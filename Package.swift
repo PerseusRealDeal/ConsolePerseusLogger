@@ -3,9 +3,10 @@
 /* Package.swift
  Version: 0.0.1
 
- Created by Mikhail Zhigulin in 7531.
+ Created by Mikhail Zhigulin in 7533.
 
  Copyright © 7531 - 7533 Mikhail A. Zhigulin of Novosibirsk
+ Copyright © 7531 - 7533 PerseusRealDeal
 
  The year starts from the creation of the world according to a Slavic calendar.
  September, the 1st of Slavic year.
@@ -20,15 +21,15 @@
 import PackageDescription
 
 let package = Package(
-    name: "T3Component",
+    name: "ConsolePerseusLogger",
     platforms: [
         .macOS(.v10_13),
         .iOS(.v11)
     ],
     products: [
         .library(
-            name: "T3Component",
-            targets: ["T3Component"])
+            name: "ConsolePerseusLogger",
+            targets: ["ConsolePerseusLogger"])
     ],
     dependencies: [
         // Dependencies declare other packages that this package depends on.
@@ -36,10 +37,10 @@ let package = Package(
     ],
     targets: [
         .target(
-            name: "T3Component",
+            name: "ConsolePerseusLogger",
             dependencies: []),
         .testTarget(
-            name: "T3ComponentTests",
-            dependencies: ["T3Component"])
+            name: "PerseusTests",
+            dependencies: ["ConsolePerseusLogger"])
     ]
 )

@@ -1,16 +1,19 @@
 //
-//  T3ComponentSingle.swift
+//  ConsolePerseusLoggerSingle.swift
 //  Version: 0.0.1
 //
 //  Created by Mikhail Zhigulin in 7531.
 //
-//  Copyright © 7531 - 7533 Mikhail A. Zhigulin of Novosibirsk.
+//  Copyright © 7531 - 7533 Mikhail A. Zhigulin of Novosibirsk
+//  Copyright © 7531 - 7533 PerseusRealDeal
+//
 //  All rights reserved.
 //
 //
 //  MIT License
 //
 //  Copyright © 7531 - 7533 Mikhail A. Zhigulin of Novosibirsk
+//  Copyright © 7531 - 7533 PerseusRealDeal
 //
 //  The year starts from the creation of the world according to a Slavic calendar.
 //  September, the 1st of Slavic year.
@@ -32,8 +35,6 @@
 //  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //  SOFTWARE.
-//
-// swiftlint_:disable file_length
 //
 
 struct T3Component {
