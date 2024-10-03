@@ -1,10 +1,11 @@
 //
-//  T3ComponentProjectTests.swift
-//  T3ComponentProjectTests
+//  ConsolePerseusLoggerTests.swift
+//  PerseusTests
 //
 //  Created by Mikhail Zhigulin in 7531.
 //
 //  Copyright © 7531 - 7533 Mikhail A. Zhigulin of Novosibirsk
+//  Copyright © 7531 - 7533 PerseusRealDeal
 //
 //  The year starts from the creation of the world according to a Slavic calendar.
 //  September, the 1st of Slavic year.
@@ -14,9 +15,9 @@
 //
 
 import XCTest
-@testable import T3Component
+@testable import ConsolePerseusLogger
 
-final class T3ComponentTests: XCTestCase {
+final class PerseusTests: XCTestCase {
 
     override func setUp() {
         super.setUp()

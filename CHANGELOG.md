@@ -23,7 +23,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Project specifics (#NN).
 
-## [0.0.1] - [YYYY-MM-DD], Developer Beginning Release
+## [0.0.1] - [2024-10-03], Developer Beginning Release
 
 ### Added
 

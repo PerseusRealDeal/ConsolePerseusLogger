@@ -4,8 +4,9 @@
 //
 //  Created by Mikhail Zhigulin in 7531.
 //
-//  Copyright © 7531 Mikhail Zhigulin of Novosibirsk.
-//  Copyright © 7531 PerseusRealDeal.
+//  Copyright © 7531 Mikhail Zhigulin of Novosibirsk
+//  Copyright © 7531 PerseusRealDeal
+//
 //  All rights reserved.
 //
 //
