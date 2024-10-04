@@ -1,6 +1,6 @@
 //
 //  ConsolePerseusLoggerSingle.swift
-//  Version: 0.0.1
+//  Version: 0.0.2
 //
 //  Created by Mikhail Zhigulin in 7531.
 //
