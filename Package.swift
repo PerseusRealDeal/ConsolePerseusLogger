@@ -1,7 +1,7 @@
 // swift-tools-version:5.7
 
 /* Package.swift
- Version: 0.0.1
+ Version: 0.0.2
 
  Created by Mikhail Zhigulin in 7533.
 
