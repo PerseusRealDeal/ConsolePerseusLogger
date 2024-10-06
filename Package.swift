@@ -1,7 +1,7 @@
 // swift-tools-version:5.7
 
 /* Package.swift
- Version: 0.0.2
+ Version: 0.1.0
 
  Created by Mikhail Zhigulin in 7533.
 
@@ -40,7 +40,7 @@ let package = Package(
             name: "ConsolePerseusLogger",
             dependencies: []),
         .testTarget(
-            name: "PerseusTests",
+            name: "UnitTests",
             dependencies: ["ConsolePerseusLogger"])
     ]
 )
