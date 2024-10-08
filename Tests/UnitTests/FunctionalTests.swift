@@ -34,7 +34,7 @@ final class FunctionalTests: XCTestCase {
 #endif
 
     func test_is_level_debug() {
-        XCTAssertEqual(log.level, .debug)
+        XCTAssertEqual(log.level, .notice)
     }
 
     func test_is_message_short() {

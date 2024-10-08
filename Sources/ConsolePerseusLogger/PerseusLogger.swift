@@ -63,7 +63,7 @@ public class PerseusLogger {
     private(set) static var message = "" // Last one.
 
     public static func message(_ text: @autoclosure () -> String,
-                               _ type: Level = .debug,
+                               _ type: Level = .notice,
                                _ file: StaticString = #file,
                                _ line: UInt = #line) {
 
