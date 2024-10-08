@@ -27,13 +27,21 @@ final class FunctionalTests: XCTestCase {
     func test_is_status_on() {
         XCTAssertEqual(log.turned, .on)
     }
+
+    func test_is_output_xcodedebug() {
+        XCTAssertEqual(log.output, .xcodedebug)
+    }
 #else
     func test_is_status_off() {
         XCTAssertEqual(log.turned, .off)
     }
+
+    func test_is_output_consoleapp() {
+        XCTAssertEqual(log.output, .consoleapp)
+    }
 #endif
 
-    func test_is_level_debug() {
+    func test_is_level_notice() {
         XCTAssertEqual(log.level, .notice)
     }
 
