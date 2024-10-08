@@ -54,18 +54,24 @@ public class PerseusLogger {
 
         public var description: String {
             switch self {
-            case .info:
-                return "INFO"
             case .debug:
                 return "DEBUG"
+            case .info:
+                return "INFO"
+            case .notice:
+                return "NOTICE"
             case .error:
                 return "ERROR"
+            case .fault:
+                return "FAULT"
             }
         }
 
-        case info  = 3
-        case debug = 2 // Default.
-        case error = 1
+        case debug  = 5 // Default.
+        case info   = 4
+        case notice = 3
+        case error  = 2
+        case fault  = 1
     }
 
 #if DEBUG
