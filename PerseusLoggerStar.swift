@@ -38,10 +38,13 @@
 //
 
 import Foundation
+import os
 
 // swiftlint:disable type_name
 public typealias log = PerseusLogger
 // swiftlint:enable type_name
+
+public typealias ConsoleObject = (subsystem: String, category: String)
 
 public class PerseusLogger {
 
@@ -101,6 +104,35 @@ public class PerseusLogger {
     public static var level = Level.notice
     public static var short = true
 
+    public static var logObject: ConsoleObject? { // Custom Log Object for Console.app.
+        didSet {
+
+            guard
+                let subsystem = logObject?.subsystem, !subsystem.isEmpty,
+                let category = logObject?.category, !category.isEmpty
+            else {
+
+                if #available(iOS 14.0, macOS 11.0, *) {
+                    consoleLogger = nil
+                }
+
+                consoleOSLog = nil
+
+                return
+            }
+
+            if #available(iOS 14.0, macOS 11.0, *) {
+                consoleLogger = Logger(subsystem: subsystem, category: category)
+            } else {
+                consoleOSLog = OSLog(subsystem: subsystem, category: category)
+            }
+        }
+    }
+
+    @available(iOS 14.0, macOS 11.0, *)
+    private(set) static var consoleLogger: Logger?
+    private(set) static var consoleOSLog: OSLog? // macOS 10.10+.
+
     private(set) static var message = "" // Last one.
 
     public static func message(_ text: @autoclosure () -> String,
@@ -130,5 +162,21 @@ public class PerseusLogger {
         print(message) // DispatchQueue.main.async { print(message) }
     }
 
-    private static func passToConsoleApp(required: Level) { }
+    private static func passToConsoleApp(required: Level) {
+
+        if #available(iOS 14.0, macOS 11.0, *) {
+            // consoleLogger, if nil create a default one.
+            return
+        }
+
+        if #available(macOS 10.10, *) {
+            // consoleOSLog, if nil create a default one.
+            return
+        }
+
+        if #unavailable(iOS 14.0) {
+            // os_log.
+            return
+        }
+    }
 }
