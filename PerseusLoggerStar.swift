@@ -43,9 +43,6 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //  SOFTWARE.
 //
-//
-// swiftlint:disable file_length
-//
 
 import Foundation
 import os
@@ -150,50 +147,46 @@ public class PerseusLogger {
 
         message = marks ? "[Logger] [\(type)] \(message)" : message
 
-        switch output {
-        case .xcodedebug: passToXcodeDebug()
-        case .consoleapp: passToConsoleApp(type)
-        }
-    }
+        if output == .xcodedebug {
 
-    private static func passToXcodeDebug() {
-        print(message) // DispatchQueue.main.async { print(message) }
-    }
+            print(message) // DispatchQueue.main.async { print(message) }
 
-    private static func passToConsoleApp(_ mark: Level) {
+        } else if output == .consoleapp {
 
-        if #available(iOS 14.0, macOS 11.0, *) {
-            if consoleLogger == nil { consoleLogger = Logger() }
+            if #available(iOS 14.0, macOS 11.0, *) {
 
-            switch mark {
-            case .debug:
-                consoleLogger?.debug("\(message)")
-            case .info:
-                consoleLogger?.info("\(message)")
-            case .notice:
-                consoleLogger?.notice("\(message)")
-            case .error:
-                consoleLogger?.error("\(message)")
-            case .fault:
-                consoleLogger?.fault("\(message)")
+                if consoleLogger == nil { consoleLogger = Logger() }
+
+                switch type {
+                case .debug:
+                    consoleLogger?.debug("\(message, privacy: .public)")
+                case .info:
+                    consoleLogger?.info("\(message, privacy: .public)")
+                case .notice:
+                    consoleLogger?.notice("\(message, privacy: .public)")
+                case .error:
+                    consoleLogger?.error("\(message, privacy: .public)")
+                case .fault:
+                    consoleLogger?.fault("\(message, privacy: .public)")
+                }
+
+                return
             }
 
-            return
-        }
+            if consoleOSLog == nil { consoleOSLog = OSLog.default }
 
-        if consoleOSLog == nil { consoleOSLog = OSLog.default }
-
-        switch mark {
-        case .debug:
-            os_log("%@", log: consoleOSLog!, type: .debug, message)
-        case .info:
-            os_log("%@", log: consoleOSLog!, type: .info, message)
-        case .notice:
-            os_log("%@", log: consoleOSLog!, type: .default, message)
-        case .error:
-            os_log("%@", log: consoleOSLog!, type: .error, message)
-        case .fault:
-            os_log("%@", log: consoleOSLog!, type: .fault, message)
+            switch type {
+            case .debug:
+                os_log("%{public}@", log: consoleOSLog!, type: .debug, message)
+            case .info:
+                os_log("%{public}@", log: consoleOSLog!, type: .info, message)
+            case .notice:
+                os_log("%{public}@", log: consoleOSLog!, type: .default, message)
+            case .error:
+                os_log("%{public}@", log: consoleOSLog!, type: .error, message)
+            case .fault:
+                os_log("%{public}@", log: consoleOSLog!, type: .fault, message)
+            }
         }
     }
 }
