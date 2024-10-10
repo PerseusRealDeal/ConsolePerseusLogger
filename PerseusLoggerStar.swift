@@ -43,6 +43,9 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //  SOFTWARE.
 //
+//
+// swiftlint:disable file_length
+//
 
 import Foundation
 import os
@@ -54,14 +57,20 @@ public typealias log = PerseusLogger
 public typealias ConsoleObject = (subsystem: String, category: String)
 
 public class PerseusLogger {
-    
+
     public enum Status {
         case on
         case off
     }
-    
+
+    public enum Output {
+        case xcodedebug
+        case consoleapp
+        // case outputfile
+    }
+
     public enum Level: Int, CustomStringConvertible {
-        
+
         public var description: String {
             switch self {
             case .debug:
@@ -76,30 +85,14 @@ public class PerseusLogger {
                 return "FAULT"
             }
         }
-        
+
         case debug  = 5
         case info   = 4
         case notice = 3 // Default.
         case error  = 2
         case fault  = 1
     }
-    
-    public enum Output: CustomStringConvertible {
-        
-        public var description: String {
-            switch self {
-            case .xcodedebug:
-                return "Xcode Debug Console"
-            case .consoleapp:
-                return "Console App on Mac"
-            }
-        }
-        
-        case xcodedebug
-        case consoleapp
-        // case outputfile
-    }
-    
+
 #if DEBUG
     public static var turned = Status.on
     public static var output = Output.xcodedebug
@@ -107,72 +100,72 @@ public class PerseusLogger {
     public static var turned = Status.off
     public static var output = Output.consoleapp
 #endif
-    
+
     public static var level = Level.notice
     public static var short = true
-    
+    public static var marks = true
+
     public static var logObject: ConsoleObject? { // Custom Log Object for Console on Mac.
         didSet {
-            
-            guard let subsystem = logObject?.subsystem, let category = logObject?.category
-            else {
-                
+
+            guard let obj = logObject else {
+
                 if #available(iOS 14.0, macOS 11.0, *) {
                     consoleLogger = nil
                 }
-                
+
                 consoleOSLog = nil
-                
+
                 return
             }
-            
+
             if #available(iOS 14.0, macOS 11.0, *) {
-                consoleLogger = Logger(subsystem: subsystem, category: category)
+                consoleLogger = Logger(subsystem: obj.subsystem, category: obj.category)
             } else {
-                consoleOSLog = OSLog(subsystem: subsystem, category: category)
+                consoleOSLog = OSLog(subsystem: obj.subsystem, category: obj.category)
             }
         }
     }
-    
+
     @available(iOS 14.0, macOS 11.0, *)
     private(set) static var consoleLogger: Logger?
     private(set) static var consoleOSLog: OSLog?
-    
+
     private(set) static var message = "" // Last one.
-    
+
     public static func message(_ text: @autoclosure () -> String,
                                _ type: Level = .debug,
                                _ file: StaticString = #file,
                                _ line: UInt = #line) {
-        
+
         guard turned == .on, type.rawValue <= level.rawValue else { return }
-        
+
         if short {
-            message = output == .consoleapp ? "\(text())" : "\(type): \(text())"
+            message = "\(text())"
         } else {
-            
             let fileName = (file.description as NSString).lastPathComponent
-            
-            message = output == .consoleapp ? "\(text()), file: \(fileName), line: \(line)" :
-            "\(type): \(text()), file: \(fileName), line: \(line)"
+            message = "\(text()), file: \(fileName), line: \(line)"
+
         }
-        
+
+        message = marks ? "[Logger] [\(type)] \(message)" : message
+
         switch output {
         case .xcodedebug: passToXcodeDebug()
-        case .consoleapp: passToConsoleApp(required: type)
+        case .consoleapp: passToConsoleApp(type)
         }
     }
-    
+
     private static func passToXcodeDebug() {
         print(message) // DispatchQueue.main.async { print(message) }
     }
-    
-    private static func passToConsoleApp(required: Level) {
-        
+
+    private static func passToConsoleApp(_ mark: Level) {
+
         if #available(iOS 14.0, macOS 11.0, *) {
             if consoleLogger == nil { consoleLogger = Logger() }
-            
-            switch required {
+
+            switch mark {
             case .debug:
                 consoleLogger?.debug("\(message)")
             case .info:
@@ -184,13 +177,13 @@ public class PerseusLogger {
             case .fault:
                 consoleLogger?.fault("\(message)")
             }
-            
+
             return
         }
-        
+
         if consoleOSLog == nil { consoleOSLog = OSLog.default }
-        
-        switch required {
+
+        switch mark {
         case .debug:
             os_log("%@", log: consoleOSLog!, type: .debug, message)
         case .info:
