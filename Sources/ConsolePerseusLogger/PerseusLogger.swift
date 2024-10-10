@@ -81,12 +81,10 @@ public class PerseusLogger {
     public static var level = Level.notice
     public static var short = true
 
-    public static var logObject: ConsoleObject? { // Custom Log Object for Console.app.
+    public static var logObject: ConsoleObject? { // Custom Log Object for Console on Mac.
         didSet {
 
-            guard
-                let subsystem = logObject?.subsystem, !subsystem.isEmpty,
-                let category = logObject?.category, !category.isEmpty
+            guard let subsystem = logObject?.subsystem, let category = logObject?.category
             else {
 
                 if #available(iOS 14.0, macOS 11.0, *) {
@@ -108,12 +106,12 @@ public class PerseusLogger {
 
     @available(iOS 14.0, macOS 11.0, *)
     private(set) static var consoleLogger: Logger?
-    private(set) static var consoleOSLog: OSLog? // macOS 10.10+.
+    private(set) static var consoleOSLog: OSLog?
 
     private(set) static var message = "" // Last one.
 
     public static func message(_ text: @autoclosure () -> String,
-                               _ type: Level = .notice,
+                               _ type: Level = .debug,
                                _ file: StaticString = #file,
                                _ line: UInt = #line) {
 
@@ -143,16 +141,19 @@ public class PerseusLogger {
 
         if #available(iOS 14.0, macOS 11.0, *) {
             // consoleLogger, if nil create a default one.
+            print(message + " (iOS 14.0, macOS 11.0, *)")
             return
         }
 
-        if #available(macOS 10.10, *) {
+        if #available(macOS 10.12, *) {
             // consoleOSLog, if nil create a default one.
+            print(message + " (macOS 10.12, *)")
             return
         }
 
-        if #unavailable(iOS 14.0) {
+        if #unavailable(iOS 14.0) { // Code runs from iOS 13 and earlier
             // os_log.
+            print(message + " (iOS 13 and earlier)")
             return
         }
     }
