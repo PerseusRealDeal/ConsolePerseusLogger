@@ -140,21 +140,37 @@ public class PerseusLogger {
     private static func passToConsoleApp(required: Level) {
 
         if #available(iOS 14.0, macOS 11.0, *) {
-            // consoleLogger, if nil create a default one.
-            print(message + " (iOS 14.0, macOS 11.0, *)")
+            if consoleLogger == nil { consoleLogger = Logger() }
+
+            switch required {
+            case .debug:
+                consoleLogger?.debug("\(message)")
+            case .info:
+                consoleLogger?.info("\(message)")
+            case .notice:
+                consoleLogger?.notice("\(message)")
+            case .error:
+                consoleLogger?.error("\(message)")
+            case .fault:
+                consoleLogger?.fault("\(message)")
+            }
+
             return
         }
 
-        if #available(macOS 10.12, *) {
-            // consoleOSLog, if nil create a default one.
-            print(message + " (macOS 10.12, *)")
-            return
-        }
+        if consoleOSLog == nil { consoleOSLog = OSLog.default }
 
-        if #unavailable(iOS 14.0) { // Code runs from iOS 13 and earlier
-            // os_log.
-            print(message + " (iOS 13 and earlier)")
-            return
+        switch required {
+        case .debug:
+            os_log("%@", log: consoleOSLog!, type: .debug, message)
+        case .info:
+            os_log("%@", log: consoleOSLog!, type: .info, message)
+        case .notice:
+            os_log("%@", log: consoleOSLog!, type: .default, message)
+        case .error:
+            os_log("%@", log: consoleOSLog!, type: .error, message)
+        case .fault:
+            os_log("%@", log: consoleOSLog!, type: .fault, message)
         }
     }
 }
