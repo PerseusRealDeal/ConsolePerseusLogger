@@ -1,6 +1,4 @@
-# Approbation Matrix / ConsolePerseusLogger v0.1.0
-
-> Only GitHub CI build & tests status used to approve.
+# Approbation Matrix / ConsolePerseusLogger v1.0.0
 
 ## macOS
 

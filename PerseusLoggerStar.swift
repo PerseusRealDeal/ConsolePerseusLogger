@@ -1,11 +1,11 @@
 //
 //  PerseusLoggerStar.swift
-//  Version: 0.1.0
+//  Version: 1.0.0
 //
 //  PLATFORMS: macOS 10.12+ | iOS 10.0+
 //  NOTE: macOS code runs on Simulator
 //
-//  SWIFT: 5.7 / Xcode 15.2+
+//  SWIFT: 5.7 / Xcode 14.2+
 //
 //  DESC: USE LOGGER LIKE A VARIABLE ANYWHERE YOU WANT.
 //
