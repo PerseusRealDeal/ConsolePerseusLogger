@@ -55,6 +55,9 @@ public typealias ConsoleObject = (subsystem: String, category: String)
 
 public class PerseusLogger {
 
+    public static let SUBSYSTEM = "Perseus"
+    public static let CATEGORY = "Logger"
+
     public enum Status {
         case on
         case off
@@ -155,7 +158,9 @@ public class PerseusLogger {
 
             if #available(iOS 14.0, macOS 11.0, *) {
 
-                if consoleLogger == nil { consoleLogger = Logger() }
+                if consoleLogger == nil {
+                    consoleLogger = Logger(subsystem: SUBSYSTEM, category: CATEGORY)
+                }
 
                 switch type {
                 case .debug:
@@ -173,7 +178,9 @@ public class PerseusLogger {
                 return
             }
 
-            if consoleOSLog == nil { consoleOSLog = OSLog.default }
+            if consoleOSLog == nil {
+                consoleOSLog = OSLog(subsystem: SUBSYSTEM, category: CATEGORY)
+            }
 
             switch type {
             case .debug:
