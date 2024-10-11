@@ -133,6 +133,7 @@ public class PerseusLogger {
 
     private(set) static var message = "" // Last one.
 
+    // swiftlint:disable:next cyclomatic_complexity
     public static func message(_ text: @autoclosure () -> String,
                                _ type: Level = .debug,
                                _ file: StaticString = #file,
