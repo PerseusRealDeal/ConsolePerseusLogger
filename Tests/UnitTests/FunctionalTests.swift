@@ -19,7 +19,7 @@ import XCTest
 
 final class FunctionalTests: XCTestCase {
 
-    func test_is_log_typealias_for_Logger() {
+    func test_is_log_typealias_for_PerseusLogger() {
         XCTAssertEqual("\(log.self)", "\(PerseusLogger.self)")
     }
 
@@ -47,5 +47,29 @@ final class FunctionalTests: XCTestCase {
 
     func test_is_message_short() {
         XCTAssertTrue(log.short)
+    }
+
+    func test_is_marks_included() {
+        XCTAssertTrue(log.marks)
+    }
+
+    func test_is_logObject_nil_byDefault() {
+
+        XCTAssertNil(log.logObject)
+        XCTAssertNil(log.logObject)
+
+        if #available(iOS 14.0, macOS 11.0, *) {
+            XCTAssertNil(log.consoleLogger)
+        }
+
+        XCTAssertNil(log.consoleOSLog)
+    }
+
+    func test_has_logger_default_subsystem_name() {
+        XCTAssertEqual(log.SUBSYSTEM, "Perseus")
+    }
+
+    func test_has_logger_default_category_name() {
+        XCTAssertEqual(log.CATEGORY, "Logger")
     }
 }
