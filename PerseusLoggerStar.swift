@@ -3,7 +3,6 @@
 //  Version: 1.0.0
 //
 //  PLATFORMS: macOS 10.12+ | iOS 10.0+
-//  NOTE: macOS code runs on Simulator
 //
 //  SWIFT: 5.7 / Xcode 14.2+
 //
@@ -159,41 +158,37 @@ public class PerseusLogger {
 
             if #available(iOS 14.0, macOS 11.0, *) {
 
-                if consoleLogger == nil {
-                    consoleLogger = Logger(subsystem: SUBSYSTEM, category: CATEGORY)
-                }
+                let logger = consoleLogger ?? Logger(subsystem: SUBSYSTEM, category: CATEGORY)
 
                 switch type {
                 case .debug:
-                    consoleLogger?.debug("\(message, privacy: .public)")
+                    logger.debug("\(message, privacy: .public)")
                 case .info:
-                    consoleLogger?.info("\(message, privacy: .public)")
+                    logger.info("\(message, privacy: .public)")
                 case .notice:
-                    consoleLogger?.notice("\(message, privacy: .public)")
+                    logger.notice("\(message, privacy: .public)")
                 case .error:
-                    consoleLogger?.error("\(message, privacy: .public)")
+                    logger.error("\(message, privacy: .public)")
                 case .fault:
-                    consoleLogger?.fault("\(message, privacy: .public)")
+                    logger.fault("\(message, privacy: .public)")
                 }
 
                 return
             }
 
-            if consoleOSLog == nil {
-                consoleOSLog = OSLog(subsystem: SUBSYSTEM, category: CATEGORY)
-            }
+            let consoleLog = consoleOSLog ?? OSLog(subsystem: SUBSYSTEM, category: CATEGORY)
 
             switch type {
             case .debug:
-                os_log("%{public}@", log: consoleOSLog!, type: .debug, message)
+                os_log("%{public}@", log: consoleLog, type: .debug, message)
             case .info:
-                os_log("%{public}@", log: consoleOSLog!, type: .info, message)
+                os_log("%{public}@", log: consoleLog, type: .info, message)
             case .notice:
-                os_log("%{public}@", log: consoleOSLog!, type: .default, message)
+                os_log("%{public}@", log: consoleLog, type: .default, message)
             case .error:
-                os_log("%{public}@", log: consoleOSLog!, type: .error, message)
+                os_log("%{public}@", log: consoleLog, type: .error, message)
             case .fault:
-                os_log("%{public}@", log: consoleOSLog!, type: .fault, message)
+                os_log("%{public}@", log: consoleLog, type: .fault, message)
             }
         }
     }
