@@ -119,7 +119,7 @@ public class PerseusLogger {
 
         }
 
-        message = marks ? "[Logger] [\(type)] \(message)" : message
+        message = marks ? "[LOG] [\(type)] \(message)" : message
 
         if output == .xcodedebug {
 
