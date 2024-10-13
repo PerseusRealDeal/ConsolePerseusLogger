@@ -5,6 +5,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Dates in this file meets Gregorian calendar. Date in format YYYY-MM-DD.
 
+## [1.0.0] - [2024-10-13], Console Output
+
+### Added
+
+- Output to Console on Mac.
+
 ## [0.1.0] - [2024-10-06], PerseusLogger
 
 ### Added
