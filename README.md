@@ -4,7 +4,7 @@
 
 [![Actions Status](https://github.com/perseusrealdeal/ConsolePerseusLogger/actions/workflows/main.yml/badge.svg)](https://github.com/perseusrealdeal/ConsolePerseusLogger/actions/workflows/main.yml)
 [![Style](https://github.com/perseusrealdeal/ConsolePerseusLogger/actions/workflows/swiftlint.yml/badge.svg)](https://github.com/perseusrealdeal/ConsolePerseusLogger/actions/workflows/swiftlint.yml)
-[![Version](https://img.shields.io/badge/Version-1.0.0-green.svg)](/CHANGELOG.md)
+[![Version](https://img.shields.io/badge/Version-1.0.1-green.svg)](/CHANGELOG.md)
 [![Platforms](https://img.shields.io/badge/Platforms-macOS%2010.13+_|_iOS%2011.0+-orange.svg)](https://en.wikipedia.org/wiki/List_of_Apple_products)
 [![Xcode 14.2](https://img.shields.io/badge/Xcode-14.2+-red.svg)](https://en.wikipedia.org/wiki/Xcode)
 [![Swift 5.7](https://img.shields.io/badge/Swift-5.7-red.svg)](https://www.swift.org)
@@ -100,6 +100,20 @@ sublogB.turned = .off
 
 log.level = .debug
 log.message("The app's start point...", .info)
+
+```
+
+### Console on Mac and Simulator
+
+> Just a matter of fact that Console on Mac doesn't show any DEBUG message from any app running on Simulator ("Include Debug Messages" tapped).<br/>
+
+> Console Perseus Logger running on Simulator doesn't pass DEBUG message, instead it passes INFO message with text of DEBUG message, so, a passed message being INFO looks like a DEBUG and it works perfactly well.<br/>
+
+> If for some reasons Simulator must pass DEBUG like a DEBUG message there is an option exists:
+
+```ruby
+
+log.debugIsInfo = false
 
 ```
 
