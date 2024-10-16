@@ -4,7 +4,7 @@
 
 [![Actions Status](https://github.com/perseusrealdeal/ConsolePerseusLogger/actions/workflows/main.yml/badge.svg)](https://github.com/perseusrealdeal/ConsolePerseusLogger/actions/workflows/main.yml)
 [![Style](https://github.com/perseusrealdeal/ConsolePerseusLogger/actions/workflows/swiftlint.yml/badge.svg)](https://github.com/perseusrealdeal/ConsolePerseusLogger/actions/workflows/swiftlint.yml)
-[![Version](https://img.shields.io/badge/Version-1.0.1-green.svg)](/CHANGELOG.md)
+[![Version](https://img.shields.io/badge/Version-1.0.2-green.svg)](/CHANGELOG.md)
 [![Platforms](https://img.shields.io/badge/Platforms-macOS%2010.13+_|_iOS%2011.0+-orange.svg)](https://en.wikipedia.org/wiki/List_of_Apple_products)
 [![Xcode 14.2](https://img.shields.io/badge/Xcode-14.2+-red.svg)](https://en.wikipedia.org/wiki/Xcode)
 [![Swift 5.7](https://img.shields.io/badge/Swift-5.7-red.svg)](https://www.swift.org)
@@ -33,13 +33,13 @@ log.message("[\(type(of: self))].\(#function)")
 
 ```
 
-| Level | Message | Default Message | Default Level | Purpose                               |
-| :---: | :------ | :-------------: | :-----------: | :------------------------------------ |
-| 5     | DEBUG   | Default         |               | Debugging only                        |
-| 4     | INFO    |                 |               | Helpful, but not essential            |
-| 3     | NOTICE  |                 | Default       | Might result in a failure             |
-| 2     | ERROR   |                 |               | Errors seen during the code execution |
-| 1     | FAULT   |                 |               | Faults and bugs in the code           |
+| Level | Message Type | Purpose                               |
+| :---: | :----------- | :------------------------------------ |
+| 5     | DEBUG        | Debugging only                        |
+| 4     | INFO         | Helpful, but not essential            |
+| 3     | NOTICE       | Might result in a failure             |
+| 2     | ERROR        | Errors seen during the code execution |
+| 1     | FAULT        | Faults and bugs in the code           |
 
 # Manual
 ## Setting the Logger for Work
@@ -50,7 +50,7 @@ log.message("[\(type(of: self))].\(#function)")
 | :---------- | :--------------: | :----------------: | :----------------------------------------------------- |
 | tuned       | .on              | .off               | If .off no matter what level no message will be passed |
 | output      | .xcodedebug      | .consoleapp        | Message output target                                  |
-| level       | .notice          | .notice            | No any messages on any level above                     |
+| level       | .debug           | .notice            | No any messages on any level above                     |
 | short       | true             | true               | FALSE: Message goes with file name and line number     |
 | marks       | true             | true               | FALSE: Message text, TRUE: [LOG] [DEBUG] Message text  |
 | logObject   | nil              | nil                | Mac Console Subsystem and Category values group        |

@@ -31,6 +31,10 @@ final class FunctionalTests: XCTestCase {
     func test_is_output_xcodedebug() {
         XCTAssertEqual(log.output, .xcodedebug)
     }
+
+    func test_is_level_notice() {
+        XCTAssertEqual(log.level, .debug)
+    }
 #else
     func test_is_status_off() {
         XCTAssertEqual(log.turned, .off)
@@ -39,11 +43,11 @@ final class FunctionalTests: XCTestCase {
     func test_is_output_consoleapp() {
         XCTAssertEqual(log.output, .consoleapp)
     }
-#endif
 
     func test_is_level_notice() {
         XCTAssertEqual(log.level, .notice)
     }
+#endif
 
     func test_is_message_short() {
         XCTAssertTrue(log.short)
