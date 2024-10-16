@@ -1,6 +1,6 @@
 //
 //  PerseusLoggerStar.swift
-//  Version: 1.0.0
+//  Version: 1.0.1
 //
 //  PLATFORMS: macOS 10.12+ | iOS 10.0+
 //
@@ -41,6 +41,8 @@
 //  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //  SOFTWARE.
+//
+// swiftlint:disable file_length
 //
 
 import Foundation
@@ -104,7 +106,11 @@ public class PerseusLogger {
     public static var short = true
     public static var marks = true
 
-    public static var logObject: ConsoleObject? { // Custom Log Object for Console on Mac.
+#if targetEnvironment(simulator)
+    public static var debugIsInfo = true // Shows DEBUG message as INFO in Console on Mac.
+#endif
+
+    public static var logObject: ConsoleObject? {
         didSet {
 
             guard let obj = logObject else {
@@ -162,7 +168,15 @@ public class PerseusLogger {
 
                 switch type {
                 case .debug:
+#if targetEnvironment(simulator)
+                    if debugIsInfo {
+                        logger.info("\(message, privacy: .public)")
+                    } else {
+                        logger.debug("\(message, privacy: .public)")
+                    }
+#else
                     logger.debug("\(message, privacy: .public)")
+#endif
                 case .info:
                     logger.info("\(message, privacy: .public)")
                 case .notice:
@@ -180,7 +194,15 @@ public class PerseusLogger {
 
             switch type {
             case .debug:
+#if targetEnvironment(simulator)
+                if debugIsInfo {
+                    os_log("%{public}@", log: consoleLog, type: .info, message)
+                } else {
+                    os_log("%{public}@", log: consoleLog, type: .debug, message)
+                }
+#else
                 os_log("%{public}@", log: consoleLog, type: .debug, message)
+#endif
             case .info:
                 os_log("%{public}@", log: consoleLog, type: .info, message)
             case .notice:

@@ -5,6 +5,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Dates in this file meets Gregorian calendar. Date in format YYYY-MM-DD.
 
+## [1.0.1] - [2024-10-16], Console Output
+
+### Fixed
+
+- Mac Console ignores DEBUG messages if Simulator ([#6](https://github.com/perseusrealdeal/ConsolePerseusLogger/issues/6)).
+
 ## [1.0.0] - [2024-10-13], Console Output
 
 ### Added

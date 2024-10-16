@@ -4,7 +4,7 @@
 
 [![Actions Status](https://github.com/perseusrealdeal/ConsolePerseusLogger/actions/workflows/main.yml/badge.svg)](https://github.com/perseusrealdeal/ConsolePerseusLogger/actions/workflows/main.yml)
 [![Style](https://github.com/perseusrealdeal/ConsolePerseusLogger/actions/workflows/swiftlint.yml/badge.svg)](https://github.com/perseusrealdeal/ConsolePerseusLogger/actions/workflows/swiftlint.yml)
-[![Version](https://img.shields.io/badge/Version-1.0.0-green.svg)](/CHANGELOG.md)
+[![Version](https://img.shields.io/badge/Version-1.0.1-green.svg)](/CHANGELOG.md)
 [![Platforms](https://img.shields.io/badge/Platforms-macOS%2010.13+_|_iOS%2011.0+-orange.svg)](https://en.wikipedia.org/wiki/List_of_Apple_products)
 [![Xcode 14.2](https://img.shields.io/badge/Xcode-14.2+-red.svg)](https://en.wikipedia.org/wiki/Xcode)
 [![Swift 5.7](https://img.shields.io/badge/Swift-5.7-red.svg)](https://www.swift.org)
@@ -14,6 +14,10 @@
 
 [![Standalone](https://img.shields.io/badge/Standalone%20-available-informational.svg)](/PerseusLoggerStar.swift)
 [![Swift Package Manager compatible](https://img.shields.io/badge/Swift%20Package%20Manager-compatible-4BC51D.svg)](/Package.swift)
+
+## Approbation Matrix
+
+> [A3 Environment](https://docs.google.com/document/d/1K2jOeIknKRRpTEEIPKhxO2H_1eBTof5uTXxyOm5g6nQ/edit?usp=sharing) / [Approbation Results](/APPROBATION.md) / [CHANGELOG](/CHANGELOG.md) for details.
 
 ## In brief > Idea to use, the Why
 
@@ -29,26 +33,30 @@ log.message("[\(type(of: self))].\(#function)")
 
 ```
 
-| Types   | Message default | Level default | Purpose                               |
-| :------ | :-------------: | :-----------: | :------------------------------------ |
-| DEBUG   | Default         |               | Debugging only                        |
-| INFO    |                 |               | Helpful, but not essential            |
-| NOTICE  |                 | Default       | Might result in a failure             |
-| ERROR   |                 |               | Errors seen during the code execution |
-| FAULT   |                 |               | Faults and bugs in the code           |
+| Level | Message | Default Message | Default Level | Purpose                               |
+| :---: | :------ | :-------------: | :-----------: | :------------------------------------ |
+| 5     | DEBUG   | Default         |               | Debugging only                        |
+| 4     | INFO    |                 |               | Helpful, but not essential            |
+| 3     | NOTICE  |                 | Default       | Might result in a failure             |
+| 2     | ERROR   |                 |               | Errors seen during the code execution |
+| 1     | FAULT   |                 |               | Faults and bugs in the code           |
 
 # Manual
 ## Setting the Logger for Work
 
 > Options used by default are different and depends on DEBUG/RELEASE if do not set explicitly.
 
-| Options | Default in DEBUG | Default in RELEASE | Description                                            |
-| :------ | :--------------: | :----------------: | :----------------------------------------------------- |
-| tuned   | .on              | .off               | If .off no matter what level no message will be passed |
-| output  | .xcodedebug      | .consoleapp        | Message output target                                  |
-| level   | .notice          | .notice            | No messages on any level above                         |
-| short   | true             | true               | If false a message goes with file name and line number |
-| marks   | true             | true               | [LOG] [DEBUG] Message text                             |
+| Options     | Default in DEBUG | Default in RELEASE | Description                                            |
+| :---------- | :--------------: | :----------------: | :----------------------------------------------------- |
+| tuned       | .on              | .off               | If .off no matter what level no message will be passed |
+| output      | .xcodedebug      | .consoleapp        | Message output target                                  |
+| level       | .notice          | .notice            | No any messages on any level above                     |
+| short       | true             | true               | FALSE: Message goes with file name and line number     |
+| marks       | true             | true               | FALSE: Message text, TRUE: [LOG] [DEBUG] Message text  |
+| logObject   | nil              | nil                | Mac Console Subsystem and Category values group        |
+| debugIsInfo | true             | true               | Only if Simulator. TRUE: DEBUG is INFO with DEBUG text |
+
+> NOTE: If logObject is nil Console Perseus Logger uses default values for Subsystem "Perseus" and Category "Logger" accordingly.
 
 ```ruby
 
@@ -58,20 +66,15 @@ log.message("[\(type(of: self))].\(#function)")
 
 import ConsolePerseusLogger
 
-// MARK: - Logger
+// MARK: - Log to Mac Console
+
+log.logObject = ("MyApp", "MyLogger") // Subsystem and Category.
+
+log.output = .consoleapp
+log.turned = .on
 
 log.level = .debug
 log.message("The app's start point...", .info)
-
-```
-
-### Subsystem and Category Logging
-
-> By default values for Subsystem and Category are "Perseus" and "Logger".
-
-```ruby
-
-log.logObject = ("MyApp", "MyLogger")
 
 ```
 
@@ -103,9 +106,21 @@ log.message("The app's start point...", .info)
 
 ```
 
-## Approbation Matrix
+### Console on Mac and Simulator
 
-> [A3 Environment](https://docs.google.com/document/d/1K2jOeIknKRRpTEEIPKhxO2H_1eBTof5uTXxyOm5g6nQ/edit?usp=sharing) / [Approbation Results](/APPROBATION.md) / [CHANGELOG](/CHANGELOG.md) for details.
+> Just a matter of fact that Console on Mac doesn't show any DEBUG message from any app running on Simulator ("Include Debug Messages" tapped).<br/>
+
+> Console Perseus Logger running on Simulator doesn't pass DEBUG message, instead it passes INFO message with text of DEBUG message, so, a passed message being INFO looks like a DEBUG and it works perfactly well.<br/>
+
+> If for some reasons Simulator must pass DEBUG like a DEBUG message there is an option exists (it's true by default if Simulator):
+
+```ruby
+
+#if targetEnvironment(simulator)
+    log.debugIsInfo = false // Use Case: Mac Console in use to redirect logs to file on disk.
+#endif
+
+```
 
 ## Build system requirements
 
