@@ -58,7 +58,7 @@ public class PerseusLogger {
 
         case debug  = 5
         case info   = 4
-        case notice = 3 // Default.
+        case notice = 3
         case error  = 2
         case fault  = 1
     }
@@ -66,12 +66,15 @@ public class PerseusLogger {
 #if DEBUG
     public static var turned = Status.on
     public static var output = Output.xcodedebug
+
+    public static var level = Level.debug
 #else
     public static var turned = Status.off
     public static var output = Output.consoleapp
-#endif
 
     public static var level = Level.notice
+#endif
+
     public static var short = true
     public static var marks = true
 

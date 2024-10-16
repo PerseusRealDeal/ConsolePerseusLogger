@@ -1,4 +1,4 @@
-# Approbation Matrix / ConsolePerseusLogger v1.0.1
+# Approbation Matrix / ConsolePerseusLogger v1.0.2
 
 > Approbated feature: Logging to Console on Mac.<br/>
 
