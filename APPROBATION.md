@@ -2,18 +2,20 @@
 
 > Approbated feature: Logging to Console on Mac.<br/>
 
+> NOTE: To catch all log messages Mac Console should be started first then after a little while the logged app.
+
 ## macOS
 
 | macOS       | Version  | Result | Details |
 | ----------- | -------- | :----: | ------- |
-| High Sierra | 10.13.6  | ok     | - |
-| Mojave      | 10.14.6  | ok     | - |
-| Catalina    | 10.15.7  | ok     | - |
-| Big Sur     | 11.7.10  | ok     | - |
-| Monterey    | 12.7.6   | ok     | - |
-| Ventura     | 13.6.9   | ok     | - |
-| Sonoma      | 14.6.1   | ok     | - |
-| Sequoia     | 15.0     | ok     | - |
+| High Sierra | 10.13.6  | ok     | -       |
+| Mojave      | 10.14.6  | ok     | -       |
+| Catalina    | 10.15.7  | ok     | -       |
+| Big Sur     | 11.7.10  | ok     | -       |
+| Monterey    | 12.7.6   | ok     | -       |
+| Ventura     | 13.6.9   | ok     | -       |
+| Sonoma      | 14.6.1   | ok     | -       |
+| Sequoia     | 15.0     | ok     | -       |
 
 ## iOS
 
