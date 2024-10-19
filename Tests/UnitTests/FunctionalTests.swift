@@ -60,7 +60,6 @@ final class FunctionalTests: XCTestCase {
     func test_is_logObject_nil_byDefault() {
 
         XCTAssertNil(log.logObject)
-        XCTAssertNil(log.logObject)
 
         if #available(iOS 14.0, macOS 11.0, *) {
             XCTAssertNil(log.consoleLogger)

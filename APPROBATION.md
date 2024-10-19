@@ -1,4 +1,4 @@
-# Approbation Matrix / ConsolePerseusLogger v1.0.2
+# Approbation Matrix / ConsolePerseusLogger v1.0.3
 
 > Approbated feature: Logging to Console on Mac.<br/>
 
@@ -13,7 +13,7 @@
 | Catalina    | 10.15.7  | ok     | -       |
 | Big Sur     | 11.7.10  | ok     | -       |
 | Monterey    | 12.7.6   | ok     | -       |
-| Ventura     | 13.6.9   | ok     | -       |
+| Ventura     | 13.7     | ok     | -       |
 | Sonoma      | 14.6.1   | ok     | -       |
 | Sequoia     | 15.0     | ok     | -       |
 
