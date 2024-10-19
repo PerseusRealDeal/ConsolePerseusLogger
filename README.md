@@ -1,10 +1,10 @@
-# Console Perseus Logger — Xcode 14.2+
+# ConsolePerseusLogger — Xcode 14.2+
 
-> Light-weight logger in Swift.<br/>
+> Light-weight logger in Swift. Hereinafter `CPL` stands for `Console Perseus Logger`.<br/>
 
 [![Actions Status](https://github.com/perseusrealdeal/ConsolePerseusLogger/actions/workflows/main.yml/badge.svg)](https://github.com/perseusrealdeal/ConsolePerseusLogger/actions/workflows/main.yml)
 [![Style](https://github.com/perseusrealdeal/ConsolePerseusLogger/actions/workflows/swiftlint.yml/badge.svg)](https://github.com/perseusrealdeal/ConsolePerseusLogger/actions/workflows/swiftlint.yml)
-[![Version](https://img.shields.io/badge/Version-1.0.2-green.svg)](/CHANGELOG.md)
+[![Version](https://img.shields.io/badge/Version-1.0.3-green.svg)](/CHANGELOG.md)
 [![Platforms](https://img.shields.io/badge/Platforms-macOS%2010.13+_|_iOS%2011.0+-orange.svg)](https://en.wikipedia.org/wiki/List_of_Apple_products)
 [![Xcode 14.2](https://img.shields.io/badge/Xcode-14.2+-red.svg)](https://en.wikipedia.org/wiki/Xcode)
 [![Swift 5.7](https://img.shields.io/badge/Swift-5.7-red.svg)](https://www.swift.org)
@@ -44,7 +44,7 @@ log.message("[\(type(of: self))].\(#function)")
 # Manual
 ## Setting the Logger for Work
 
-> Options used by default are different and depends on DEBUG/RELEASE if do not set explicitly.
+> Options used by default are different and depend on DEBUG/RELEASE.
 
 | Options     | Default in DEBUG | Default in RELEASE | Description                                            |
 | :---------- | :--------------: | :----------------: | :----------------------------------------------------- |
@@ -56,7 +56,7 @@ log.message("[\(type(of: self))].\(#function)")
 | logObject   | nil              | nil                | Mac Console Subsystem and Category values group        |
 | debugIsInfo | true             | true               | Only if Simulator. TRUE: DEBUG is INFO with DEBUG text |
 
-> NOTE: If logObject is nil Console Perseus Logger uses default values for Subsystem "Perseus" and Category "Logger" accordingly.
+> NOTE: If logObject is nil CPL uses default values for Subsystem "Perseus" and Category "Logger" accordingly.
 
 ```ruby
 
@@ -79,6 +79,8 @@ log.message("The app's start point...", .info)
 ```
 
 ### Getting access to the Logger of Submodule
+
+> In case if CPL used as a standalone file in submodule (package).
 
 ```ruby
 

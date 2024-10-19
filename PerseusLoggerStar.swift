@@ -1,6 +1,6 @@
 //
 //  PerseusLoggerStar.swift
-//  Version: 1.0.2
+//  Version: 1.0.3
 //
 //  PLATFORMS: macOS 10.12+ | iOS 10.0+
 //
@@ -139,8 +139,6 @@ public class PerseusLogger {
     private(set) static var consoleLogger: Logger?
     private(set) static var consoleOSLog: OSLog?
 
-    private(set) static var message = "" // Last one.
-
     // swiftlint:disable:next cyclomatic_complexity
     public static func message(_ text: @autoclosure () -> String,
                                _ type: Level = .debug,
@@ -148,6 +146,8 @@ public class PerseusLogger {
                                _ line: UInt = #line) {
 
         guard turned == .on, type.rawValue <= level.rawValue else { return }
+
+        var message = ""
 
         if short {
             message = "\(text())"
