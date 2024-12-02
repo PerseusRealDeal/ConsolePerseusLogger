@@ -24,7 +24,7 @@ let package = Package(
     name: "ConsolePerseusLogger",
     platforms: [
         .macOS(.v10_13),
-        .iOS(.v11)
+        .iOS(.v12)
     ],
     products: [
         .library(
