@@ -1,8 +1,9 @@
 //
 //  PerseusLoggerStar.swift
-//  Version: 1.0.3
+//  Version: 1.1.0
 //
-//  PLATFORMS: macOS 10.12+ | iOS 10.0+
+//  RECOMMENED PLATFORMS: macOS 10.13+ | iOS 12.0+
+//  MINOR PLATFORMS FOR STANDALONE USAGE: macOS 10.12+ | iOS 10.0+
 //
 //  SWIFT: 5.7 / Xcode 14.2+
 //
