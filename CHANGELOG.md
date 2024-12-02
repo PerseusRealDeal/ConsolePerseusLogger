@@ -5,7 +5,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Dates in this file meets Gregorian calendar. Date in format YYYY-MM-DD.
 
-## [1.0.3] - [2024-10-19], CPL
+## [1.1.0] - [Unreleased], CPL
+
+### Added
+
+- Messaging output in file on disk.
+
+### Changed
+
+- Access level to default for PerseusLogger typealias in standalone file.
+- iOS version supported to 12.0.
+
+## [1.0.3] - [2024-10-19], Console Output
 
 ### Security
 
