@@ -88,6 +88,21 @@ public class PerseusLogger {
             }
         }
 
+        public var tag: String {
+            switch self {
+            case .debug:
+                return "[DEBUG ]"
+            case .info:
+                return "[INFO  ]"
+            case .notice:
+                return "[NOTICE]"
+            case .error:
+                return "[ERROR ]"
+            case .fault:
+                return "[FAULT ]"
+            }
+        }
+
         case debug  = 5
         case info   = 4
         case notice = 3
@@ -158,7 +173,7 @@ public class PerseusLogger {
 
         }
 
-        message = marks ? "[\(type)] \(message)" : message
+        message = marks ? "\(type.tag) \(message)" : message
 
         if output == .xcodedebug {
 
