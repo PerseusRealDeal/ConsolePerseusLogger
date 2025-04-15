@@ -55,10 +55,12 @@ typealias log = PerseusLogger
 
 public typealias ConsoleObject = (subsystem: String, category: String)
 
+public let CONSOLE_APP_SUBSYSTEM_DEFAULT = "Perseus"
+public let CONSOLE_APP_CATEGORY_DEFAULT = "Logger"
+
 public class PerseusLogger {
 
-    public static let SUBSYSTEM = "Perseus"
-    public static let CATEGORY = "Logger"
+    // MARKS: - Specific types
 
     public enum Status {
         case on
@@ -110,6 +112,8 @@ public class PerseusLogger {
         case fault  = 1
     }
 
+    // MARK: - Properties
+
 #if DEBUG
     public static var turned = Status.on
     public static var output = Output.xcodedebug
@@ -124,6 +128,8 @@ public class PerseusLogger {
 
     public static var short = true
     public static var marks = true
+
+    public static var time = false // Ignored for Console.app. Depends on marks.
 
 #if targetEnvironment(simulator)
     public static var debugIsInfo = true // Shows DEBUG message as INFO in Console on Mac.
@@ -151,9 +157,13 @@ public class PerseusLogger {
         }
     }
 
+    // MARK: - Internals
+
     @available(iOS 14.0, macOS 11.0, *)
     private(set) static var consoleLogger: Logger?
     private(set) static var consoleOSLog: OSLog?
+
+    // MARK: - Contract
 
     // swiftlint:disable:next cyclomatic_complexity
     public static func message(_ text: @autoclosure () -> String,
@@ -165,6 +175,8 @@ public class PerseusLogger {
 
         var message = ""
 
+        // Path.
+
         if short {
             message = "\(text())"
         } else {
@@ -173,7 +185,20 @@ public class PerseusLogger {
 
         }
 
+        // Level.
+
         message = marks ? "\(type.tag) \(message)" : message
+
+        // Time.
+
+        if output != .consoleapp, time {
+
+            // TODO: - Append time tag.
+
+            message = marks ? "[TIME] \(message)" : message
+        }
+
+        // Print.
 
         if output == .xcodedebug {
 
@@ -183,7 +208,8 @@ public class PerseusLogger {
 
             if #available(iOS 14.0, macOS 11.0, *) {
 
-                let logger = consoleLogger ?? Logger(subsystem: SUBSYSTEM, category: CATEGORY)
+                let logger = consoleLogger ?? Logger(subsystem: CONSOLE_APP_SUBSYSTEM_DEFAULT,
+                                                     category: CONSOLE_APP_CATEGORY_DEFAULT)
 
                 switch type {
                 case .debug:
@@ -209,7 +235,8 @@ public class PerseusLogger {
                 return
             }
 
-            let consoleLog = consoleOSLog ?? OSLog(subsystem: SUBSYSTEM, category: CATEGORY)
+            let consoleLog = consoleOSLog ?? OSLog(subsystem: CONSOLE_APP_SUBSYSTEM_DEFAULT,
+                                                   category: CONSOLE_APP_CATEGORY_DEFAULT)
 
             switch type {
             case .debug:

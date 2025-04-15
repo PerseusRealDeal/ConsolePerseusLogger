@@ -69,10 +69,10 @@ final class FunctionalTests: XCTestCase {
     }
 
     func test_has_logger_default_subsystem_name() {
-        XCTAssertEqual(log.SUBSYSTEM, "Perseus")
+        XCTAssertEqual(CONSOLE_APP_SUBSYSTEM_DEFAULT, "Perseus")
     }
 
     func test_has_logger_default_category_name() {
-        XCTAssertEqual(log.CATEGORY, "Logger")
+        XCTAssertEqual(CONSOLE_APP_CATEGORY_DEFAULT, "Logger")
     }
 }
