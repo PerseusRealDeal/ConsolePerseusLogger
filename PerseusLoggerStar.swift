@@ -80,7 +80,7 @@ public class PerseusLogger {
             case .info:
                 return "INFO"
             case .notice:
-                return "NOTICE"
+                return "NOTE"
             case .error:
                 return "ERROR"
             case .fault:
@@ -91,15 +91,15 @@ public class PerseusLogger {
         public var tag: String {
             switch self {
             case .debug:
-                return "[DEBUG ]"
+                return "[DEBUG]"
             case .info:
-                return "[INFO  ]"
+                return "[INFO ]"
             case .notice:
-                return "[NOTICE]"
+                return "[NOTE ]"
             case .error:
-                return "[ERROR ]"
+                return "[ERROR]"
             case .fault:
-                return "[FAULT ]"
+                return "[FAULT]"
             }
         }
 
