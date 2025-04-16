@@ -19,6 +19,11 @@ import XCTest
 
 final class FunctionalTests: XCTestCase {
 
+    func test_just_log_messages() {
+        log.message("")
+        log.message("")
+    }
+
     func test_is_log_typealias_for_PerseusLogger() {
         XCTAssertEqual("\(log.self)", "\(PerseusLogger.self)")
     }

@@ -2,6 +2,8 @@
 //  PerseusLoggerStar.swift
 //  Version: 1.1.0
 //
+//  For iOS and macOS only. Use Stars to adopt for the platform specifics you need.
+//
 //  RECOMMENED PLATFORMS: macOS 10.13+ | iOS 11.0+
 //  MINOR PLATFORMS FOR STANDALONE USAGE: macOS 10.12+ | iOS 10.0+
 //
@@ -129,7 +131,7 @@ public class PerseusLogger {
     public static var short = true
     public static var marks = true
 
-    public static var time = false // Ignored for Console.app. Depends on marks.
+    public static var time = true // Ignored for Console.app. Depends on marks and short.
 
 #if targetEnvironment(simulator)
     public static var debugIsInfo = true // Shows DEBUG message as INFO in Console on Mac.
@@ -155,6 +157,10 @@ public class PerseusLogger {
                 consoleOSLog = OSLog(subsystem: obj.subsystem, category: obj.category)
             }
         }
+    }
+
+    public static var localTime: String {
+        return getLocalTime()
     }
 
     // MARK: - Internals
@@ -192,17 +198,23 @@ public class PerseusLogger {
         // Time.
 
         if output != .consoleapp, time {
-
-            // TODO: - Append time tag.
-
-            message = marks ? "[TIME] \(message)" : message
+            message = marks ? "[\(getLocalTime())] \(message)" : message
         }
 
         // Print.
 
+        print(message, type)
+    }
+
+    // MARK: - Implementation
+
+    private static func print(_ text: String, _ type: Level) {
+
+        let message = text
+
         if output == .xcodedebug {
 
-            print(message) // DispatchQueue.main.async { print(message) }
+            Swift.print(message) // DispatchQueue.main.async { print(message) }
 
         } else if output == .consoleapp {
 
@@ -259,5 +271,41 @@ public class PerseusLogger {
                 os_log("%{public}@", log: consoleLog, type: .fault, message)
             }
         }
+    }
+
+    private static func getLocalTime() -> String {
+
+        guard let timezone = TimeZone(secondsFromGMT: 0) else { return "TIME" }
+
+        var calendar = Calendar.current
+
+        calendar.timeZone = timezone
+        calendar.locale = Locale(identifier: "en_US_POSIX") // Supports nanoseconds. For sure.
+
+        let current = Date(timeIntervalSince1970:(Date().timeIntervalSince1970 +
+                                                  Double(TimeZone.current.secondsFromGMT())))
+
+        let details: Set<Calendar.Component> = [.hour, .minute, .second, .nanosecond]
+        let components = calendar.dateComponents(details, from: current)
+
+        // Parse.
+
+        guard
+            let hour = components.hour?.inTime, // Always in 24-hour.
+            let minute = components.minute?.inTime,
+            let second = components.second?.inTime,
+            let nanosecond = components.nanosecond?.inTime else { return "TIME" }
+
+        return "\(hour):\(minute):\(second):\(nanosecond)"
+    }
+}
+
+// MARK: - Helpers
+
+private extension Int {
+
+    var inTime: String {
+        guard self >= 0, self <= 9 else { return String(self) }
+        return "0\(self)"
     }
 }
