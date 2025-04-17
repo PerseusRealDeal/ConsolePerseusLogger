@@ -114,10 +114,10 @@ public class PerseusLogger {
         case fault  = 1
     }
 
-    public enum TimeSubmultiply {
-        case milliseconds // -3.
-        case microseconds // -6.
-        case nanoseconds  // -9.
+    public enum TimeMultiply {
+        case millisecond // -3.
+        case microsecond // -6.
+        case nanosecond  // -9.
     }
 
     // MARK: - Properties
@@ -127,13 +127,13 @@ public class PerseusLogger {
     public static var output = Output.xcodedebug
 
     public static var level = Level.debug
-    public static var submultiply = TimeSubmultiply.milliseconds
+    public static var subsecond = TimeMultiply.microsecond
 #else
     public static var turned = Status.off
     public static var output = Output.consoleapp
 
     public static var level = Level.notice
-    public static var submultiply = TimeSubmultiply.nanoseconds
+    public static var subsecond = TimeMultiply.nanosecond
 #endif
 
     public static var short = true
@@ -302,9 +302,9 @@ public class PerseusLogger {
             let hour = components.hour?.inTime, // Always in 24-hour.
             let minute = components.minute?.inTime,
             let second = components.second?.inTime,
-            let nanosecond = components.nanosecond else { return "TIME" }
+            let subsecond = components.nanosecond?.multiply else { return "TIME" }
 
-        let time = "[\(hour):\(minute):\(second):\(nanosecond)]"
+        let time = "[\(hour):\(minute):\(second):\(subsecond)]"
 
         if short {
             // return time
@@ -318,7 +318,9 @@ public class PerseusLogger {
             let month = components.month?.inTime,
             let day = components.day?.inTime else { return "TIME" }
 
-        return "[\(year):\(month):\(day)] \(time)"
+        let date = "[\(year):\(month):\(day)]"
+
+        return "\(date) \(time)"
     }
 }
 
@@ -329,5 +331,12 @@ private extension Int {
     var inTime: String {
         guard self >= 0, self <= 9 else { return String(self) }
         return "0\(self)"
+    }
+
+    var multiply: String {
+
+        // TODO: Time submultiply
+
+        return String(self)
     }
 }
