@@ -115,31 +115,58 @@ public class PerseusLogger {
     }
 
     public enum TimeMultiply {
-        case millisecond // -3.
-        case microsecond // -6.
+        // case millisecond // -3.
+        // case microsecond // -6.
         case nanosecond  // -9.
+    }
+
+    public enum MessageFormat {
+
+        case short
+        // marks true, time false, directives false
+        // [DEBUG] message
+
+        // marks true, time true, directives false
+        // [2025:04:17] [20:31:53:630594968] [DEBUG] message
+
+        // marks true, time false, directives true
+        // [DEBUG] message, file: File.swift, line: 29
+
+        // marks true, time true, directives true
+        // [2025:04:17] [20:31:53:630918979] [DEBUG] message, file: File.swift, line: 29
+
+        // marks false, directives true
+        // message, file: File.swift, line: 29
+
+        // marks false, directives false
+        // message
+
+        case full
+        // [2025:04:17] [20:31:53:630918979] [DEBUG] message, file: File.swift, line: 29
+
+        case textonly
+        // message
     }
 
     // MARK: - Properties
 
 #if DEBUG
     public static var turned = Status.on
-    public static var output = Output.xcodedebug
-
     public static var level = Level.debug
-    public static var subsecond = TimeMultiply.microsecond
+    public static var output = Output.xcodedebug
 #else
     public static var turned = Status.off
-    public static var output = Output.consoleapp
-
     public static var level = Level.notice
-    public static var subsecond = TimeMultiply.nanosecond
+    public static var output = Output.consoleapp
 #endif
 
-    public static var short = true
-    public static var marks = true
+    public static var subsecond = TimeMultiply.nanosecond
+    public static var format = MessageFormat.short
 
-    public static var time = true // Ignored for Console.app. Depends on marks.
+    public static var marks = true // [DEBUG] tag in message.
+    public static var time = false // If also and marks true adds time tags to message.
+
+    public static var directives = false // File# and Line# in message.
 
 #if targetEnvironment(simulator)
     public static var debugIsInfo = true // Shows DEBUG message as INFO in Console on Mac.
@@ -191,23 +218,24 @@ public class PerseusLogger {
 
         // Path.
 
-        if short {
-            message = "\(text())"
-        } else {
+        let withDirectives = (format == .full) ? true : (directives && (format != .textonly))
+
+        if withDirectives {
             let fileName = (file.description as NSString).lastPathComponent
             message = "\(text()), file: \(fileName), line: \(line)"
-
+        } else {
+            message = "\(text())"
         }
 
         // Level.
 
-        message = marks ? "\(type.tag) \(message)" : message
+        let isTyped = (format == .full) ? true : marks && (format != .textonly)
+        message = isTyped ? "\(type.tag) \(message)" : message
 
         // Time.
 
-        if output != .consoleapp, time {
-            message = marks ? "\(getLocalTime()) \(message)" : message
-        }
+        let isTimed = (format == .full) ? true : marks && time && (format != .textonly)
+        message = isTimed ? "\(getLocalTime()) \(message)" : message
 
         // Print.
 
@@ -293,10 +321,22 @@ public class PerseusLogger {
         let current = Date(timeIntervalSince1970:(Date().timeIntervalSince1970 +
                                                   Double(TimeZone.current.secondsFromGMT())))
 
-        var details: Set<Calendar.Component> = [.hour, .minute, .second, .nanosecond]
+        // Parse date.
+
+        var details: Set<Calendar.Component> = [.year, .month, .day]
         var components = calendar.dateComponents(details, from: current)
 
-        // Parse.
+        guard
+            let year = components.year,
+            let month = components.month?.inTime,
+            let day = components.day?.inTime else { return "TIME" }
+
+        let date = "[\(year):\(month):\(day)]"
+
+        // Parse time.
+
+        details = [.hour, .minute, .second, .nanosecond]
+        components = calendar.dateComponents(details, from: current)
 
         guard
             let hour = components.hour?.inTime, // Always in 24-hour.
@@ -305,20 +345,6 @@ public class PerseusLogger {
             let subsecond = components.nanosecond?.multiply else { return "TIME" }
 
         let time = "[\(hour):\(minute):\(second):\(subsecond)]"
-
-        if short {
-            // return time
-        }
-
-        details = [.year, .month, .day]
-        components = calendar.dateComponents(details, from: current)
-
-        guard
-            let year = components.year,
-            let month = components.month?.inTime,
-            let day = components.day?.inTime else { return "TIME" }
-
-        let date = "[\(year):\(month):\(day)]"
 
         return "\(date) \(time)"
     }
@@ -334,9 +360,6 @@ private extension Int {
     }
 
     var multiply: String {
-
-        // TODO: Time submultiply
-
         return String(self)
     }
 }

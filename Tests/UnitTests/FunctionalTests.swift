@@ -20,9 +20,7 @@ import XCTest
 final class FunctionalTests: XCTestCase {
 
     func test_just_log_messages() {
-        log.message("")
-        log.short = false
-        log.message("")
+        log.message("a lovely message also and by default")
     }
 
     func test_is_log_typealias_for_PerseusLogger() {
@@ -55,12 +53,24 @@ final class FunctionalTests: XCTestCase {
     }
 #endif
 
+    func test_is_subsecond_nanosecond() {
+        XCTAssertTrue(log.subsecond == .nanosecond)
+    }
+
     func test_is_message_short() {
-        XCTAssertTrue(log.short)
+        XCTAssertTrue(log.format == .short)
     }
 
     func test_is_marks_included() {
         XCTAssertTrue(log.marks)
+    }
+
+    func test_is_time_included() {
+        XCTAssertFalse(log.time)
+    }
+
+    func test_is_directives_included() {
+        XCTAssertFalse(log.directives)
     }
 
     func test_is_logObject_nil_byDefault() {
