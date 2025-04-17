@@ -21,6 +21,7 @@ final class FunctionalTests: XCTestCase {
 
     func test_just_log_messages() {
         log.message("")
+        log.short = false
         log.message("")
     }
 

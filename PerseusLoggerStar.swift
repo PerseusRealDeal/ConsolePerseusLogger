@@ -114,6 +114,12 @@ public class PerseusLogger {
         case fault  = 1
     }
 
+    public enum TimeSubmultiply {
+        case milliseconds // -3.
+        case microseconds // -6.
+        case nanoseconds  // -9.
+    }
+
     // MARK: - Properties
 
 #if DEBUG
@@ -121,17 +127,19 @@ public class PerseusLogger {
     public static var output = Output.xcodedebug
 
     public static var level = Level.debug
+    public static var submultiply = TimeSubmultiply.milliseconds
 #else
     public static var turned = Status.off
     public static var output = Output.consoleapp
 
     public static var level = Level.notice
+    public static var submultiply = TimeSubmultiply.nanoseconds
 #endif
 
     public static var short = true
     public static var marks = true
 
-    public static var time = true // Ignored for Console.app. Depends on marks and short.
+    public static var time = true // Ignored for Console.app. Depends on marks.
 
 #if targetEnvironment(simulator)
     public static var debugIsInfo = true // Shows DEBUG message as INFO in Console on Mac.
@@ -198,7 +206,7 @@ public class PerseusLogger {
         // Time.
 
         if output != .consoleapp, time {
-            message = marks ? "[\(getLocalTime())] \(message)" : message
+            message = marks ? "\(getLocalTime()) \(message)" : message
         }
 
         // Print.
@@ -285,8 +293,8 @@ public class PerseusLogger {
         let current = Date(timeIntervalSince1970:(Date().timeIntervalSince1970 +
                                                   Double(TimeZone.current.secondsFromGMT())))
 
-        let details: Set<Calendar.Component> = [.hour, .minute, .second, .nanosecond]
-        let components = calendar.dateComponents(details, from: current)
+        var details: Set<Calendar.Component> = [.hour, .minute, .second, .nanosecond]
+        var components = calendar.dateComponents(details, from: current)
 
         // Parse.
 
@@ -294,9 +302,23 @@ public class PerseusLogger {
             let hour = components.hour?.inTime, // Always in 24-hour.
             let minute = components.minute?.inTime,
             let second = components.second?.inTime,
-            let nanosecond = components.nanosecond?.inTime else { return "TIME" }
+            let nanosecond = components.nanosecond else { return "TIME" }
 
-        return "\(hour):\(minute):\(second):\(nanosecond)"
+        let time = "[\(hour):\(minute):\(second):\(nanosecond)]"
+
+        if short {
+            // return time
+        }
+
+        details = [.year, .month, .day]
+        components = calendar.dateComponents(details, from: current)
+
+        guard
+            let year = components.year,
+            let month = components.month?.inTime,
+            let day = components.day?.inTime else { return "TIME" }
+
+        return "[\(year):\(month):\(day)] \(time)"
     }
 }
 
