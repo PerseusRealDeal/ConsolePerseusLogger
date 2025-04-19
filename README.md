@@ -1,11 +1,12 @@
 # ConsolePerseusLogger — Xcode 14.2+
 
 > Light-weight logger in Swift. Hereinafter `CPL` stands for `Console Perseus Logger`.<br/>
+> Tutorial [`Mastering Logging with CPL`](https://docs.google.com/document/d/1cWsqhRphP9NzGbMxkJA1agLProjPn6GBw3QEaar4VNY/edit?usp=sharing).<br/>
 
 [![Actions Status](https://github.com/perseusrealdeal/ConsolePerseusLogger/actions/workflows/main.yml/badge.svg)](https://github.com/perseusrealdeal/ConsolePerseusLogger/actions/workflows/main.yml)
 [![Style](https://github.com/perseusrealdeal/ConsolePerseusLogger/actions/workflows/swiftlint.yml/badge.svg)](https://github.com/perseusrealdeal/ConsolePerseusLogger/actions/workflows/swiftlint.yml)
 [![Version](https://img.shields.io/badge/Version-1.1.0-green.svg)](/CHANGELOG.md)
-[![Platforms](https://img.shields.io/badge/Platforms-macOS%2010.13+_|_iOS%2012.0+-orange.svg)](https://en.wikipedia.org/wiki/List_of_Apple_products)
+[![Platforms](https://img.shields.io/badge/Platforms-macOS%2010.13+_|_iOS%2011.0+-orange.svg)](https://en.wikipedia.org/wiki/List_of_Apple_products)
 [![Xcode 14.2](https://img.shields.io/badge/Xcode-14.2+-red.svg)](https://en.wikipedia.org/wiki/Xcode)
 [![Swift 5.7](https://img.shields.io/badge/Swift-5.7-red.svg)](https://www.swift.org)
 [![License](http://img.shields.io/:License-MIT-blue.svg)](/LICENSE)
@@ -17,15 +18,13 @@
 
 ## Approbation Matrix
 
-> [A3 Environment](https://docs.google.com/document/d/1K2jOeIknKRRpTEEIPKhxO2H_1eBTof5uTXxyOm5g6nQ/edit?usp=sharing) / [Approbation Results](/APPROBATION.md) / [CHANGELOG](/CHANGELOG.md) for details.
+> [`A3 Environment and Approbation`](/APPROBATION.md) / [`CHANGELOG`](/CHANGELOG.md) for details.
 
 ## In brief > Idea to use, the Why
 
 > USE LOGGER LIKE A VARIABLE ANYWHERE YOU WANT.<br/>
 
-![Screenshot 2024-10-13 at 14 00 48](https://github.com/user-attachments/assets/98b8eb7d-06cc-4c3a-ab7a-4997a844bc74)
-
-```ruby
+```swift
 
 import ConsolePerseusLogger
 
@@ -33,7 +32,28 @@ log.message("[\(type(of: self))].\(#function)")
 
 ```
 
-| Level | Message Type | Purpose                               |
+![Image](https://github.com/user-attachments/assets/5342d42e-4d7e-4260-acde-e4a552169529)
+
+```swift
+
+import ConsolePerseusLogger
+
+// MARK: - Log to Mac Console
+
+// log.logObject = ("MyApp", "MyLogger") // Customs for Mac Console Subsystem and Category.
+
+log.output = .consoleapp
+log.message("The app's start point...", .info)
+
+```
+
+![Image](https://github.com/user-attachments/assets/9e2fb4ca-7f8a-4870-b79a-9d4a3823d5e1)
+
+## Log level and message types
+
+> CPL applyies the most common log types for indicating information category.
+
+| Level | Message Type | Description                           |
 | :---: | :----------- | :------------------------------------ |
 | 5     | DEBUG        | Debugging only                        |
 | 4     | INFO         | Helpful, but not essential            |
@@ -41,48 +61,42 @@ log.message("[\(type(of: self))].\(#function)")
 | 2     | ERROR        | Errors seen during the code execution |
 | 1     | FAULT        | Faults and bugs in the code           |
 
-# Manual
-## Setting the Logger for Work
+> More over CPL considers each type like a message filter look how it works
 
-> Options used by default are different and depend on DEBUG/RELEASE.
+![Image](https://github.com/user-attachments/assets/1c193bea-ee68-4afb-bffc-d8e76e406e3a)
 
-| Options     | Default in DEBUG | Default in RELEASE | Description                                            |
-| :---------- | :--------------: | :----------------: | :----------------------------------------------------- |
-| tuned       | .on              | .off               | If .off no matter what level no message will be passed |
-| output      | .xcodedebug      | .consoleapp        | Message output target                                  |
-| level       | .debug           | .notice            | No any messages on any level above                     |
-| short       | true             | true               | FALSE: Message goes with file name and line number     |
-| marks       | true             | true               | FALSE: Message text, TRUE: [LOG] [DEBUG] Message text  |
-| logObject   | nil              | nil                | Mac Console Subsystem and Category values group        |
-| debugIsInfo | true             | true               | Only if Simulator. TRUE: DEBUG is INFO with DEBUG text |
+## Setup the Logger for Work
 
-> NOTE: If logObject is nil CPL uses default values for Subsystem "Perseus" and Category "Logger" accordingly.
+> Default values of CPL options depend on DEBUG/RELEASE.
 
-```ruby
+| Options     | Default in DEBUG | Default in RELEASE |
+| :---------- | :--------------- | :----------------- |
+| tuned       | .on              | .off               |
+| output      | .xcodedebug      | .consoleapp        |
+| level       | .debug           | .notice            |
 
-//
-//  main.swift
-//
+> Other CPL options are the same for DEBUG/RELEASE by default. 
 
-import ConsolePerseusLogger
+| Options     | Default in DEBUG      | Default in RELEASE    |
+| :---------- | :-------------------- | :-------------------- |
+| subsecond   | .nanosecond           | .nanosecond           |
+| format      | .short                | .short                |
+| marks       | true                  | true                  |
+| time        | false                 | false                 |
+| directives  | false                 | false                 |
+| logObject   | ("Perseus", "Logger") | ("Perseus", "Logger") |
 
-// MARK: - Log to Mac Console
+> Special option goes kinda lifehack. Matter only if Simulator. 
 
-log.logObject = ("MyApp", "MyLogger") // Subsystem and Category.
+| Options     | Default in DEBUG | Default in RELEASE |
+| :---------- | :--------------- | :----------------- |
+| debugIsInfo | true             | true               |
 
-log.output = .consoleapp
-log.turned = .on
+## CPL in SPM package
 
-log.level = .debug
-log.message("The app's start point...", .info)
+> In case if CPL in use as a standalone file in SPM package.
 
-```
-
-### Getting access to the Logger of Submodule
-
-> In case if CPL used as a standalone file in submodule (package).
-
-```ruby
+```swift
 
 //
 //  main.swift
@@ -90,25 +104,24 @@ log.message("The app's start point...", .info)
 
 import ConsolePerseusLogger
 
-import class SubmoduleA.PerseusLogger
-import class SubmoduleB.PerseusLogger
+import class PackageA.PerseusLogger
+import class PackageB.PerseusLogger
 
-typealias sublogA = SubmoduleA.PerseusLogger
-typealias sublogB = SubmoduleB.PerseusLogger
+typealias logA = PackageA.PerseusLogger
+typealias logB = PackageB.PerseusLogger
 
 // MARK: - Subloggers
 
-sublogA.turned = .off
-sublogB.turned = .off
+logA.turned = .off
+logB.turned = .off
 
 // MARK: - Logger
 
-log.level = .debug
 log.message("The app's start point...", .info)
 
 ```
 
-### Console on Mac and Simulator
+## Console on Mac and Simulator
 
 > Just a matter of fact that Console on Mac doesn't show any DEBUG message from any app running on Simulator ("Include Debug Messages" tapped).<br/>
 
@@ -116,7 +129,7 @@ log.message("The app's start point...", .info)
 
 > If for some reasons Simulator must pass DEBUG like a DEBUG message there is an option exists (it's true by default if Simulator):
 
-```ruby
+```swift
 
 #if targetEnvironment(simulator)
     log.debugIsInfo = false // Use Case: Mac Console in use to redirect logs to file on disk.
@@ -178,7 +191,7 @@ Copyright © 7531 - 7533 PerseusRealDeal
 </table>
 
 - Language support: [Reverso](https://www.reverso.net/)
-- Git client: [SmartGit](https://syntevo.com/)
+- Git clients: [SmartGit](https://syntevo.com/) and [GitHub Desktop](https://github.com/apps/desktop)
 
 # Author
 
