@@ -1,8 +1,8 @@
 //
-//  PerseusLogger.swift
+//  TheOne.swift
 //  ConsolePerseusLogger
 //
-//  For iOS and macOS only. Use Stars to adopt for the platform specifics you need.
+//  For iOS and macOS only. Use Stars to adopt for the specifics you need.
 //
 //  Created by Mikhail Zhigulin in 7531.
 //
@@ -301,7 +301,7 @@ public class PerseusLogger {
             let month = components.month?.inTime,
             let day = components.day?.inTime else { return "TIME" }
 
-        let date = "[\(year):\(month):\(day)]"
+        let date = "[\(year)-\(month)-\(day)]"
 
         // Parse time.
 

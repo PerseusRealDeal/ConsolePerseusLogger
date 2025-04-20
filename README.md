@@ -1,7 +1,11 @@
 # ConsolePerseusLogger — Xcode 14.2+
 
+[`iOS approbation app`](https://github.com/perseusrealdeal/TheOneRing) [`macOS approbation app`](https://github.com/perseusrealdeal/Arkenstone)
+
 > Light-weight logger in Swift. Hereinafter `CPL` stands for `Console Perseus Logger`.<br/>
 > Tutorial [`Mastering Logging with CPL`](https://docs.google.com/document/d/1cWsqhRphP9NzGbMxkJA1agLProjPn6GBw3QEaar4VNY/edit?usp=sharing).<br/>
+
+> `CPL` is a single author and personale solution developed in `person-to-person` relationship paradigm.
 
 [![Actions Status](https://github.com/perseusrealdeal/ConsolePerseusLogger/actions/workflows/main.yml/badge.svg)](https://github.com/perseusrealdeal/ConsolePerseusLogger/actions/workflows/main.yml)
 [![Style](https://github.com/perseusrealdeal/ConsolePerseusLogger/actions/workflows/swiftlint.yml/badge.svg)](https://github.com/perseusrealdeal/ConsolePerseusLogger/actions/workflows/swiftlint.yml)
@@ -13,8 +17,10 @@
 
 ## Integration Capabilities
 
-[![Standalone](https://img.shields.io/badge/Standalone%20-available-informational.svg)](/PerseusLoggerStar.swift)
+[![Standalone](https://img.shields.io/badge/Standalone%20-available-informational.svg)](/CPLStar.swift)
 [![Swift Package Manager compatible](https://img.shields.io/badge/Swift%20Package%20Manager-compatible-4BC51D.svg)](/Package.swift)
+
+> Use Stars to adopt [`CPL`](/CPLStar.swift) for the specifics you need.
 
 ## Approbation Matrix
 
@@ -24,23 +30,53 @@
 
 > USE LOGGER LIKE A VARIABLE ANYWHERE YOU WANT.<br/>
 
+![Image](https://github.com/user-attachments/assets/4d3ecb2c-973c-41f1-80d9-c0fa236ff325)
+
+## Installation
+
+### Standalone
+
+Use the single source code file [CPLStar.swift](/CPLStar.swift) directly in your project.
+
+### Swift Package Manager
+
+`Project in the Navigator > Package Dependencies > Add Package Dependency`
+
+> Put the following line in the package search field:
+
+`https://github.com/perseusrealdeal/ConsolePerseusLogger`
+
+## Build requirements
+
+- [macOS Monterey 12.7.6+](https://apps.apple.com/by/app/macos-monterey/id1576738294) / [Xcode 14.2+](https://developer.apple.com/services-account/download?path=/Developer_Tools/Xcode_14.2/Xcode_14.2.xip)
+
+> But as the single source code file [CPLStar.swift](/CPLStar.swift) CPL can be used even in Xcode 10.1.
+
+## Third-party software
+
+- Style [SwiftLint](https://github.com/realm/SwiftLint) / [Shell Script](/SucceedsPostAction.sh)
+- Action [mxcl/xcodebuild@v3.3](https://github.com/mxcl/xcodebuild/releases/tag/v3.3.0)
+- Action [cirruslabs/swiftlint-action@v1](https://github.com/cirruslabs/swiftlint-action/releases/tag/v1.0.0)
+
+## Usage
+
 ### Log to console
 
 ```swift
 
-import ConsolePerseusLogger // Or use standalone PerseusLoggerStar.swift
+import ConsolePerseusLogger // Or use standalone CPLStar.swift
 
 log.message("[\(type(of: self))].\(#function)")
 
 ```
 
-![Image](https://github.com/user-attachments/assets/3f439c1b-1529-472a-8472-d0adb7e23d45)
+![Image](https://github.com/user-attachments/assets/b6049e5a-a84c-4762-a103-cf85fc8d8b52)
 
 ### Log to Mac Console
 
 ```swift
 
-import ConsolePerseusLogger // Or use standalone PerseusLoggerStar.swift
+import ConsolePerseusLogger // Or use standalone CPLStar.swift
 
 // MARK: - Log to Mac Console
 
@@ -51,7 +87,7 @@ log.message("The app's start point...", .info)
 
 ```
 
-![Image](https://github.com/user-attachments/assets/9d7a0014-cdfb-4df0-af93-df1fd299cef7)
+![Image](https://github.com/user-attachments/assets/ac711ff0-4296-406c-90ba-630149dda39c)
 
 ## Log level and message types
 
@@ -67,7 +103,7 @@ log.message("The app's start point...", .info)
 
 > More over CPL considers each type like a message filter look how it works
 
-![Image](https://github.com/user-attachments/assets/1c193bea-ee68-4afb-bffc-d8e76e406e3a)
+![Image](https://github.com/user-attachments/assets/69ee1f63-a58d-414a-9cc8-fe1673a15982)
 
 ## Setup the Logger for Work
 
@@ -106,7 +142,7 @@ log.message("The app's start point...", .info)
 //  main.swift
 //
 
-import ConsolePerseusLogger
+import ConsolePerseusLogger // Or use standalone CPLStar.swift
 
 import class PackageA.PerseusLogger
 import class PackageB.PerseusLogger
@@ -140,16 +176,6 @@ log.message("The app's start point...", .info)
 #endif
 
 ```
-
-## Build system requirements
-
-- [macOS Monterey 12.7.6+](https://apps.apple.com/by/app/macos-monterey/id1576738294) / [Xcode 14.2+](https://developer.apple.com/services-account/download?path=/Developer_Tools/Xcode_14.2/Xcode_14.2.xip)
-
-# Third-party software
-
-- Style [SwiftLint](https://github.com/realm/SwiftLint) / [Shell Script](/SucceedsPostAction.sh)
-- Action [mxcl/xcodebuild@v3.3](https://github.com/mxcl/xcodebuild/releases/tag/v3.3.0)
-- Action [cirruslabs/swiftlint-action@v1](https://github.com/cirruslabs/swiftlint-action/releases/tag/v1.0.0)
 
 # Points taken into account
 

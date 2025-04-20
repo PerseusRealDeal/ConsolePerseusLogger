@@ -1,8 +1,10 @@
 //
-//  PerseusLoggerStar.swift
+//  CPLStar.swift
 //  Version: 1.1.0
 //
-//  For iOS and macOS only. Use Stars to adopt for the platform specifics you need.
+//  ConsolePerseusLogger
+//
+//  For iOS and macOS only. Use Stars to adopt for the specifics you need.
 //
 //  DESC: USE LOGGER LIKE A VARIABLE ANYWHERE YOU WANT.
 //
@@ -47,7 +49,7 @@ import Foundation
 import os
 
 // swiftlint:disable type_name
-typealias log = PerseusLogger
+public typealias log = PerseusLogger // Remove public in case if SPM package.
 // swiftlint:enable type_name
 
 public typealias ConsoleObject = (subsystem: String, category: String)
@@ -326,7 +328,7 @@ public class PerseusLogger {
             let month = components.month?.inTime,
             let day = components.day?.inTime else { return "TIME" }
 
-        let date = "[\(year):\(month):\(day)]"
+        let date = "[\(year)-\(month)-\(day)]"
 
         // Parse time.
 

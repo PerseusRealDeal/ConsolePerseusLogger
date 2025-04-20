@@ -7,7 +7,7 @@ Dates in this file meets Gregorian calendar. Date in format YYYY-MM-DD.
 
 ## [1.1.0] - [2025-MM-DD], CPL
 
-- Minimum build requirements: macOS 10.13+, iOS 11.0+, and Xcode 14.2+.
+- Minimum build requirements: macOS 10.13+, iOS 11.0+, and Xcode 14.2+, but if standalone Xcode 10.1+.
 
 ### Added
 
