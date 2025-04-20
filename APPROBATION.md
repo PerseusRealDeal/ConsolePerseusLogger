@@ -8,7 +8,7 @@
 
 ## macOS approbation result
 
-> The macOS app used to approbate the ConsolePerseusLogger 1.1.0 is [Arkenstone](https://github.com/perseusrealdeal/Arkenstone).
+> The approbation macOS app for ConsolePerseusLogger 1.1.0 is [Arkenstone](https://github.com/perseusrealdeal/Arkenstone).
 
 | macOS       | Version | Result  | Details |
 | ----------- | ------- | :-----: | ------- |
@@ -23,7 +23,7 @@
 
 ## iOS approbation result
 
-> The iOS app used to approbate the ConsolePerseusLogger 1.1.0 is [The One Ring](https://github.com/perseusrealdeal/TheOneRing).
+> The approbation iOS app for ConsolePerseusLogger 1.1.0 is [The One Ring](https://github.com/perseusrealdeal/TheOneRing).
 
 | Device          | Simulator | OS Version | Result  | Details |
 | --------------- | :-------: | ---------- | :-----: | ------- |
