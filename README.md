@@ -24,6 +24,8 @@
 
 > USE LOGGER LIKE A VARIABLE ANYWHERE YOU WANT.<br/>
 
+### Log to console
+
 ```swift
 
 import ConsolePerseusLogger
@@ -32,7 +34,9 @@ log.message("[\(type(of: self))].\(#function)")
 
 ```
 
-![Image](https://github.com/user-attachments/assets/5342d42e-4d7e-4260-acde-e4a552169529)
+![Image](https://github.com/user-attachments/assets/3f439c1b-1529-472a-8472-d0adb7e23d45)
+
+### Log to Mac Console
 
 ```swift
 
@@ -47,7 +51,7 @@ log.message("The app's start point...", .info)
 
 ```
 
-![Image](https://github.com/user-attachments/assets/9e2fb4ca-7f8a-4870-b79a-9d4a3823d5e1)
+![Image](https://github.com/user-attachments/assets/9d7a0014-cdfb-4df0-af93-df1fd299cef7)
 
 ## Log level and message types
 
