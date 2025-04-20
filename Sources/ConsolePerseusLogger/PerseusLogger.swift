@@ -15,6 +15,8 @@
 //  Licensed under the MIT license. See LICENSE file.
 //  All rights reserved.
 //
+// swiftlint:disable file_length
+//
 
 import Foundation
 import os
@@ -174,7 +176,6 @@ public class PerseusLogger {
 
     // MARK: - Contract
 
-    // swiftlint:disable:next cyclomatic_complexity
     public static func message(_ text: @autoclosure () -> String,
                                _ type: Level = .debug,
                                _ file: StaticString = #file,
@@ -212,6 +213,7 @@ public class PerseusLogger {
 
     // MARK: - Implementation
 
+    // swiftlint:disable:next cyclomatic_complexity
     private static func print(_ text: String, _ type: Level) {
 
         let message = text
@@ -286,8 +288,8 @@ public class PerseusLogger {
         calendar.timeZone = timezone
         calendar.locale = Locale(identifier: "en_US_POSIX") // Supports nanoseconds. For sure.
 
-        let current = Date(timeIntervalSince1970:(Date().timeIntervalSince1970 +
-                                                  Double(TimeZone.current.secondsFromGMT())))
+        let current = Date(timeIntervalSince1970: (Date().timeIntervalSince1970 +
+                                                   Double(TimeZone.current.secondsFromGMT())))
 
         // Parse date.
 

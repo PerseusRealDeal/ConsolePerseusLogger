@@ -28,7 +28,7 @@
 
 ```swift
 
-import ConsolePerseusLogger
+import ConsolePerseusLogger // Or use standalone PerseusLoggerStar.swift
 
 log.message("[\(type(of: self))].\(#function)")
 
@@ -40,7 +40,7 @@ log.message("[\(type(of: self))].\(#function)")
 
 ```swift
 
-import ConsolePerseusLogger
+import ConsolePerseusLogger // Or use standalone PerseusLoggerStar.swift
 
 // MARK: - Log to Mac Console
 
