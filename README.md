@@ -32,20 +32,6 @@
 
 ![Image](https://github.com/user-attachments/assets/4d3ecb2c-973c-41f1-80d9-c0fa236ff325)
 
-## Installation
-
-### Standalone
-
-Use the single source code file [CPLStar.swift](/CPLStar.swift) directly in your project.
-
-### Swift Package Manager
-
-`Project in the Navigator > Package Dependencies > Add Package Dependency`
-
-> Put the following line in the package search field:
-
-`https://github.com/perseusrealdeal/ConsolePerseusLogger`
-
 ## Build requirements
 
 - [macOS Monterey 12.7.6+](https://apps.apple.com/by/app/macos-monterey/id1576738294) / [Xcode 14.2+](https://developer.apple.com/services-account/download?path=/Developer_Tools/Xcode_14.2/Xcode_14.2.xip)
@@ -58,9 +44,15 @@ Use the single source code file [CPLStar.swift](/CPLStar.swift) directly in your
 - Action [mxcl/xcodebuild@v3.3](https://github.com/mxcl/xcodebuild/releases/tag/v3.3.0)
 - Action [cirruslabs/swiftlint-action@v1](https://github.com/cirruslabs/swiftlint-action/releases/tag/v1.0.0)
 
-## Usage
+# Installation
 
-### Log to console
+> Standalone: the single source code file [CPLStar.swift](/CPLStar.swift)
+
+> Swift Package Manager: `https://github.com/perseusrealdeal/ConsolePerseusLogger`
+
+# Usage
+
+## Log to console
 
 ```swift
 
@@ -72,7 +64,7 @@ log.message("[\(type(of: self))].\(#function)")
 
 ![Image](https://github.com/user-attachments/assets/b6049e5a-a84c-4762-a103-cf85fc8d8b52)
 
-### Log to Mac Console
+## Log to Mac Console
 
 ```swift
 
@@ -91,7 +83,7 @@ log.message("The app's start point...", .info)
 
 ## Log level and message types
 
-> CPL applyies the most common log types for indicating information category.
+> CPL applies the most common log types for indicating information category.
 
 | Level | Message Type | Description                           |
 | :---: | :----------- | :------------------------------------ |

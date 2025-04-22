@@ -5,18 +5,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Dates in this file meets Gregorian calendar. Date in format YYYY-MM-DD.
 
-## [1.1.0] - [2025-MM-DD], CPL
+## [1.1.0] - [2025-04-DD], CPL
 
-- Minimum build requirements: macOS 10.13+, iOS 11.0+, and Xcode 14.2+, but if standalone Xcode 10.1+.
+- Minimum build requirements: macOS 10.13+, iOS 11.0+, Xcode 14.2+. If standalone Xcode 10.1+.
 
 ### Added
 
-- Date and time to message.
+- Date and time to message.<br/>
+  [TYPE] [DATE] [TIME] message, file: #, line: #
+  
 - Minor changes.
 
 ### Improved
 
-- Message format.
+- Message format work.
 - Source Code.
 - Documentation.
 
