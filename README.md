@@ -56,7 +56,7 @@
 
 ```swift
 
-import ConsolePerseusLogger // Or use standalone CPLStar.swift
+import ConsolePerseusLogger // Or use standalone CPLStar.swift.
 
 log.message("[\(type(of: self))].\(#function)")
 
@@ -68,11 +68,11 @@ log.message("[\(type(of: self))].\(#function)")
 
 ```swift
 
-import ConsolePerseusLogger // Or use standalone CPLStar.swift
+import ConsolePerseusLogger // Or use standalone CPLStar.swift.
 
-// MARK: - Log to Mac Console
+// MARK: - Log to Console.app
 
-// log.logObject = ("MyApp", "MyLogger") // Customs for Mac Console Subsystem and Category.
+// log.logObject = ("MyApp", "MyLogger") // Customs for Console.app Subsystem and Category.
 
 log.output = .consoleapp
 log.message("The app's start point...", .info)
@@ -134,7 +134,7 @@ log.message("The app's start point...", .info)
 //  main.swift
 //
 
-import ConsolePerseusLogger // Or use standalone CPLStar.swift
+import ConsolePerseusLogger // Or use standalone CPLStar.swift.
 
 import class PackageA.PerseusLogger
 import class PackageB.PerseusLogger
@@ -153,18 +153,18 @@ log.message("The app's start point...", .info)
 
 ```
 
-## Console on Mac and Simulator
+## Console.app and Simulator
 
-> Just a matter of fact that Console on Mac doesn't show any DEBUG message from any app running on Simulator ("Include Debug Messages" tapped).<br/>
+> Just a matter of fact that Console.app doesn't show any DEBUG message from any app running on Simulator (even if "Include Debug Messages" tapped in Console.app).<br/>
 
-> Console Perseus Logger running on Simulator doesn't pass DEBUG message, instead it passes INFO message with text of DEBUG message, so, a passed message being INFO looks like a DEBUG and it works perfactly well.<br/>
+> Console Perseus Logger running on Simulator doesn't pass DEBUG message to Console.app, instead it passes INFO message with text of DEBUG message by default if Simulator runs, so, a passed message being INFO looks like a DEBUG and it works perfactly well.<br/>
 
-> If for some reasons Simulator must pass DEBUG like a DEBUG message there is an option exists (it's true by default if Simulator):
+> If for some reasons CPL must pass DEBUG like a DEBUG message if Simulator the option must take false `log.debugIsInfo = false`.
 
 ```swift
 
 #if targetEnvironment(simulator)
-    log.debugIsInfo = false // Use Case: Mac Console in use to redirect logs to file on disk.
+    log.debugIsInfo = false
 #endif
 
 ```

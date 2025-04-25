@@ -1,7 +1,5 @@
 # Approbation Matrix / ConsolePerseusLogger v1.1.0
 
-> Approbated features: messaging to Xcode console, messaging to Console.app<br/>
-
 > NOTE: To catch all log messages Mac Console should be started first then after a little while the logged app.
 
 > Compilation: macOS Monterey 12.7.6 / Xcode 14.2
