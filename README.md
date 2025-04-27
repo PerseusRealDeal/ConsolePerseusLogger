@@ -104,7 +104,7 @@ log.message("The app's start point...", .info)
 | Options     | Default in DEBUG | Default in RELEASE |
 | :---------- | :--------------- | :----------------- |
 | tuned       | .on              | .off               |
-| output      | .xcodedebug      | .consoleapp        |
+| output      | .standard        | .consoleapp        |
 | level       | .debug           | .notice            |
 
 > Other CPL options are the same for DEBUG/RELEASE by default. 

@@ -69,7 +69,7 @@ public class PerseusLogger {
     }
 
     public enum Output {
-        case xcodedebug
+        case standard // In Use: Swift.print("").
         case consoleapp
         // case outputfile
     }
@@ -152,7 +152,7 @@ public class PerseusLogger {
 #if DEBUG
     public static var turned = Status.on
     public static var level = Level.debug
-    public static var output = Output.xcodedebug
+    public static var output = Output.standard
 #else
     public static var turned = Status.off
     public static var level = Level.notice
@@ -168,7 +168,7 @@ public class PerseusLogger {
     public static var directives = false // File# and Line# in message.
 
 #if targetEnvironment(simulator)
-    public static var debugIsInfo = true // Shows DEBUG message as INFO in Console on Mac.
+    public static var debugIsInfo = true // Shows DEBUG message as INFO in macOS Console.app.
 #endif
 
     public static var logObject: ConsoleObject? {
@@ -247,7 +247,7 @@ public class PerseusLogger {
 
         let message = text
 
-        if output == .xcodedebug {
+        if output == .standard {
 
             Swift.print(message) // DispatchQueue.main.async { print(message) }
 
@@ -315,7 +315,7 @@ public class PerseusLogger {
         var calendar = Calendar.current
 
         calendar.timeZone = timezone
-        calendar.locale = Locale(identifier: "en_US_POSIX") // Supports nanoseconds. For sure.
+        calendar.locale = Locale(identifier: "en_US_POSIX")
 
         let current = Date(timeIntervalSince1970: (Date().timeIntervalSince1970 +
                                                    Double(TimeZone.current.secondsFromGMT())))

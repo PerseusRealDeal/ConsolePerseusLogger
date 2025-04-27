@@ -9,6 +9,10 @@ Dates in this file meets Gregorian calendar. Date in format YYYY-MM-DD.
 
 - Minimum build requirements: macOS 10.13+, iOS 11.0+, Xcode 14.2+. If standalone Xcode 10.1+.
 
+### Changed
+
+- Renamed API component: Output.xcodedebug > Output.standard
+
 ### Added
 
 - Date and time to message.<br/>
@@ -18,7 +22,7 @@ Dates in this file meets Gregorian calendar. Date in format YYYY-MM-DD.
 
 ### Improved
 
-- Message format work.
+- Message format.
 - Source Code.
 - Documentation.
 
