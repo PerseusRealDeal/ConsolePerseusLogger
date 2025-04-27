@@ -56,7 +56,7 @@
 
 ```swift
 
-import ConsolePerseusLogger // Or use standalone CPLStar.swift.
+import ConsolePerseusLogger
 
 log.message("[\(type(of: self))].\(#function)")
 
@@ -68,7 +68,7 @@ log.message("[\(type(of: self))].\(#function)")
 
 ```swift
 
-import ConsolePerseusLogger // Or use standalone CPLStar.swift.
+import ConsolePerseusLogger
 
 // MARK: - Log to Console.app
 
@@ -134,7 +134,7 @@ log.message("The app's start point...", .info)
 //  main.swift
 //
 
-import ConsolePerseusLogger // Or use standalone CPLStar.swift.
+import ConsolePerseusLogger
 
 import class PackageA.PerseusLogger
 import class PackageB.PerseusLogger
