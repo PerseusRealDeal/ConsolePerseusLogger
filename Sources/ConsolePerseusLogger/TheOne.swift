@@ -126,13 +126,13 @@ public class PerseusLogger {
         // [DEBUG] message
 
         // marks true, time true, directives false
-        // [DEBUG] [2025:04:17] [20:31:53:630594968] message
+        // [DEBUG] [2025-04-17] [20:31:53:630594968] message
 
         // marks true, time false, directives true
         // [DEBUG] message, file: File.swift, line: 29
 
         // marks true, time true, directives true
-        // [DEBUG] [2025:04:17] [20:31:53:630918979] message, file: File.swift, line: 29
+        // [DEBUG] [2025-04-17] [20:31:53:630918979] message, file: File.swift, line: 29
 
         // marks false, directives true
         // message, file: File.swift, line: 29
@@ -141,7 +141,7 @@ public class PerseusLogger {
         // message
 
         case full
-        // [DEBUG] [2025:04:17] [20:31:53:630918979] message, file: File.swift, line: 29
+        // [DEBUG] [2025-04-17] [20:31:53:630918979] message, file: File.swift, line: 29
 
         case textonly
         // message
