@@ -55,6 +55,9 @@ public typealias log = PerseusLogger
 // swiftlint:enable type_name
 
 public typealias ConsoleObject = (subsystem: String, category: String)
+public typealias LocalTime = (date: String, time: String)
+
+public typealias MessageDelegate = ((String, PerseusLogger.Level, LocalTime) -> Void)
 
 public let CONSOLE_APP_SUBSYSTEM_DEFAULT = "Perseus"
 public let CONSOLE_APP_CATEGORY_DEFAULT = "Logger"
@@ -71,7 +74,7 @@ public class PerseusLogger {
     public enum Output {
         case standard // In Use: Swift.print("").
         case consoleapp
-        // case outputfile
+        case custom // In Use: customActionOnMessage?(_:_:_:).
     }
 
     public enum Level: Int, CustomStringConvertible {
@@ -149,6 +152,8 @@ public class PerseusLogger {
 
     // MARK: - Properties
 
+    public static var customActionOnMessage: MessageDelegate?
+
 #if DEBUG
     public static var turned = Status.on
     public static var level = Level.debug
@@ -193,7 +198,7 @@ public class PerseusLogger {
         }
     }
 
-    public static var localTime: String {
+    public static var localTime: LocalTime {
         return getLocalTime()
     }
 
@@ -228,7 +233,11 @@ public class PerseusLogger {
         // Time.
 
         let isTimed = (format == .full) ? true : marks && time && (format != .textonly)
-        message = isTimed ? "\(getLocalTime()) \(message)" : message
+        let localTime = getLocalTime()
+
+        if isTimed {
+            message = "[\(localTime.date)] [\(localTime.time)] \(message)"
+        }
 
         // Type.
 
@@ -237,7 +246,11 @@ public class PerseusLogger {
 
         // Print.
 
-        print(message, type)
+        if output == .custom {
+            customActionOnMessage?(message, type, localTime)
+        } else {
+            print(message, type)
+        }
     }
 
     // MARK: - Implementation
@@ -245,11 +258,11 @@ public class PerseusLogger {
     // swiftlint:disable:next cyclomatic_complexity
     private static func print(_ text: String, _ type: Level) {
 
-        let message = text
+        let message = (text: text, type: type)
 
         if output == .standard {
 
-            Swift.print(message) // DispatchQueue.main.async { print(message) }
+            Swift.print(message.text) // DispatchQueue.main.async { print(message) }
 
         } else if output == .consoleapp {
 
@@ -258,25 +271,25 @@ public class PerseusLogger {
                 let logger = consoleLogger ?? Logger(subsystem: CONSOLE_APP_SUBSYSTEM_DEFAULT,
                                                      category: CONSOLE_APP_CATEGORY_DEFAULT)
 
-                switch type {
+                switch message.type {
                 case .debug:
 #if targetEnvironment(simulator)
                     if debugIsInfo {
-                        logger.info("\(message, privacy: .public)")
+                        logger.info("\(message.text, privacy: .public)")
                     } else {
-                        logger.debug("\(message, privacy: .public)")
+                        logger.debug("\(message.text, privacy: .public)")
                     }
 #else
-                    logger.debug("\(message, privacy: .public)")
+                    logger.debug("\(message.text, privacy: .public)")
 #endif
                 case .info:
-                    logger.info("\(message, privacy: .public)")
+                    logger.info("\(message.text, privacy: .public)")
                 case .notice:
-                    logger.notice("\(message, privacy: .public)")
+                    logger.notice("\(message.text, privacy: .public)")
                 case .error:
-                    logger.error("\(message, privacy: .public)")
+                    logger.error("\(message.text, privacy: .public)")
                 case .fault:
-                    logger.fault("\(message, privacy: .public)")
+                    logger.fault("\(message.text, privacy: .public)")
                 }
 
                 return
@@ -285,32 +298,32 @@ public class PerseusLogger {
             let consoleLog = consoleOSLog ?? OSLog(subsystem: CONSOLE_APP_SUBSYSTEM_DEFAULT,
                                                    category: CONSOLE_APP_CATEGORY_DEFAULT)
 
-            switch type {
+            switch message.type {
             case .debug:
 #if targetEnvironment(simulator)
                 if debugIsInfo {
-                    os_log("%{public}@", log: consoleLog, type: .info, message)
+                    os_log("%{public}@", log: consoleLog, type: .info, message.text)
                 } else {
-                    os_log("%{public}@", log: consoleLog, type: .debug, message)
+                    os_log("%{public}@", log: consoleLog, type: .debug, message.text)
                 }
 #else
-                os_log("%{public}@", log: consoleLog, type: .debug, message)
+                os_log("%{public}@", log: consoleLog, type: .debug, message.text)
 #endif
             case .info:
-                os_log("%{public}@", log: consoleLog, type: .info, message)
+                os_log("%{public}@", log: consoleLog, type: .info, message.text)
             case .notice:
-                os_log("%{public}@", log: consoleLog, type: .default, message)
+                os_log("%{public}@", log: consoleLog, type: .default, message.text)
             case .error:
-                os_log("%{public}@", log: consoleLog, type: .error, message)
+                os_log("%{public}@", log: consoleLog, type: .error, message.text)
             case .fault:
-                os_log("%{public}@", log: consoleLog, type: .fault, message)
+                os_log("%{public}@", log: consoleLog, type: .fault, message.text)
             }
         }
     }
 
-    private static func getLocalTime() -> String {
+    private static func getLocalTime() -> (date: String, time: String) {
 
-        guard let timezone = TimeZone(secondsFromGMT: 0) else { return "TIME" }
+        guard let timezone = TimeZone(secondsFromGMT: 0) else { return ("TIME", "TIME") }
 
         var calendar = Calendar.current
 
@@ -332,9 +345,9 @@ public class PerseusLogger {
         guard
             let year = components.year,
             let month = components.month?.inTime,
-            let day = components.day?.inTime else { return "TIME" }
+            let day = components.day?.inTime else { return ("TIME", "TIME") }
 
-        let date = "[\(year)-\(month)-\(day)]"
+        let date = "\(year)-\(month)-\(day)"
 
         // Parse time.
 
@@ -342,11 +355,11 @@ public class PerseusLogger {
             let hour = components.hour?.inTime, // Always in 24-hour.
             let minute = components.minute?.inTime,
             let second = components.second?.inTime,
-            let subsecond = components.nanosecond?.multiply else { return "TIME" }
+            let subsecond = components.nanosecond?.multiply else { return ("TIME", "TIME") }
 
-        let time = "[\(hour):\(minute):\(second):\(subsecond)]"
+        let time = "\(hour):\(minute):\(second):\(subsecond)"
 
-        return "\(date) \(time)"
+        return (date: date, time: time)
     }
 }
 
