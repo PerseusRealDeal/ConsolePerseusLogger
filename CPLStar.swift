@@ -55,13 +55,18 @@ public typealias log = PerseusLogger // In SPM package should be not public exce
 
 public typealias ConsoleObject = (subsystem: String, category: String)
 public typealias LocalTime = (date: String, time: String)
+public typealias PIDandTID = (pid: String, tid: String) // PID and Thread ID.
 
-public typealias MessageDelegate = ((String, PerseusLogger.Level, LocalTime) -> Void)
-
-public let CONSOLE_APP_SUBSYSTEM_DEFAULT = "Perseus"
-public let CONSOLE_APP_CATEGORY_DEFAULT = "Logger"
+public typealias MessageDelegate = (
+    (String, PerseusLogger.Level, LocalTime, PIDandTID) -> Void
+)
 
 public class PerseusLogger {
+
+    // MARK: - Constants
+
+    private static let SUBSYSTEM = "Perseus"
+    private static let CATEGORY = "Logger"
 
     // MARK: - Specifics
 
@@ -73,7 +78,7 @@ public class PerseusLogger {
     public enum Output {
         case standard // In Use: Swift.print("").
         case consoleapp
-        case custom // In Use: customActionOnMessage?(_:_:_:).
+        case custom // In Use: customActionOnMessage?(_:_:_:_:).
     }
 
     public enum Level: Int, CustomStringConvertible {
@@ -121,32 +126,41 @@ public class PerseusLogger {
         case nanosecond  // -9.
     }
 
-    public enum MessageFormat { // [TYPE] [DATE] [TIME] message, file: #, line: #
+    public enum TIDNumber {
+        case hexadecimal
+        case decimal
+    }
+
+    public enum MessageFormat { // [TYPE] [DATE] [TIME] [PID:TID] message, file: #, line: #
 
         case short
-        // marks true, time false, directives false
-        // [DEBUG] message
 
-        // marks true, time true, directives false
-        // [DEBUG] [2025-04-17] [20:31:53:630594968] message
+// marks true, time false, pidtid false, directives false
+// [DEBUG] message
 
-        // marks true, time false, directives true
-        // [DEBUG] message, file: File.swift, line: 29
+// marks true, time true, pidtid false, directives false
+// [DEBUG] [2025-04-17] [20:31:53:630594968] message
 
-        // marks true, time true, directives true
-        // [DEBUG] [2025-04-17] [20:31:53:630918979] message, file: File.swift, line: 29
+// marks true, time false, pidtid false, directives true
+// [DEBUG] message, file: File.swift, line: 29
 
-        // marks false, directives true
-        // message, file: File.swift, line: 29
+// marks true, time false, pidtid true, directives true
+// [DEBUG] [6317:0x2519d] message, file: File.swift, line: 29
 
-        // marks false, directives false
-        // message
+// marks true, time true, pidtid true, directives true
+// [DEBUG] [2025-04-17] [20:31:53:630918979] [6317:0x2519d] message, file: File.swift, line: 29
+
+// marks false, directives true
+// message, file: File.swift, line: 29
+
+// marks false, directives false
+// message
 
         case full
-        // [DEBUG] [2025-04-17] [20:31:53:630918979] message, file: File.swift, line: 29
+// [DEBUG] [2025-04-17] [20:31:53:630918979] [6317:0x2519d] message, file: File.swift, line: 29
 
         case textonly
-        // message
+// message
     }
 
     // MARK: - Properties
@@ -164,10 +178,13 @@ public class PerseusLogger {
 #endif
 
     public static var subsecond = TimeMultiply.nanosecond
+    public static var tidnumber = TIDNumber.hexadecimal
+
     public static var format = MessageFormat.short
 
-    public static var marks = true // Controls tags [TYPE] [DATE] [TIME].
+    public static var marks = true // Controls tags [TYPE] [DATE] [TIME] [PID:TID].
     public static var time = false // If also and marks true adds [DATE] [TIME] to message.
+    public static var pidtid = false // If also and marks true adds [PID:TID] to message.
 
     public static var directives = false // File# and Line# in message.
 
@@ -201,6 +218,10 @@ public class PerseusLogger {
         return getLocalTime()
     }
 
+    public static var pidAndTid: PIDandTID {
+        return getPIDandTID()
+    }
+
     // MARK: - Internals
 
     @available(iOS 14.0, macOS 11.0, *)
@@ -230,6 +251,15 @@ public class PerseusLogger {
             message = "\(text())"
         }
 
+        // PID and TID.
+
+        let withPIDandTID = (format == .full) ? true : marks && pidtid && (format != .textonly)
+        let pidAndTid = getPIDandTID()
+
+        if withPIDandTID {
+            message = "[\(pidAndTid.pid):\(pidAndTid.tid)] \(message)"
+        }
+
         // Time.
 
         let isTimed = (format == .full) ? true : marks && time && (format != .textonly)
@@ -247,7 +277,7 @@ public class PerseusLogger {
         // Print.
 
         if oput == .custom {
-            customActionOnMessage?(message, type, localTime)
+            customActionOnMessage?(message, type, localTime, pidAndTid)
         } else {
             print(message, type, oput)
         }
@@ -268,8 +298,7 @@ public class PerseusLogger {
 
             if #available(iOS 14.0, macOS 11.0, *) {
 
-                let logger = consoleLogger ?? Logger(subsystem: CONSOLE_APP_SUBSYSTEM_DEFAULT,
-                                                     category: CONSOLE_APP_CATEGORY_DEFAULT)
+                let logger = consoleLogger ?? Logger(subsystem: SUBSYSTEM, category: CATEGORY)
 
                 switch message.type {
                 case .debug:
@@ -295,8 +324,7 @@ public class PerseusLogger {
                 return
             }
 
-            let consoleLog = consoleOSLog ?? OSLog(subsystem: CONSOLE_APP_SUBSYSTEM_DEFAULT,
-                                                   category: CONSOLE_APP_CATEGORY_DEFAULT)
+            let consoleLog = consoleOSLog ?? OSLog(subsystem: SUBSYSTEM, category: CATEGORY)
 
             switch message.type {
             case .debug:
@@ -321,7 +349,7 @@ public class PerseusLogger {
         }
     }
 
-    private static func getLocalTime() -> (date: String, time: String) {
+    private static func getLocalTime() -> LocalTime {
 
         guard let timezone = TimeZone(secondsFromGMT: 0) else { return ("TIME", "TIME") }
 
@@ -361,6 +389,15 @@ public class PerseusLogger {
 
         return (date: date, time: time)
     }
+
+    private static func getPIDandTID() -> PIDandTID {
+
+        var tid: UInt64 = 0
+        pthread_threadid_np(nil, &tid)
+
+        return (pid: "\(ProcessInfo.processInfo.processIdentifier)",
+                tid: "\(tidnumber == .hexadecimal ? tid.hex : tid.description)")
+    }
 }
 
 // MARK: - Helpers
@@ -374,5 +411,11 @@ private extension Int {
 
     var multiply: String {
         return String(self)
+    }
+}
+
+private extension UInt64 {
+    var hex: String {
+        return "0x\(String(format: "%02x", self))"
     }
 }

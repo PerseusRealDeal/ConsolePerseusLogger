@@ -23,6 +23,7 @@ final class FunctionalTests: XCTestCase {
 
     func test_the_first_success() {
         log.time = true
+        log.pidtid = true
         log.message(#function)
     }
 }
