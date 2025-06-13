@@ -1,6 +1,6 @@
 # ConsolePerseusLogger — Xcode 14.2+
 
-[`iOS approbation app`](https://github.com/perseusrealdeal/TheOneRing) [`macOS approbation app`](https://github.com/perseusrealdeal/Arkenstone)
+> [`iOS approbation app`](https://github.com/perseusrealdeal/TheOneRing) [`macOS approbation app`](https://github.com/perseusrealdeal/Arkenstone)
 
 > Light-weight logger in Swift. Hereinafter `CPL` stands for `C`onsole `P`erseus `L`ogger.<br/>
 
@@ -14,7 +14,7 @@
 
 [![Actions Status](https://github.com/perseusrealdeal/ConsolePerseusLogger/actions/workflows/main.yml/badge.svg)](https://github.com/perseusrealdeal/ConsolePerseusLogger/actions/workflows/main.yml)
 [![Style](https://github.com/perseusrealdeal/ConsolePerseusLogger/actions/workflows/swiftlint.yml/badge.svg)](https://github.com/perseusrealdeal/ConsolePerseusLogger/actions/workflows/swiftlint.yml)
-[![Version](https://img.shields.io/badge/Version-1.3.0-green.svg)](/CHANGELOG.md)
+[![Version](https://img.shields.io/badge/Version-1.4.0-green.svg)](/CHANGELOG.md)
 [![Platforms](https://img.shields.io/badge/Platforms-macOS%2010.13+_|_iOS%2011.0+-orange.svg)](https://en.wikipedia.org/wiki/List_of_Apple_products)
 [![Xcode 14.2](https://img.shields.io/badge/Xcode-14.2+-red.svg)](https://en.wikipedia.org/wiki/Xcode)
 [![Swift 5.7](https://img.shields.io/badge/Swift-5.7-red.svg)](https://www.swift.org)
@@ -25,7 +25,8 @@
 [![Standalone](https://img.shields.io/badge/Standalone%20-available-informational.svg)](/CPLStar.swift)
 [![Swift Package Manager compatible](https://img.shields.io/badge/Swift%20Package%20Manager-compatible-4BC51D.svg)](/Package.swift)
 
-> Use Stars to adopt [`CPL`](/CPLStar.swift) for the specifics you need.
+> [!TIP]
+> Use Standalone to adopt [`CPL`](/CPLStar.swift) for the specifics you need.
 
 ## Approbation Matrix
 
@@ -41,19 +42,28 @@
 
 - [macOS Monterey 12.7.6+](https://apps.apple.com/by/app/macos-monterey/id1576738294) / [Xcode 14.2+](https://developer.apple.com/services-account/download?path=/Developer_Tools/Xcode_14.2/Xcode_14.2.xip)
 
-> But as the single source code file [CPLStar.swift](/CPLStar.swift) CPL can be used even in Xcode 10.1.
+> [!TIP]
+> As the single source code file [CPLStar.swift](/CPLStar.swift) CPL with minimum changes can be used even in Xcode 10.1.
 
 ## Third-party software
 
-- Style [SwiftLint](https://github.com/realm/SwiftLint) / [Shell Script](/SucceedsPostAction.sh)
-- Action [mxcl/xcodebuild@v3](https://github.com/mxcl/xcodebuild/releases/tag/v3.5.1)
-- Action [cirruslabs/swiftlint-action@v1](https://github.com/cirruslabs/swiftlint-action/releases/tag/v1.0.0)
+| Type   | Name                                                                                                                              | License                            |
+| ------ | --------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------- |
+| Style  | [SwiftLint](https://github.com/realm/SwiftLint) / [v0.57.0 for Monterey+](https://github.com/realm/SwiftLint/releases/tag/0.57.0) | MIT                                |
+| Script | [SwiftLint Shell Script](/SucceedsPostAction.sh) to run SwiftLint                                                                 | MIT                                |
+| Action | [mxcl/xcodebuild@v3](https://github.com/mxcl/xcodebuild)                                                                          | [Unlicense](https://unlicense.org) |
+| Action | [cirruslabs/swiftlint-action@v1](https://github.com/cirruslabs/swiftlint-action/)                                                 | MIT                                |
 
 # Installation
 
 > Standalone: the single source code file [CPLStar.swift](/CPLStar.swift)
 
 > Swift Package Manager: `https://github.com/perseusrealdeal/ConsolePerseusLogger`
+
+> [!WARNING]
+> In case if output is consoleapp and Environment Variable `OS_ACTIVITY_MODE` in `disable` value log messages will be blocked for Xcode console, but only.
+
+![Image](https://github.com/user-attachments/assets/fb64c5cf-70dc-489c-9850-976ea3d5800c)
 
 # Usage
 
@@ -143,7 +153,8 @@ log.message("The app's start point...", .info)
 | format      | .short                | .short                |
 | marks       | true                  | true                  |
 | time        | false                 | false                 |
-| directives  | false                 | false                 |
+| pidtid      | false                 | false                 |
+| directives  | false                 | false                 | 
 | logObject   | ("Perseus", "Logger") | ("Perseus", "Logger") |
 
 > Special option goes kinda lifehack. Matter only if Simulator. 
@@ -213,6 +224,12 @@ Copyright © 7531 - 7533 PerseusRealDeal
 - The year starts from the creation of the world according to a Slavic calendar.
 - September, the 1st of Slavic year. It means that "Sep 01, 2024" is the beginning of 7533.
 
+## Other Required License Notices
+
+© 2025 The SwiftLint Contributors **for** SwiftLint</br>
+© GitHub **for** GitHub Action cirruslabs/swiftlint-action@v1</br>
+© 2021 Alexandre Colucci, geteimy.com **for** Shell Script SucceedsPostAction.sh</br>
+
 [LICENSE](/LICENSE) for details.
 
 ## Credits
@@ -245,4 +262,4 @@ Copyright © 7531 - 7533 PerseusRealDeal
 
 # Author
 
-> Mikhail A. Zhigulin of Novosibirsk.
+> © Mikhail A. Zhigulin of Novosibirsk.

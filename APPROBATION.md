@@ -1,4 +1,4 @@
-# Approbation Matrix / ConsolePerseusLogger v1.1.0 & v1.2.0 & v1.3.0
+# Approbation Matrix / ConsolePerseusLogger v1.1.0 & v1.2.0 & v1.3.0 & v1.4.0
 
 > NOTE: To catch all log messages Mac Console should be started first then after a little while the logged app.
 
@@ -6,7 +6,7 @@
 
 ## macOS approbation result
 
-> The approbation macOS app for ConsolePerseusLogger 1.1.0 is [Arkenstone](https://github.com/perseusrealdeal/Arkenstone).
+> The approbation macOS app for ConsolePerseusLogger is [Arkenstone](https://github.com/perseusrealdeal/Arkenstone).
 
 | macOS       | Version | Result  | Details |
 | ----------- | ------- | :-----: | ------- |
@@ -21,7 +21,7 @@
 
 ## iOS approbation result
 
-> The approbation iOS app for ConsolePerseusLogger 1.1.0 is [The One Ring](https://github.com/perseusrealdeal/TheOneRing).
+> The approbation iOS app for ConsolePerseusLogger is [The One Ring](https://github.com/perseusrealdeal/TheOneRing).
 
 | Device          | Simulator | OS Version | Result  | Details |
 | --------------- | :-------: | ---------- | :-----: | ------- |
