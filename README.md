@@ -150,6 +150,7 @@ log.message("The app's start point...", .info)
 | Options     | Default in DEBUG      | Default in RELEASE    |
 | :---------- | :-------------------- | :-------------------- |
 | subsecond   | .nanosecond           | .nanosecond           |
+| tidnumber   | .hexadecimal          | .hexadecimal          |
 | format      | .short                | .short                |
 | marks       | true                  | true                  |
 | time        | false                 | false                 |
