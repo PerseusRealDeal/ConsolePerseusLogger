@@ -136,25 +136,31 @@ public class PerseusLogger {
 
         case short
 
-// marks true, time false, pidtid false, directives false
+// marks true, time false, ownerid false, directives false
 // [DEBUG] message
 
-// marks true, time true, pidtid false, directives false
+// marks true, time true, ownerid false, directives false
 // [DEBUG] [2025-04-17] [20:31:53:630594968] message
 
-// marks true, time false, pidtid false, directives true
+// marks true, time false, ownerid false, directives true
 // [DEBUG] message, file: File.swift, line: 29
 
-// marks true, time false, pidtid true, directives true
+// marks true, time false, ownerid true, directives true
 // [DEBUG] [6317:0x2519d] message, file: File.swift, line: 29
 
-// marks true, time true, pidtid true, directives true
+// marks true, time true, ownerid true, directives true
 // [DEBUG] [2025-04-17] [20:31:53:630918979] [6317:0x2519d] message, file: File.swift, line: 29
 
-// marks false, directives true
+// marks false, time false, ownerid false, directives true
 // message, file: File.swift, line: 29
 
-// marks false, directives false
+// marks false, time false, ownerid true, directives true
+// [6317:0x2519d] message, file: File.swift, line: 29
+
+// marks false, time false, ownerid true, directives false
+// [6317:0x2519d] message
+
+// marks false, time false, ownerid false, directives false
 // message
 
         case full
@@ -183,11 +189,10 @@ public class PerseusLogger {
 
     public static var format = MessageFormat.short
 
-    public static var marks = true // Controls tags [TYPE] [DATE] [TIME] [PID:TID].
-    public static var time = false // If also and marks true adds [DATE] [TIME] to message.
-    public static var pidtid = false // If also and marks true adds [PID:TID] to message.
-
-    public static var directives = false // File# and Line# in message.
+    public static var marks = true // Controls tags [TYPE] [DATE] [TIME].
+    public static var time = false // + [DATE] [TIME] to message. Depends on format and marks.
+    public static var ownerid = false // + [PID:TID] to message. Depends on format.
+    public static var directives = false // + File# and Line# to message. Depends on format.
 
 #if targetEnvironment(simulator)
     public static var debugIsInfo = true // Shows DEBUG message as INFO in macOS Console.app.
@@ -243,7 +248,7 @@ public class PerseusLogger {
 
         // Path.
 
-        let withDirectives = (format == .full) ? true : (directives && (format != .textonly))
+        let withDirectives = (format == .full) ? true : directives && (format != .textonly)
 
         if withDirectives {
             let fileName = (file.description as NSString).lastPathComponent
@@ -254,11 +259,11 @@ public class PerseusLogger {
 
         // PID and TID.
 
-        let withPIDandTID = (format == .full) ? true : marks && pidtid && (format != .textonly)
-        let pidAndTid = getPIDandTID()
+        let withOwnerId = (format == .full) ? true : ownerid && (format != .textonly)
+        let idtuple = getPIDandTID()
 
-        if withPIDandTID {
-            message = "[\(pidAndTid.pid):\(pidAndTid.tid)] \(message)"
+        if withOwnerId {
+            message = "[\(idtuple.pid):\(idtuple.tid)] \(message)"
         }
 
         // Time.
@@ -278,7 +283,7 @@ public class PerseusLogger {
         // Print.
 
         if oput == .custom {
-            customActionOnMessage?(message, type, localTime, pidAndTid)
+            customActionOnMessage?(message, type, localTime, idtuple)
         } else {
             print(message, type, oput)
         }

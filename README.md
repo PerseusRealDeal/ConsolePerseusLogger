@@ -8,8 +8,6 @@
 > - Log to macOS Console.app.<br/>
 > - Log to custom output.
 
-> Look at [`Mastering Logging with CPL`](https://docs.google.com/document/d/1cWsqhRphP9NzGbMxkJA1agLProjPn6GBw3QEaar4VNY/edit?usp=sharing).<br/>
-
 > `CPL` is a single author and personale solution developed in `person-to-person` relationship paradigm.
 
 [![Actions Status](https://github.com/perseusrealdeal/ConsolePerseusLogger/actions/workflows/main.yml/badge.svg)](https://github.com/perseusrealdeal/ConsolePerseusLogger/actions/workflows/main.yml)
@@ -26,7 +24,7 @@
 [![Swift Package Manager compatible](https://img.shields.io/badge/Swift%20Package%20Manager-compatible-4BC51D.svg)](/Package.swift)
 
 > [!TIP]
-> Use Standalone to adopt [`CPL`](/CPLStar.swift) for the specifics you need.
+> To adopt `CPL` for the specifics you need use [Standalone](/CPLStar.swift).
 
 ## Approbation Matrix
 
@@ -43,7 +41,7 @@
 - [macOS Monterey 12.7.6+](https://apps.apple.com/by/app/macos-monterey/id1576738294) / [Xcode 14.2+](https://developer.apple.com/services-account/download?path=/Developer_Tools/Xcode_14.2/Xcode_14.2.xip)
 
 > [!TIP]
-> As the single source code file [CPLStar.swift](/CPLStar.swift) CPL with minimum changes can be used even in Xcode 10.1.
+> As the single source code [CPLStar.swift](/CPLStar.swift) CPL with minimum changes can be used even in Xcode 10.1.
 
 ## Third-party software
 
@@ -60,8 +58,8 @@
 
 > Swift Package Manager: `https://github.com/perseusrealdeal/ConsolePerseusLogger`
 
-> [!WARNING]
-> In case if output is consoleapp and Environment Variable `OS_ACTIVITY_MODE` in `disable` value log messages will be blocked for Xcode console, but only.
+> [!NOTE]
+> If output is consoleapp and Environment Variable `OS_ACTIVITY_MODE` in `disable` log messaging will be restricted for Xcode console, but only.
 
 ![Image](https://github.com/user-attachments/assets/fb64c5cf-70dc-489c-9850-976ea3d5800c)
 
@@ -104,11 +102,15 @@ import ConsolePerseusLogger
 
 typealias Level = ConsolePerseusLogger.PerseusLogger.Level
 
-func customPrint(_ text: String, _ type: Level, _ localTime: LocalTime) {
-    print("[MYLOG] \(type) \(localTime.date) \(localTime.time) \(text)")
+func customPrint(_ text: String, _ type: Level, _ localTime: LocalTime, _ owner: PIDandTID) {
+
+    let time = "[\(localTime.date)] [\(localTime.time)]"
+    let id = "[\(owner.pid):\(owner.tid)]"
+
+    print("[MYLOG] [\(type)] \(time) \(id) \(text)")
 }
 
-log.customActionOnMessage = customPrint(_:_:_:)
+log.customActionOnMessage = customPrint(_:_:_:_:)
 
 log.format = .textonly
 log.output = .custom
@@ -117,7 +119,7 @@ log.message("The app's start point...", .info)
 
 ```
 
-![Image](https://github.com/user-attachments/assets/a4d9ecf4-561a-4536-b6ac-1ccb06747489)
+![Image](https://github.com/user-attachments/assets/f4d6125d-a217-44be-9ff3-84113a23e8d8)
 
 ## Log level and message types
 
@@ -131,7 +133,7 @@ log.message("The app's start point...", .info)
 | 2     | ERROR        | Errors seen during the code execution |
 | 1     | FAULT        | Faults and bugs in the code           |
 
-> More over CPL considers each type like a message filter look how it works
+> Alos, CPL considers Message Type to filter, look how it works:
 
 ![Image](https://github.com/user-attachments/assets/69ee1f63-a58d-414a-9cc8-fe1673a15982)
 
@@ -154,7 +156,7 @@ log.message("The app's start point...", .info)
 | format      | .short                | .short                |
 | marks       | true                  | true                  |
 | time        | false                 | false                 |
-| pidtid      | false                 | false                 |
+| ownerid     | false                 | false                 |
 | directives  | false                 | false                 | 
 | logObject   | ("Perseus", "Logger") | ("Perseus", "Logger") |
 
