@@ -12,7 +12,7 @@
 
 [![Actions Status](https://github.com/perseusrealdeal/ConsolePerseusLogger/actions/workflows/main.yml/badge.svg)](https://github.com/perseusrealdeal/ConsolePerseusLogger/actions/workflows/main.yml)
 [![Style](https://github.com/perseusrealdeal/ConsolePerseusLogger/actions/workflows/swiftlint.yml/badge.svg)](https://github.com/perseusrealdeal/ConsolePerseusLogger/actions/workflows/swiftlint.yml)
-[![Version](https://img.shields.io/badge/Version-1.4.0-green.svg)](/CHANGELOG.md)
+[![Version](https://img.shields.io/badge/Version-1.5.0-green.svg)](/CHANGELOG.md)
 [![Platforms](https://img.shields.io/badge/Platforms-macOS%2010.13+_|_iOS%2011.0+-orange.svg)](https://en.wikipedia.org/wiki/List_of_Apple_products)
 [![Xcode 14.2](https://img.shields.io/badge/Xcode-14.2+-red.svg)](https://en.wikipedia.org/wiki/Xcode)
 [![Swift 5.7](https://img.shields.io/badge/Swift-5.7-red.svg)](https://www.swift.org)
@@ -133,7 +133,7 @@ log.message("The app's start point...", .info)
 | 2     | ERROR        | Errors seen during the code execution |
 | 1     | FAULT        | Faults and bugs in the code           |
 
-> Alos, CPL considers Message Type to filter, look how it works:
+> Also, CPL considers Message Type to filter, look how it works:
 
 ![Image](https://github.com/user-attachments/assets/69ee1f63-a58d-414a-9cc8-fe1673a15982)
 

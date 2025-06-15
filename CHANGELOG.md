@@ -5,6 +5,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Dates in this file meets Gregorian calendar. Date in format YYYY-MM-DD.
 
+## [1.5.0] - [2025-NN-NN], CPL with message privacy
+
+### Added
+
+- File configuration.
+
 ## [1.4.0] - [2025-06-14], CPL with PID and TID
 
 ### Added
