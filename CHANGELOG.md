@@ -5,6 +5,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Dates in this file meets Gregorian calendar. Date in format YYYY-MM-DD.
 
+## [1.5.0] - [2025-06-17], CPL with json config
+
+### Added
+
+- Json config to reset options. Option `tuned` can be reseted manually only.
+- Xcode Swift playground with CPL usage samples.
+
 ## [1.4.0] - [2025-06-14], CPL with PID and TID
 
 ### Added

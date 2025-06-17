@@ -1,6 +1,6 @@
 //
 //  CPLStar.swift
-//  Version: 1.4.0
+//  Version: 1.5.0
 //
 //  Standalone ConsolePerseusLogger.
 //
@@ -8,6 +8,8 @@
 //  For iOS and macOS only. Use Stars to adopt for the specifics you need.
 //
 //  DESC: USE LOGGER LIKE A VARIABLE ANYWHERE YOU WANT.
+//
+//  [TYPE] [DATE] [TIME] [PID:TID] message, file: #, line: #
 //
 //  Created by Mikhail Zhigulin in 7531.
 //
@@ -66,22 +68,22 @@ public class PerseusLogger {
     // MARK: - Constants
 
     private static let SUBSYSTEM = "Perseus"
-    private static let CATEGORY = "Logger"
+    private static let CATEGORY = "Lover"
 
     // MARK: - Specifics
 
-    public enum Status {
+    public enum Status: String, Decodable {
         case on
         case off
     }
 
-    public enum Output {
+    public enum Output: String, Decodable {
         case standard // In Use: Swift.print("").
         case consoleapp
         case custom // In Use: customActionOnMessage?(_:_:_:_:).
     }
 
-    public enum Level: Int, CustomStringConvertible {
+    public enum Level: Int, CustomStringConvertible, Decodable {
 
         public var description: String {
             switch self {
@@ -120,46 +122,46 @@ public class PerseusLogger {
         case fault  = 1
     }
 
-    public enum TimeMultiply {
+    public enum TimeMultiply: String, Decodable {
         // case millisecond // -3.
         // case microsecond // -6.
         case nanosecond  // -9.
     }
 
-    public enum TIDNumber {
+    public enum TIDNumber: String, Decodable {
         case hexadecimal
         case decimal
     }
 
-    public enum MessageFormat { // [TYPE] [DATE] [TIME] [PID:TID] message, file: #, line: #
+    public enum MessageFormat: String, Decodable {
 
         case short
 
-// marks true, time false, ownerid false, directives false
+// marks true, time false, owner false, directives false
 // [DEBUG] message
 
-// marks true, time true, ownerid false, directives false
+// marks true, time true, owner false, directives false
 // [DEBUG] [2025-04-17] [20:31:53:630594968] message
 
-// marks true, time false, ownerid false, directives true
+// marks true, time false, owner false, directives true
 // [DEBUG] message, file: File.swift, line: 29
 
-// marks true, time false, ownerid true, directives true
+// marks true, time false, owner true, directives true
 // [DEBUG] [6317:0x2519d] message, file: File.swift, line: 29
 
-// marks true, time true, ownerid true, directives true
+// marks true, time true, owner true, directives true
 // [DEBUG] [2025-04-17] [20:31:53:630918979] [6317:0x2519d] message, file: File.swift, line: 29
 
-// marks false, time false, ownerid false, directives true
+// marks false, time false, owner false, directives true
 // message, file: File.swift, line: 29
 
-// marks false, time false, ownerid true, directives true
+// marks false, time false, owner true, directives true
 // [6317:0x2519d] message, file: File.swift, line: 29
 
-// marks false, time false, ownerid true, directives false
+// marks false, time false, owner true, directives false
 // [6317:0x2519d] message
 
-// marks false, time false, ownerid false, directives false
+// marks false, time false, owner false, directives false
 // message
 
         case full
@@ -190,7 +192,7 @@ public class PerseusLogger {
 
     public static var marks = true // Controls tags [TYPE] [DATE] [TIME].
     public static var time = false // + [DATE] [TIME] to message. Depends on format and marks.
-    public static var ownerid = false // + [PID:TID] to message. Depends on format.
+    public static var owner = false // + [PID:TID] to message. Depends on format.
     public static var directives = false // + File# and Line# to message. Depends on format.
 
 #if targetEnvironment(simulator)
@@ -235,6 +237,36 @@ public class PerseusLogger {
 
     // MARK: - Contract
 
+    public static func loadConfig(_ profile: ProfileCPL) -> Bool {
+        if let data = profile.json.data(using: .utf8) {
+            if let jsonConfig = decodeJsonProfile(data) {
+                reloadOptions(jsonConfig)
+                return true
+            }
+            log.message("Failed to decode CPL json config data!", .error)
+            return false
+        }
+        log.message("Failed to load CPL config data!", .error)
+        return false
+    }
+
+    public static func loadConfig(_ json: URL) -> Bool {
+        if FileManager.default.fileExists(atPath: json.relativePath) {
+            if let data = try? Data(contentsOf: json) {
+                if let jsonConfig = decodeJsonProfile(data) {
+                    reloadOptions(jsonConfig)
+                    return true
+                }
+                log.message("Failed to decode CPL json config data!", .error)
+                return false
+            }
+            log.message("Failed to load CPL config data!", .error)
+            return false
+        }
+        log.message("CPL config file doesn't exist!", .error)
+        return false
+    }
+
     public static func message(_ text: @autoclosure () -> String,
                                _ type: Level = .debug,
                                _ oput: Output = PerseusLogger.output,
@@ -258,7 +290,7 @@ public class PerseusLogger {
 
         // PID and TID.
 
-        let withOwnerId = (format == .full) ? true : ownerid && (format != .textonly)
+        let withOwnerId = (format == .full) ? true : owner && (format != .textonly)
         let idtuple = getPIDandTID()
 
         if withOwnerId {
@@ -403,6 +435,30 @@ public class PerseusLogger {
         return (pid: "\(ProcessInfo.processInfo.processIdentifier)",
                 tid: "\(tidnumber == .hexadecimal ? tid.hex : tid.description)")
     }
+
+    private static func decodeJsonProfile(_ data: Data) -> JsonOptionsCPL? {
+        if let json = try? JSONDecoder().decode(JsonOptionsCPL.self, from: data) {
+            return json
+        }
+        return nil
+    }
+
+    private static func reloadOptions(_ newValue: JsonOptionsCPL) {
+        logObject = (newValue.subsystem, newValue.category)
+        // turned = newValue.turned // Ignored, only manually!
+        level = newValue.level
+        output = newValue.output
+        subsecond = newValue.subsecond
+        tidnumber = newValue.tidnumber
+        format = newValue.format
+        marks = newValue.marks
+        time = newValue.time
+        owner = newValue.owner
+        directives = newValue.directives
+#if targetEnvironment(simulator)
+        debugIsInfo = newValue.debugIsInfo
+#endif
+    }
 }
 
 // MARK: - Helpers
@@ -424,3 +480,117 @@ private extension UInt64 {
         return "0x\(String(format: "%02x", self))"
     }
 }
+
+// MARK: - Configuration Profiles
+
+private struct JsonOptionsCPL: CustomStringConvertible, Decodable {
+    let subsystem: String
+    let category: String
+    let turned: PerseusLogger.Status
+    let level: PerseusLogger.Level
+    let output: PerseusLogger.Output
+    let subsecond: PerseusLogger.TimeMultiply
+    let tidnumber: PerseusLogger.TIDNumber
+    let format: PerseusLogger.MessageFormat
+    let marks: Bool
+    let time: Bool
+    let owner: Bool
+    let directives: Bool
+    let debugIsInfo: Bool
+
+    public var description: String {
+        return
+"""
+\nCPL Configuration Profile values\n
+subsystem   : \(subsystem)
+category    : \(category)
+turned      : \(turned)
+level       : \(level)
+output      : \(output)
+subsecond   : \(subsecond)
+tidnumber   : \(tidnumber)
+format      : \(format)
+marks       : \(marks)
+time        : \(time)
+owner       : \(owner)
+directives  : \(directives)
+debugIsInfo : \(debugIsInfo)
+\n
+"""
+    }
+}
+
+public enum ProfileCPL: String {
+
+    case debugRoutine
+    case debugConcurrency
+    case defaultDebug
+
+    public var json: String {
+        switch self {
+        case .debugRoutine:
+            return debugRoutineProfile
+        case .debugConcurrency:
+            return debugConcurrencyProfile
+        case .defaultDebug:
+            return defaultDebugProfile
+        }
+    }
+}
+
+private let debugRoutineProfile =
+"""
+{
+    "subsystem"   : "Perseus",
+    "category"    : "Lover",
+    "turned"      : "on",
+    "level"       : 5,
+    "output"      : "standard",
+    "subsecond"   : "nanosecond",
+    "tidnumber"   : "hexadecimal",
+    "format"      : "short",
+    "marks"       : true,
+    "time"        : true,
+    "owner"       : false,
+    "directives"  : false,
+    "debugIsInfo" : true
+}
+"""
+
+private let debugConcurrencyProfile =
+"""
+{
+    "subsystem"   : "Perseus",
+    "category"    : "Lover",
+    "turned"      : "on",
+    "level"       : 5,
+    "output"      : "standard",
+    "subsecond"   : "nanosecond",
+    "tidnumber"   : "hexadecimal",
+    "format"      : "short",
+    "marks"       : false,
+    "time"        : false,
+    "owner"       : true,
+    "directives"  : false,
+    "debugIsInfo" : true
+}
+"""
+
+private let defaultDebugProfile =
+"""
+{
+    "subsystem"   : "Perseus",
+    "category"    : "Lover",
+    "turned"      : "on",
+    "level"       : 5,
+    "output"      : "standard",
+    "subsecond"   : "nanosecond",
+    "tidnumber"   : "hexadecimal",
+    "format"      : "short",
+    "marks"       : true,
+    "time"        : false,
+    "owner"       : false,
+    "directives"  : false,
+    "debugIsInfo" : true
+}
+"""

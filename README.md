@@ -2,17 +2,19 @@
 
 > [`iOS approbation app`](https://github.com/perseusrealdeal/TheOneRing) [`macOS approbation app`](https://github.com/perseusrealdeal/Arkenstone)
 
-> Light-weight logger in Swift. Hereinafter `CPL` stands for `C`onsole `P`erseus `L`ogger.<br/>
+> Light-weight logging lover in Swift. Hereinafter `CPL` stands for `C`onsole `P`erseus `L`ogger.<br/>
 
 > - Log to console.<br/>
 > - Log to macOS Console.app.<br/>
 > - Log to custom output.
 
+> `[TYPE] [DATE] [TIME] [PID:TID] message, file: #, line: #`
+
 > `CPL` is a single author and personale solution developed in `person-to-person` relationship paradigm.
 
 [![Actions Status](https://github.com/perseusrealdeal/ConsolePerseusLogger/actions/workflows/main.yml/badge.svg)](https://github.com/perseusrealdeal/ConsolePerseusLogger/actions/workflows/main.yml)
 [![Style](https://github.com/perseusrealdeal/ConsolePerseusLogger/actions/workflows/swiftlint.yml/badge.svg)](https://github.com/perseusrealdeal/ConsolePerseusLogger/actions/workflows/swiftlint.yml)
-[![Version](https://img.shields.io/badge/Version-1.4.0-green.svg)](/CHANGELOG.md)
+[![Version](https://img.shields.io/badge/Version-1.5.0-green.svg)](/CHANGELOG.md)
 [![Platforms](https://img.shields.io/badge/Platforms-macOS%2010.13+_|_iOS%2011.0+-orange.svg)](https://en.wikipedia.org/wiki/List_of_Apple_products)
 [![Xcode 14.2](https://img.shields.io/badge/Xcode-14.2+-red.svg)](https://en.wikipedia.org/wiki/Xcode)
 [![Swift 5.7](https://img.shields.io/badge/Swift-5.7-red.svg)](https://www.swift.org)
@@ -30,11 +32,13 @@
 
 > [`A3 Environment and Approbation`](/APPROBATION.md) / [`CHANGELOG`](/CHANGELOG.md) for details.
 
+> [Download](https://github.com/user-attachments/files/20772719/CPLplays.playground.zip) CPL playground file.
+
 ## In brief > Idea to use, the Why
 
 > USE LOGGER LIKE A VARIABLE ANYWHERE YOU WANT.<br/>
 
-![Image](https://github.com/user-attachments/assets/4d3ecb2c-973c-41f1-80d9-c0fa236ff325)
+![Image](https://github.com/user-attachments/assets/0c677cd4-2986-47f9-8400-cadb475fade5)
 
 ## Build requirements
 
@@ -75,7 +79,7 @@ log.message("[\(type(of: self))].\(#function)")
 
 ```
 
-![Image](https://github.com/user-attachments/assets/b6049e5a-a84c-4762-a103-cf85fc8d8b52)
+![Image](https://github.com/user-attachments/assets/fda51c4a-c311-4c54-ac8c-16b6275c09e0)
 
 ## Log to Mac Console
 
@@ -85,14 +89,14 @@ import ConsolePerseusLogger
 
 // MARK: - Log to Console.app
 
-// log.logObject = ("MyApp", "MyLogger") // Customs for Console.app Subsystem and Category.
+// log.logObject = ("MyApp", "MyLover") // Customs for Console.app Subsystem and Category.
 
 log.output = .consoleapp
 log.message("The app's start point...", .info)
 
 ```
 
-![Image](https://github.com/user-attachments/assets/ac711ff0-4296-406c-90ba-630149dda39c)
+![Image](https://github.com/user-attachments/assets/5c10526b-6bba-4600-8be3-8cdcd0a0d412)
 
 ## Custom log
 
@@ -119,7 +123,7 @@ log.message("The app's start point...", .info)
 
 ```
 
-![Image](https://github.com/user-attachments/assets/f4d6125d-a217-44be-9ff3-84113a23e8d8)
+![Image](https://github.com/user-attachments/assets/2df85278-43cf-4c68-9058-327ebe1c02a7)
 
 ## Log level and message types
 
@@ -133,11 +137,11 @@ log.message("The app's start point...", .info)
 | 2     | ERROR        | Errors seen during the code execution |
 | 1     | FAULT        | Faults and bugs in the code           |
 
-> Alos, CPL considers Message Type to filter, look how it works:
+> Also, CPL considers Message Type to filter, look how it works:
 
-![Image](https://github.com/user-attachments/assets/69ee1f63-a58d-414a-9cc8-fe1673a15982)
+![Image](https://github.com/user-attachments/assets/06c6614e-4cb2-447d-86ab-bbcb60d49cc5)
 
-## Setup the Logger for Work
+## Setting the Logger Up
 
 > Default values of CPL options depend on DEBUG/RELEASE.
 
@@ -149,22 +153,60 @@ log.message("The app's start point...", .info)
 
 > Other CPL options are the same for DEBUG/RELEASE by default. 
 
-| Options     | Default in DEBUG      | Default in RELEASE    |
-| :---------- | :-------------------- | :-------------------- |
-| subsecond   | .nanosecond           | .nanosecond           |
-| tidnumber   | .hexadecimal          | .hexadecimal          |
-| format      | .short                | .short                |
-| marks       | true                  | true                  |
-| time        | false                 | false                 |
-| ownerid     | false                 | false                 |
-| directives  | false                 | false                 | 
-| logObject   | ("Perseus", "Logger") | ("Perseus", "Logger") |
+| Options     | Default in DEBUG     | Default in RELEASE   |
+| :---------- | :------------------- | :------------------- |
+| subsecond   | .nanosecond          | .nanosecond          |
+| tidnumber   | .hexadecimal         | .hexadecimal         |
+| format      | .short               | .short               |
+| marks       | true                 | true                 |
+| time        | false                | false                |
+| owner       | false                | false                |
+| directives  | false                | false                | 
+| logObject   | ("Perseus", "Lover") | ("Perseus", "Lover") |
 
 > Special option goes kinda lifehack. Matter only if Simulator. 
 
 | Options     | Default in DEBUG | Default in RELEASE |
 | :---------- | :--------------- | :----------------- |
 | debugIsInfo | true             | true               |
+
+### Load (reset) CPL options with JSON config
+
+> Each option can be reseted in run time with json config except option `turned`.
+
+`Case 1:` Using predefined json profile
+
+```swift
+
+import ConsolePerseusLogger
+
+let isReseted = log.loadConfig(.debugRoutine)
+let result = isReseted ? "CPL current options loaded." : "Failed to load options!"
+
+log.message(result)
+
+```
+
+`Case 2:` Using custom profile (URL required)
+
+```swift
+
+import ConsolePerseusLogger
+
+var result = ""
+
+if let path = Bundle.main.url(forResource: "CPLConfig", withExtension: "json") {
+    let isLoaded = log.loadConfig(path)
+    result = isLoaded ? "Options successfully loaded." : "Failed to load options!"
+} else {
+    result = "Failed to create URL!"
+}
+
+log.message(result)
+
+```
+
+![Image](https://github.com/user-attachments/assets/27bbddd7-be98-4c85-a40e-5de1585e9162)
 
 ## CPL in SPM package
 
