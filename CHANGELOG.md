@@ -5,6 +5,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Dates in this file meets Gregorian calendar. Date in format YYYY-MM-DD.
 
+## [1.5.1] - [2025-07-22], CPL
+
+### Added
+
+- SwiftUI debugging usage sample to README.
+
+### Changed
+
+- Renamed internals variables for the sake of consistency.
+
+### Removed
+
+- Platforms specification of Package manifesto.
+
+### Updated
+
+- GitHub CI scripts.
+
 ## [1.5.0] - [2025-06-17], CPL with json config
 
 ### Added

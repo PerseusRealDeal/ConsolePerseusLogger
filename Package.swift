@@ -1,7 +1,7 @@
 // swift-tools-version:5.7
 
 /* Package.swift
- Version: 1.5.0
+ Version: 1.5.1
 
  For iOS and macOS only. Use Stars to adopt for the specifics you need.
 
@@ -24,10 +24,6 @@ import PackageDescription
 
 let package = Package(
     name: "ConsolePerseusLogger",
-    platforms: [
-        .macOS(.v10_13),
-        .iOS(.v11)
-    ],
     products: [
         .library(
             name: "ConsolePerseusLogger",

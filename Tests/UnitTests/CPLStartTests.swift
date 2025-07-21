@@ -22,8 +22,9 @@ final class FunctionalTests: XCTestCase {
     override static func setUp() {
         super.setUp()
 
-        log.marks = false
-        log.time = false
+        log.marks = true
+        log.directives = true
+        log.time = true
         log.owner = true
     }
 /*
@@ -36,7 +37,7 @@ final class FunctionalTests: XCTestCase {
     func test_the_first_success() {
         log.message("[\(type(of: self))].\(#function)")
 
-        let isReseted = log.loadConfig(.debugRoutine)
+        let isReseted = log.loadConfig(.defaultDebug)
         let result = isReseted ? "CPL options loaded." : "Failed to load options!"
 
         log.message(result)
