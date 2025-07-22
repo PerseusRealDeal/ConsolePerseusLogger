@@ -4,7 +4,7 @@
 
 > Light-weight logging lover in Swift. Hereinafter `CPL` stands for `C`onsole `P`erseus `L`ogger.<br/>
 
-> - Log to console.<br/>
+> - Log to the console.<br/>
 > - Log to macOS Console.app.<br/>
 > - Log to custom output.
 
@@ -14,7 +14,7 @@
 
 [![Actions Status](https://github.com/perseusrealdeal/ConsolePerseusLogger/actions/workflows/main.yml/badge.svg)](https://github.com/perseusrealdeal/ConsolePerseusLogger/actions/workflows/main.yml)
 [![Style](https://github.com/perseusrealdeal/ConsolePerseusLogger/actions/workflows/swiftlint.yml/badge.svg)](https://github.com/perseusrealdeal/ConsolePerseusLogger/actions/workflows/swiftlint.yml)
-[![Version](https://img.shields.io/badge/Version-1.5.0-green.svg)](/CHANGELOG.md)
+[![Version](https://img.shields.io/badge/Version-1.5.1-green.svg)](/CHANGELOG.md)
 [![Platforms](https://img.shields.io/badge/Platforms-macOS%2010.13+_|_iOS%2011.0+-orange.svg)](https://en.wikipedia.org/wiki/List_of_Apple_products)
 [![Xcode 14.2](https://img.shields.io/badge/Xcode-14.2+-red.svg)](https://en.wikipedia.org/wiki/Xcode)
 [![Swift 5.7](https://img.shields.io/badge/Swift-5.7-red.svg)](https://www.swift.org)
@@ -32,20 +32,20 @@
 
 > [`A3 Environment and Approbation`](/APPROBATION.md) / [`CHANGELOG`](/CHANGELOG.md) for details.
 
-> [Download](https://github.com/user-attachments/files/20772719/CPLplays.playground.zip) CPL playground file.
+> Xcode playground [download page](https://github.com/PerseusRealDeal/ConsolePerseusLogger/issues/17).
 
-## In brief > Idea to use, the Why
+## In brief > Idea to use
 
 > USE LOGGER LIKE A VARIABLE ANYWHERE YOU WANT.<br/>
 
-![Image](https://github.com/user-attachments/assets/0c677cd4-2986-47f9-8400-cadb475fade5)
+![Image](https://github.com/user-attachments/assets/d1bb43ab-1342-4dff-b4d4-0fbd205dba39)
 
 ## Build requirements
 
 - [macOS Monterey 12.7.6+](https://apps.apple.com/by/app/macos-monterey/id1576738294) / [Xcode 14.2+](https://developer.apple.com/services-account/download?path=/Developer_Tools/Xcode_14.2/Xcode_14.2.xip)
 
 > [!TIP]
-> As the single source code [CPLStar.swift](/CPLStar.swift) CPL with minimum changes can be used even in Xcode 10.1.
+> As the single source code [CPLStar.swift](/CPLStar.swift) CPL with minimum changes can be used even in Xcode 10.1, just remove all statements starting with `if #available(iOS 14.0, macOS 11.0, *)`.
 
 ## Third-party software
 
@@ -69,7 +69,7 @@
 
 # Usage
 
-## Log to console
+## Log to the console
 
 ```swift
 
@@ -79,9 +79,9 @@ log.message("[\(type(of: self))].\(#function)")
 
 ```
 
-![Image](https://github.com/user-attachments/assets/fda51c4a-c311-4c54-ac8c-16b6275c09e0)
+![Image](https://github.com/user-attachments/assets/fde70234-5faa-4afe-ad1f-2bfc24ee8f7d)
 
-## Log to Mac Console
+## Log to macOS Console.app
 
 ```swift
 
@@ -96,7 +96,7 @@ log.message("The app's start point...", .info)
 
 ```
 
-![Image](https://github.com/user-attachments/assets/5c10526b-6bba-4600-8be3-8cdcd0a0d412)
+![Image](https://github.com/user-attachments/assets/04e2618f-7b83-401a-bc7b-87bdc91fb9e9)
 
 ## Custom log
 
@@ -123,7 +123,57 @@ log.message("The app's start point...", .info)
 
 ```
 
-![Image](https://github.com/user-attachments/assets/2df85278-43cf-4c68-9058-327ebe1c02a7)
+![Image](https://github.com/user-attachments/assets/fe135516-7ab2-4747-8954-fd1ffe768483)
+
+## Debugging SwiftUI
+
+`Case 1:` as is
+
+```swift
+
+Image(systemName: "globe")
+    .onAppear {
+        log.message("This is the debug output.")
+    }
+
+```
+
+`Case 2:` wrapper
+
+> Add an extension on View that returns itself and calls the logger's message method:
+
+```swift
+
+extension View {
+    func message(_ text: @autoclosure () -> String,
+                 _ type: PerseusLogger.Level = .debug,
+                 _ oput: PerseusLogger.Output = PerseusLogger.output,
+                 _ file: StaticString = #file,
+                 _ line: UInt = #line) -> Self {
+
+        log.message(text(), type, oput, file, line)
+
+        return self
+    }
+}
+
+```
+
+> Then use message as a view modifier to print debug information to the console when the view is built:
+
+```swift
+
+VStack {
+   ForEach(colors, id: \.self) { color in
+      Circle()
+         .foregroundColor(color)
+         .message("\(color)")
+   }
+}
+
+```
+
+![Image](https://github.com/user-attachments/assets/bdc3e71f-123c-42b8-b3ae-d98a34f99520)
 
 ## Log level and message types
 
@@ -139,21 +189,21 @@ log.message("The app's start point...", .info)
 
 > Also, CPL considers Message Type to filter, look how it works:
 
-![Image](https://github.com/user-attachments/assets/06c6614e-4cb2-447d-86ab-bbcb60d49cc5)
+![Image](https://github.com/user-attachments/assets/23b72f6e-39b9-4d7d-be27-7374436deb42)
 
 ## Setting the Logger Up
 
 > Default values of CPL options depend on DEBUG/RELEASE.
 
-| Options     | Default in DEBUG | Default in RELEASE |
-| :---------- | :--------------- | :----------------- |
-| tuned       | .on              | .off               |
-| output      | .standard        | .consoleapp        |
-| level       | .debug           | .notice            |
+| Option      | Default in DEBUG     | Default in RELEASE   |
+| :---------- | :------------------- | :------------------- |
+| tuned       | .on                  | .off                 |
+| output      | .standard            | .consoleapp          |
+| level       | .debug               | .notice              |
 
 > Other CPL options are the same for DEBUG/RELEASE by default. 
 
-| Options     | Default in DEBUG     | Default in RELEASE   |
+| Option      | Default in DEBUG     | Default in RELEASE   |
 | :---------- | :------------------- | :------------------- |
 | subsecond   | .nanosecond          | .nanosecond          |
 | tidnumber   | .hexadecimal         | .hexadecimal         |
@@ -166,9 +216,9 @@ log.message("The app's start point...", .info)
 
 > Special option goes kinda lifehack. Matter only if Simulator. 
 
-| Options     | Default in DEBUG | Default in RELEASE |
-| :---------- | :--------------- | :----------------- |
-| debugIsInfo | true             | true               |
+| Option      | Default in DEBUG     | Default in RELEASE   |
+| :---------- | :------------------- | :------------------- |
+| debugIsInfo | true                 | true                 |
 
 ### Load (reset) CPL options with JSON config
 
@@ -206,7 +256,7 @@ log.message(result)
 
 ```
 
-![Image](https://github.com/user-attachments/assets/27bbddd7-be98-4c85-a40e-5de1585e9162)
+![Image](https://github.com/user-attachments/assets/32c6dcee-11ad-44d6-add0-ee8e6ae6c465)
 
 ## CPL in SPM package
 
