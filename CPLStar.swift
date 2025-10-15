@@ -1,6 +1,6 @@
 //
 //  CPLStar.swift
-//  Version: 1.5.1
+//  Version: 1.6.0
 //
 //  Standalone ConsolePerseusLogger.
 //
@@ -13,16 +13,16 @@
 //
 //  Created by Mikhail Zhigulin in 7531.
 //
-//  Copyright © 7531 - 7533 Mikhail A. Zhigulin of Novosibirsk
-//  Copyright © 7531 - 7533 PerseusRealDeal
+//  Copyright © 7531 - 7534 Mikhail A. Zhigulin of Novosibirsk
+//  Copyright © 7531 - 7534 PerseusRealDeal
 //
 //  All rights reserved.
 //
 //
 //  MIT License
 //
-//  Copyright © 7531 - 7533 Mikhail A. Zhigulin of Novosibirsk
-//  Copyright © 7531 - 7533 PerseusRealDeal
+//  Copyright © 7531 - 7534 Mikhail A. Zhigulin of Novosibirsk
+//  Copyright © 7531 - 7534 PerseusRealDeal
 //
 //  The year starts from the creation of the world according to a Slavic calendar.
 //  September, the 1st of Slavic year.
@@ -60,7 +60,7 @@ public typealias LocalTime = (date: String, time: String)
 public typealias PIDandTID = (pid: String, tid: String) // PID and Thread ID.
 
 public typealias MessageDelegate = (
-    (String, PerseusLogger.Level, LocalTime, PIDandTID) -> Void
+    (String, PerseusLogger.Level, LocalTime, PIDandTID, PerseusLogger.User) -> Void
 )
 
 public class PerseusLogger {
@@ -80,7 +80,12 @@ public class PerseusLogger {
     public enum Output: String, Decodable {
         case standard // In Use: Swift.print("").
         case consoleapp
-        case custom // In Use: customActionOnMessage?(_:_:_:_:).
+        case custom // In Use: customActionOnMessage?(_:_:_:_:_:).
+    }
+
+    public enum User: String, Decodable {
+        case enduser // Ignores status turned == .off; level == .notice is recommended.
+        case operative
     }
 
     public enum Level: Int, CustomStringConvertible, Decodable {
@@ -270,10 +275,14 @@ public class PerseusLogger {
     public static func message(_ text: @autoclosure () -> String,
                                _ type: Level = .debug,
                                _ oput: Output = PerseusLogger.output,
+                               _ user: User = .operative,
                                _ file: StaticString = #file,
                                _ line: UInt = #line) {
 
-        guard turned == .on, type.rawValue <= level.rawValue else { return }
+        guard turned == .on || user == .enduser, type.rawValue <= level.rawValue
+        else {
+            return
+        }
 
         var message = ""
 
@@ -314,7 +323,7 @@ public class PerseusLogger {
         // Print.
 
         if oput == .custom {
-            customActionOnMessage?(message, type, localTime, idtuple)
+            customActionOnMessage?(message, type, localTime, idtuple, user)
         } else {
             print(message, type, oput)
         }
