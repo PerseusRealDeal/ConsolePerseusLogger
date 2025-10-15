@@ -4,14 +4,15 @@
 //
 //  Standalone ConsolePerseusLogger.
 //
-//
-//  For iOS and macOS only. Use Stars to adopt for the specifics you need.
+//  For iOS and macOS. Use Stars to adopt for the specifics you need.
 //
 //  DESC: USE LOGGER LIKE A VARIABLE ANYWHERE YOU WANT.
 //
 //  [TYPE] [DATE] [TIME] [PID:TID] message, file: #, line: #
 //
 //  Created by Mikhail Zhigulin in 7531.
+//
+//  BASED_ON_LOGGER: https://gist.github.com/perseusrealdeal/df456a9825fcface44eca738056eb6d5
 //
 //  Copyright © 7531 - 7533 Mikhail A. Zhigulin of Novosibirsk
 //  Copyright © 7531 - 7533 PerseusRealDeal
@@ -72,23 +73,24 @@ public class PerseusLogger {
 
     // MARK: - Specifics
 
-    public enum Status: String, Decodable {
+    public enum Status: String, Decodable, CaseIterable {
         case on
         case off
     }
 
-    public enum Output: String, Decodable {
+    public enum Output: String, Decodable, CaseIterable {
         case standard // In Use: Swift.print("").
         case consoleapp
         case custom // In Use: customActionOnMessage?(_:_:_:_:_:).
     }
 
-    public enum User: String, Decodable {
+    // log.message("This message for an end-user.", .notice, .custom, .enduser)
+    public enum User: String, Decodable, CaseIterable {
         case enduser // Ignores status turned == .off; level == .notice is recommended.
         case operative
     }
 
-    public enum Level: Int, CustomStringConvertible, Decodable {
+    public enum Level: Int, CustomStringConvertible, Decodable, CaseIterable {
 
         public var description: String {
             switch self {
@@ -127,18 +129,18 @@ public class PerseusLogger {
         case fault  = 1
     }
 
-    public enum TimeMultiply: String, Decodable {
+    public enum TimeMultiply: String, Decodable, CaseIterable {
         // case millisecond // -3.
         // case microsecond // -6.
         case nanosecond  // -9.
     }
 
-    public enum TIDNumber: String, Decodable {
+    public enum TIDNumber: String, Decodable, CaseIterable {
         case hexadecimal
         case decimal
     }
 
-    public enum MessageFormat: String, Decodable {
+    public enum MessageFormat: String, Decodable, CaseIterable {
 
         case short
 
@@ -242,36 +244,6 @@ public class PerseusLogger {
 
     // MARK: - Contract
 
-    public static func loadConfig(_ profile: ProfileCPL) -> Bool {
-        if let data = profile.json.data(using: .utf8) {
-            if let jsonConfig = decodeJsonProfile(data) {
-                reloadOptions(jsonConfig)
-                return true
-            }
-            log.message("Failed to decode CPL json config data!", .error)
-            return false
-        }
-        log.message("Failed to load CPL config data!", .error)
-        return false
-    }
-
-    public static func loadConfig(_ json: URL) -> Bool {
-        if FileManager.default.fileExists(atPath: json.relativePath) {
-            if let data = try? Data(contentsOf: json) {
-                if let jsonConfig = decodeJsonProfile(data) {
-                    reloadOptions(jsonConfig)
-                    return true
-                }
-                log.message("Failed to decode CPL json config data!", .error)
-                return false
-            }
-            log.message("Failed to load CPL config data!", .error)
-            return false
-        }
-        log.message("CPL config file doesn't exist!", .error)
-        return false
-    }
-
     public static func message(_ text: @autoclosure () -> String,
                                _ type: Level = .debug,
                                _ oput: Output = PerseusLogger.output,
@@ -327,6 +299,36 @@ public class PerseusLogger {
         } else {
             print(message, type, oput)
         }
+    }
+
+    public static func loadConfig(_ profile: ProfileCPL) -> Bool {
+        if let data = profile.json.data(using: .utf8) {
+            if let jsonConfig = decodeJsonProfile(data) {
+                reloadOptions(jsonConfig)
+                return true
+            }
+            log.message("Failed to decode CPL json config data!", .error)
+            return false
+        }
+        log.message("Failed to load CPL config data!", .error)
+        return false
+    }
+
+    public static func loadConfig(_ json: URL) -> Bool {
+        if FileManager.default.fileExists(atPath: json.relativePath) {
+            if let data = try? Data(contentsOf: json) {
+                if let jsonConfig = decodeJsonProfile(data) {
+                    reloadOptions(jsonConfig)
+                    return true
+                }
+                log.message("Failed to decode CPL json config data!", .error)
+                return false
+            }
+            log.message("Failed to load CPL config data!", .error)
+            return false
+        }
+        log.message("CPL config file doesn't exist!", .error)
+        return false
     }
 
     // MARK: - Implementation
@@ -490,7 +492,7 @@ private extension UInt64 {
     }
 }
 
-// MARK: - Configuration Profiles
+// MARK: - JSON Profiles
 
 private struct JsonOptionsCPL: CustomStringConvertible, Decodable {
     let subsystem: String

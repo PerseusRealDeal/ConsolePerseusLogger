@@ -10,6 +10,7 @@ Dates in this file meets Gregorian calendar. Date in format YYYY-MM-DD.
 ### Added
 
 - End-user message.
+- Log report.
 
 ## [1.5.1] - [2025-07-22], CPL
 
