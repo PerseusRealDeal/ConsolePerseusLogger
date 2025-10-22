@@ -12,7 +12,7 @@
 //
 //  Created by Mikhail Zhigulin in 7531.
 //
-//  BASED_ON_LOGGER: https://gist.github.com/perseusrealdeal/df456a9825fcface44eca738056eb6d5
+//  BASED_ON_LOGGER: https://gist.github.com/PerseusRealDeal/df456a9825fcface44eca738056eb6d5
 //  BASED_ON_REPORT: https://gist.github.com/PerseusRealDeal/9a4118301b59d43969d8edf5ebc3a571
 //
 //  Copyright © 7531 - 7534 Mikhail A. Zhigulin of Novosibirsk
@@ -620,6 +620,10 @@ public class PerseusLogReport: NSObject {
 
     @objc public dynamic var lastMessage: String = "" {
         didSet {
+
+            // TODO: Resize report
+
+            /*
             let count = report.count
             if count > limit {
                 report = report.dropFirst(count - limit).description
@@ -628,6 +632,7 @@ public class PerseusLogReport: NSObject {
                     report.removeFirst(position.utf16Offset(in: report)-2)
                 }
             }
+            */
 
             report.append(report.isEmpty ? lastMessage : newLine + lastMessage)
         }

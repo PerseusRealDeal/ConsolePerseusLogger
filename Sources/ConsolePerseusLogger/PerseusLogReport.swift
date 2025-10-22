@@ -34,6 +34,10 @@ public class PerseusLogReport: NSObject {
 
     @objc public dynamic var lastMessage: String = "" {
         didSet {
+
+            // TODO: Resize report
+
+            /*
             let count = report.count
             if count > limit {
                 report = report.dropFirst(count - limit).description
@@ -42,6 +46,7 @@ public class PerseusLogReport: NSObject {
                     report.removeFirst(position.utf16Offset(in: report)-2)
                 }
             }
+            */
 
             report.append(report.isEmpty ? lastMessage : newLine + lastMessage)
         }
