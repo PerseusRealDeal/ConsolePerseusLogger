@@ -81,7 +81,7 @@ public class PerseusLogger {
 
     public enum Output: String, Decodable, CaseIterable {
         case standard // In Use: Swift.print("").
-        case consoleapp
+        case consoleapp // In Use: Logger structure from iOS 14.0, macOS 11.0, NSLog otherwise.
         case custom // In Use: customActionOnMessage?(_:_:_:_:_:).
     }
 
@@ -198,10 +198,10 @@ public class PerseusLogger {
 
     public static var format = MessageFormat.short
 
-    public static var marks = true // Controls tags [TYPE] [DATE] [TIME].
-    public static var time = false // + [DATE] [TIME] to message. Depends on format and marks.
-    public static var owner = false // + [PID:TID] to message. Depends on format.
-    public static var directives = false // + File# and Line# to message. Depends on format.
+    public static var marks = true // [TYPE] [DATE] [TIME].
+    public static var time = false // [DATE] [TIME] to message. Depends on format and marks.
+    public static var owner = false // [PID:TID] to message. Depends on format.
+    public static var directives = false // File# and Line# to message. Depends on format.
 
 #if targetEnvironment(simulator)
     public static var debugIsInfo = true // Shows DEBUG message as INFO in macOS Console.app.
@@ -457,7 +457,7 @@ public class PerseusLogger {
 
     private static func reloadOptions(_ newValue: JsonOptionsCPL) {
         logObject = (newValue.subsystem, newValue.category)
-        // turned = newValue.turned // Ignored, only manually!
+        // turned = newValue.turned // Only manually!
         level = newValue.level
         output = newValue.output
         subsecond = newValue.subsecond
@@ -620,21 +620,8 @@ public class PerseusLogReport: NSObject {
 
     @objc public dynamic var lastMessage: String = "" {
         didSet {
-
-            // TODO: Resize report
-
-            /*
-            let count = report.count
-            if count > limit {
-                report = report.dropFirst(count - limit).description
-
-                if let position = report.range(of: newLine)?.upperBound {
-                    report.removeFirst(position.utf16Offset(in: report)-2)
-                }
-            }
-            */
-
-            report.append(report.isEmpty ? lastMessage : newLine + lastMessage)
+            resizeReportIfNeeded()
+            appendLastMessageToReport()
         }
     }
 
@@ -673,5 +660,72 @@ public class PerseusLogReport: NSObject {
 
     public func clear() {
         report = ""
+    }
+
+    private func resizeReportIfNeeded() {
+
+        let lmCount = lastMessage.count
+        let nlCount = newLine.count
+
+        // Can the last message be reported?
+        guard lmCount != 0, lmCount < limit else {
+            return
+        }
+
+        // Should the report be resized?
+        let length = lmCount + report.count + (report.isEmpty ? 0 : nlCount)
+        guard limit - length < 0 else {
+            return
+        }
+
+        // What length to remove?
+        let messages = report.components(separatedBy: newLine)
+        let messagesCount = messages.count - 1
+
+        var lengthToRemove = 0
+        var itemCount = 0
+
+        for item in messages {
+
+            itemCount += 1
+            let newLineLength = messagesCount == 0 ? 0 : nlCount
+
+            lengthToRemove += (item.count + newLineLength)
+
+            if itemCount == messagesCount, messagesCount > 2 {
+                lengthToRemove -= nlCount // There's no new line in the report end
+            }
+
+            // Is it enough?
+            let reportAfter = report.count - lengthToRemove
+            let lastMessageAfter = reportAfter != 0 ? nlCount + lmCount : lmCount
+
+            if limit - (reportAfter + lastMessageAfter) >= 0 {
+                break
+            }
+        }
+
+        // Final check
+        guard report.count >= lengthToRemove else {
+            return
+        }
+
+        // Free space
+        report.removeFirst(lengthToRemove)
+    }
+
+    private func appendLastMessageToReport() {
+
+        guard lastMessage.count != 0, lastMessage.count < limit else {
+            return
+        }
+
+        let length = (lastMessage.count + report.count + (report.isEmpty ? 0 : newLine.count))
+
+        guard limit - length >= 0 else {
+            return
+        }
+
+        report.append(report.isEmpty ? lastMessage : newLine + lastMessage)
     }
 }

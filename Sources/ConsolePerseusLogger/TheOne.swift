@@ -80,7 +80,7 @@ public class PerseusLogger {
 
     public enum Output: String, Decodable, CaseIterable {
         case standard // In Use: Swift.print("").
-        case consoleapp
+        case consoleapp // In Use: Logger structure from iOS 14.0, macOS 11.0, NSLog otherwise.
         case custom // In Use: customActionOnMessage?(_:_:_:_:_:).
     }
 
@@ -197,10 +197,10 @@ public class PerseusLogger {
 
     public static var format = MessageFormat.short
 
-    public static var marks = true // Controls tags [TYPE] [DATE] [TIME].
-    public static var time = false // + [DATE] [TIME] to message. Depends on format and marks.
-    public static var owner = false // + [PID:TID] to message. Depends on format.
-    public static var directives = false // + File# and Line# to message. Depends on format.
+    public static var marks = true // [TYPE] [DATE] [TIME].
+    public static var time = false // [DATE] [TIME] to message. Depends on format and marks.
+    public static var owner = false // [PID:TID] to message. Depends on format.
+    public static var directives = false // File# and Line# to message. Depends on format.
 
 #if targetEnvironment(simulator)
     public static var debugIsInfo = true // Shows DEBUG message as INFO in macOS Console.app.
@@ -456,7 +456,7 @@ public class PerseusLogger {
 
     private static func reloadOptions(_ newValue: JsonOptionsCPL) {
         logObject = (newValue.subsystem, newValue.category)
-        // turned = newValue.turned // Ignored, only manually!
+        // turned = newValue.turned // Only manually!
         level = newValue.level
         output = newValue.output
         subsecond = newValue.subsecond
