@@ -1,20 +1,5 @@
 # ConsolePerseusLogger — Xcode 14.2+
 
-> [`iOS approbation app`](https://github.com/perseusrealdeal/TheOneRing) [`macOS approbation app`](https://github.com/perseusrealdeal/Arkenstone)
-
-> Light-weight logging lover in Swift. Hereinafter `CPL` stands for `C`onsole `P`erseus `L`ogger.<br/>
-
-> - Log to the console.<br/>
-> - Log to macOS Console.app.<br/>
-> - Log to custom output.<br/>
-> - Collect logs. [PerseusLogReport](/Sources/ConsolePerseusLogger/PerseusLogReport.swift), extend it if any changes take place or create your own.<br/>
-> - Delegate logs. End-user notifications.
-
-> `[TYPE] [DATE] [TIME] [PID:TID] message, file: #, line: #`
-
-> `CPL` is a single author and personale solution developed in `person-to-person` relationship paradigm.<br/>
-> `P2P` stands for `person-to-person`.
-
 [![Actions Status](https://github.com/perseusrealdeal/ConsolePerseusLogger/actions/workflows/main.yml/badge.svg)](https://github.com/perseusrealdeal/ConsolePerseusLogger/actions/workflows/main.yml)
 [![Style](https://github.com/perseusrealdeal/ConsolePerseusLogger/actions/workflows/swiftlint.yml/badge.svg)](https://github.com/perseusrealdeal/ConsolePerseusLogger/actions/workflows/swiftlint.yml)
 [![Version](https://img.shields.io/badge/Version-1.6.0-green.svg)](/CHANGELOG.md)
@@ -22,6 +7,22 @@
 [![Xcode 14.2](https://img.shields.io/badge/Xcode-14.2+-red.svg)](https://en.wikipedia.org/wiki/Xcode)
 [![Swift 5.7](https://img.shields.io/badge/Swift-5.7-red.svg)](https://www.swift.org)
 [![License](http://img.shields.io/:License-MIT-blue.svg)](/LICENSE)
+
+> `[TYPE] [DATE] [TIME] [PID:TID] message, file: #, line: #`
+
+> Light-weight logging lover in Swift. Hereinafter `CPL` stands for `C`onsole `P`erseus `L`ogger.
+
+> - Log to the console.<br/>
+> - Log to macOS Console.app.<br/>
+> - Log to custom output.<br/>
+> - Collect logs. Extend [PerseusLogReport](/Sources/ConsolePerseusLogger/PerseusLogReport.swift) to meet expectations with specifics or create your own.<br/>
+> - Delegate logs. End-user notifications.
+
+> `CPL` is a single author and personale solution developed in `person-to-person` relationship paradigm.
+
+> `P2P` stands for `person-to-person`.
+
+> `In approbation:` [`iOS app`](https://github.com/perseusrealdeal/TheOneRing) [`macOS app`](https://github.com/perseusrealdeal/Arkenstone) `In business:` [`The Dark Moon`](https://github.com/perseusrealdeal/TheDarkMoon)
 
 # Contents
 
@@ -33,7 +34,7 @@
 * [Installation](#Installation)
 * [Usage](#Usage)
     * [Log to the console](#Log-to-the-console)
-    * [Log to macOS Console.app](#Log-to-macOS-Console.app)
+    * [Log to macOS Console](#Log-to-macOS-Console)
     * [Custom log](#Custom-log)
     * [Debugging SwiftUI](#Debugging-SwiftUI)
     * [Log level and message types](#Log-level-and-message-types)
@@ -54,7 +55,7 @@
 [![Swift Package Manager compatible](https://img.shields.io/badge/Swift%20Package%20Manager-compatible-4BC51D.svg)](/Package.swift)
 
 > [!TIP]
-> To adopt `CPL` for the specifics you need use [Standalone](/CPLStar.swift).
+> To meet expectations with specifics use [Standalone](/CPLStar.swift) to adopt `CPL`.
 
 # Approbation Matrix
 
@@ -125,9 +126,12 @@ log.message("[\(type(of: self))].\(#function)")
 
 ![Image](https://github.com/user-attachments/assets/ad0acd00-d55c-4ab9-916e-db32ca8ee236)
 
-## Log to macOS Console.app
+## Log to macOS Console
 
-`Case 1:` Redirect all messages starting from 
+> [!NOTE]
+> To pass messages to Console.app `CPL` employs `Logger` structure (from iOS 14.0, macOS 11.0) and `OSLog`.
+
+`Case 1:` Redirect all messages to .consoleapp
 
 ```swift
 
@@ -244,13 +248,13 @@ VStack {
 
 > CPL applies the most common log types for indicating information category.
 
-| Level | Message Type | Description                           |
-| :---: | :----------- | :------------------------------------ |
-| 5     | DEBUG        | Debugging only                        |
-| 4     | INFO         | Helpful, but not essential            |
-| 3     | NOTICE       | Might result in a failure             |
-| 2     | ERROR        | Errors seen during the code execution |
-| 1     | FAULT        | Faults and bugs in the code           |
+| Level | Message Type | Description                                        |
+| :---: | :----------- | :------------------------------------------------- |
+| 5     | DEBUG        | Debugging only                                     |
+| 4     | INFO         | Helpful, but not essential                         |
+| 3     | NOTICE       | Might result in a failure or end-user notification |
+| 2     | ERROR        | Errors seen during the code execution              |
+| 1     | FAULT        | Faults and bugs in the code                        |
 
 > Also, CPL considers Message Type to filter, look how it works:
 
@@ -375,11 +379,24 @@ log.message("The app's start point...", .info)
 ```
 
 > [!NOTE]
-> To pass messages to Console.app `CPL` employs `Logger` class starting from iOS 14.0, macOS 11.0 and `OSLog` for early ones.
+> To pass messages to Console.app `CPL` employs `Logger` structure (from iOS 14.0, macOS 11.0) and `OSLog`.
 
 ## Collecting logs
 
 > [PerseusLogReport](/Sources/ConsolePerseusLogger/PerseusLogReport.swift) and KVO can be used to view last log messages.
+
+```swift
+
+let report = PerseusLogReport()
+var observation: NSKeyValueObservation?
+
+observation = report.observe(\.lastMessage, options: .new) { _, change in
+    // Refresh code
+}
+
+log.customActionOnMessage = report.report(_:_:_:_:_:)
+
+```
 
 `Step 1:` Create a report
 
@@ -390,7 +407,7 @@ log.message("The app's start point...", .info)
 ![Image](https://github.com/user-attachments/assets/5ee19176-2a08-4697-b6e3-f1521d962500)
 
 > [!NOTE]
-> Override method `report(_:_:_:_:_:)` of `PerseusLogReport` to meet expectaions with specifics.
+> Override method `report(_:_:_:_:_:)` of `PerseusLogReport` to meet expectations with specifics.
 
 ## Delegating logs
 
@@ -402,7 +419,7 @@ log.message("Notification...", .notice, .custom, .enduser)
 
 ```
 
-> End-user log messages are always ingore `log.turned = .off` and will work, but `log.level` is still matter.
+> End-user log messages always ingore `log.turned = .off` and will work, but `log.level` is still matter.
 
 > [!IMPORTANT]
 > Always pass end-user messages with `log.level = .notice` type, it's a default and almost neutral level. 
@@ -412,13 +429,62 @@ log.message("Notification...", .notice, .custom, .enduser)
 
 ![Image](https://github.com/user-attachments/assets/ff8f23d0-6dd2-4605-a6fa-742796b839e8)
 
-`To delegate a log message:`
+`Case 1:` **To delegate a log message with a report**
 
-`Step 1:` Find a type that will be responsible for accepting a log message by extending `PerseusDelegatedMessage` protocol.
+`Step 1:` Find a type to implement `PerseusDelegatedMessage` protocol
 
-`Step 2:` Create a report of `PerseusLogReport` class and set a delegate.
+`Step 2:` Create a report of `PerseusLogReport`
+
+`Step 3:` Set the delegate `report.delegate` to the `PerseusDelegatedMessage` one
+
+`Step 4:` `log.customActionOnMessage = report.report(_:_:_:_:_:)`
 
 ![Image](https://github.com/user-attachments/assets/06b9ccb4-1a83-4769-a74e-3edec7743a74)
+
+`Case 2:` **To delegate a log message without a report**
+
+```swift
+
+import ConsolePerseusLogger
+
+typealias Level = ConsolePerseusLogger.PerseusLogger.Level
+typealias User = ConsolePerseusLogger.PerseusLogger.User
+
+class MyEndUserMessageClass: PerseusDelegatedMessage {
+    var message: String = "" {
+        didSet {
+            didSetEndUserMessage()
+        }
+    }
+
+    private func didSetEndUserMessage() {
+        log.message("[\(type(of: self))].\(#function): \(message)")
+    }
+}
+
+func customPrint(_ text: String,
+                 _ type: Level,
+                 _ localTime: LocalTime,
+                 _ owner: PIDandTID,
+                 _ user: User) {
+
+    let text = text.replacingOccurrences(of: "\(type.tag) ", with: "")
+
+    if user == .enduser {
+        delegate?.message = text
+    }
+}
+
+log.customActionOnMessage = customPrint(_:_:_:_:_:)
+
+var delegate: PerseusDelegatedMessage? = MyEndUserMessageClass()
+let greeting = "Hello!"
+
+log.message(greeting, .notice, .custom, .enduser)
+
+```
+
+![Image](https://github.com/user-attachments/assets/118df2b0-e4e7-4e38-9b22-1fd472f0a91c)
 
 # Points taken into account
 
@@ -430,8 +496,8 @@ log.message("Notification...", .notice, .custom, .enduser)
 
 # License MIT
 
-Copyright © 7531 - 7533 Mikhail A. Zhigulin of Novosibirsk<br/>
-Copyright © 7531 - 7533 PerseusRealDeal
+Copyright © 7531 - 7534 Mikhail A. Zhigulin of Novosibirsk<br/>
+Copyright © 7531 - 7534 PerseusRealDeal
 
 - The year starts from the creation of the world according to a Slavic calendar.
 - September, the 1st of Slavic year. It means that "Sep 01, 2024" is the beginning of 7533.

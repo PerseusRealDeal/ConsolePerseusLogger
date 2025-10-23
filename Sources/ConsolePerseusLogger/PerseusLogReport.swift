@@ -130,7 +130,7 @@ public class PerseusLogReport: NSObject {
 
     private func appendLastMessageToReport() {
 
-        guard lastMessage.count != 0, lastMessage.count < limit else {
+        guard lastMessage.isEmpty == false, lastMessage.count < limit else {
             return
         }
 

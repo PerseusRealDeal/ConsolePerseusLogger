@@ -84,7 +84,7 @@ public class PerseusLogger {
         case custom // In Use: customActionOnMessage?(_:_:_:_:_:).
     }
 
-    // log.message("This message for an end-user.", .notice, .custom, .enduser)
+    // log.message("Notification...", .notice, .custom, .enduser)
     public enum User: String, Decodable, CaseIterable {
         case enduser // Ignores status turned == .off; level == .notice is recommended.
         case operative
@@ -142,7 +142,7 @@ public class PerseusLogger {
 
     public enum MessageFormat: String, Decodable, CaseIterable {
 
-        case short
+        case short // Depends on message details visibility flags.
 
 // marks true, time false, owner false, directives false
 // [DEBUG] message
@@ -171,10 +171,10 @@ public class PerseusLogger {
 // marks false, time false, owner false, directives false
 // message
 
-        case full
+        case full // Forcefully. No matter what message details visibility flags are.
 // [DEBUG] [2025-04-17] [20:31:53:630918979] [6317:0x2519d] message, file: File.swift, line: 29
 
-        case textonly
+        case textonly // Forcefully. No matter what message details visibility flags are.
 // message
     }
 
@@ -195,12 +195,14 @@ public class PerseusLogger {
     public static var subsecond = TimeMultiply.nanosecond
     public static var tidnumber = TIDNumber.hexadecimal
 
+    // Message Details Visibility flags
     public static var format = MessageFormat.short
 
-    public static var marks = true // [TYPE] [DATE] [TIME].
-    public static var time = false // [DATE] [TIME] to message. Depends on format and marks.
-    public static var owner = false // [PID:TID] to message. Depends on format.
-    public static var directives = false // File# and Line# to message. Depends on format.
+    // [TYPE] [DATE] [TIME] [PID:TID] message, file: #, line: #
+    public static var marks = true // [TYPE]
+    public static var time = false // [DATE] [TIME] Depends on format and marks
+    public static var owner = false // [PID:TID] Depends on format
+    public static var directives = false // file# and line# Depends on format
 
 #if targetEnvironment(simulator)
     public static var debugIsInfo = true // Shows DEBUG message as INFO in macOS Console.app.
