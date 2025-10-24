@@ -60,9 +60,10 @@ typealias log = PerseusLogger // In SPM package should be not public except TheO
 public typealias ConsoleObject = (subsystem: String, category: String)
 public typealias LocalTime = (date: String, time: String, timeUTC: TimeInterval)
 public typealias PIDandTID = (pid: String, tid: String) // PID and Thread ID.
+public typealias Directives = (fileName: String, line: UInt)
 
 public typealias MessageDelegate = (
-    (String, PerseusLogger.Level, LocalTime, PIDandTID, PerseusLogger.User) -> Void
+    (String, PerseusLogger.Level, LocalTime, PIDandTID, PerseusLogger.User, Directives) -> Void
 )
 
 public class PerseusLogger {
@@ -264,9 +265,9 @@ public class PerseusLogger {
         // Path.
 
         let withDirectives = (format == .full) ? true : directives && (format != .textonly)
+        let fileName = (file.description as NSString).lastPathComponent
 
         if withDirectives {
-            let fileName = (file.description as NSString).lastPathComponent
             message = "\(text()), file: \(fileName), line: \(line)"
         } else {
             message = "\(text())"
@@ -298,7 +299,8 @@ public class PerseusLogger {
         // Print.
 
         if oput == .custom {
-            customActionOnMessage?(message, type, localTime, idtuple, user)
+            let dirs: Directives = (fileName: fileName, line: line)
+            customActionOnMessage?(message, type, localTime, idtuple, user, dirs)
         } else {
             print(message, type, oput)
         }
@@ -661,7 +663,8 @@ public class PerseusLogReport: NSObject {
                        _ type: PerseusLogger.Level,
                        _ localTime: LocalTime,
                        _ owner: PIDandTID,
-                       _ user: PerseusLogger.User) {
+                       _ user: PerseusLogger.User,
+                       _ dirs: Directives) {
 
         let text = text.replacingOccurrences(of: "\(type.tag) ", with: "")
         lastMessage = "[\(localTime.date)] [\(localTime.time)] \(type.tag)\r\n\(text)"

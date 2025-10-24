@@ -62,7 +62,8 @@ public class PerseusLogReport: NSObject {
                        _ type: PerseusLogger.Level,
                        _ localTime: LocalTime,
                        _ owner: PIDandTID,
-                       _ user: PerseusLogger.User) {
+                       _ user: PerseusLogger.User,
+                       _ dirs: Directives) {
 
         let text = text.replacingOccurrences(of: "\(type.tag) ", with: "")
         lastMessage = "[\(localTime.date)] [\(localTime.time)] \(type.tag)\r\n\(text)"
