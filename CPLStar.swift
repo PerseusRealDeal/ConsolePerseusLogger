@@ -58,7 +58,7 @@ typealias log = PerseusLogger // In SPM package should be not public except TheO
 // swiftlint:enable type_name
 
 public typealias ConsoleObject = (subsystem: String, category: String)
-public typealias LocalTime = (date: String, time: String)
+public typealias LocalTime = (date: String, time: String, timeUTC: TimeInterval)
 public typealias PIDandTID = (pid: String, tid: String) // PID and Thread ID.
 
 public typealias MessageDelegate = (
@@ -402,14 +402,19 @@ public class PerseusLogger {
 
     private static func getLocalTime() -> LocalTime {
 
-        guard let timezone = TimeZone(secondsFromGMT: 0) else { return ("TIME", "TIME") }
+        guard
+            let timezone = TimeZone(secondsFromGMT: 0)
+        else {
+            return ("TIME", "TIME", 0.0)
+        }
 
         var calendar = Calendar.current
 
         calendar.timeZone = timezone
         calendar.locale = Locale(identifier: "en_US_POSIX")
 
-        let current = Date(timeIntervalSince1970: (Date().timeIntervalSince1970 +
+        let UTC = Date().timeIntervalSince1970
+        let current = Date(timeIntervalSince1970: (UTC +
                                                    Double(TimeZone.current.secondsFromGMT())))
 
         let details: Set<Calendar.Component> =
@@ -424,7 +429,10 @@ public class PerseusLogger {
         guard
             let year = components.year,
             let month = components.month?.toPrint,
-            let day = components.day?.toPrint else { return ("TIME", "TIME") }
+            let day = components.day?.toPrint
+        else {
+            return ("TIME", "TIME", 0.0)
+        }
 
         let date = "\(year)-\(month)-\(day)"
 
@@ -434,11 +442,14 @@ public class PerseusLogger {
             let hour = components.hour?.toPrint, // Always in 24-hour.
             let minute = components.minute?.toPrint,
             let second = components.second?.toPrint,
-            let subsecond = components.nanosecond?.multiply else { return ("TIME", "TIME") }
+            let subsecond = components.nanosecond?.multiply
+        else {
+            return ("TIME", "TIME", 0.0)
+        }
 
         let time = "\(hour):\(minute):\(second):\(subsecond)"
 
-        return (date: date, time: time)
+        return (date: date, time: time, timeUTC: UTC)
     }
 
     private static func getPIDandTID() -> PIDandTID {
@@ -718,7 +729,7 @@ public class PerseusLogReport: NSObject {
 
     private func appendLastMessageToReport() {
 
-        guard lastMessage.count != 0, lastMessage.count < limit else {
+        guard lastMessage.isEmpty == false, lastMessage.count < limit else {
             return
         }
 

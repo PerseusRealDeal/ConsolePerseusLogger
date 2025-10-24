@@ -177,9 +177,12 @@ func customPrint(_ text: String,
                  _ user: User) {
 
     let time = "[\(localTime.date)] [\(localTime.time)]"
-    let id = "[\(owner.pid):\(owner.tid)]"
+    let utc = localTime.timeUTC
 
-    print("[\(type)] [MYLOG] \(time) \(id) \(text)")
+    let id = "[\(owner.pid):\(owner.tid)]"
+    // let text = text.replacingOccurrences(of: "\(type.tag) ", with: "")
+
+    print("[MYLOG] \(text) \(time) \(id) UTC: \(utc)")
 }
 
 log.customActionOnMessage = customPrint(_:_:_:_:_:)
@@ -191,7 +194,7 @@ log.message("The app's start point...", .info)
 
 ```
 
-![Image](https://github.com/user-attachments/assets/692b7466-7244-427b-b25c-6b5db4a84674)
+![Image](https://github.com/user-attachments/assets/56765f83-15df-4544-a497-12503cef4ccd)
 
 ## Debugging SwiftUI
 

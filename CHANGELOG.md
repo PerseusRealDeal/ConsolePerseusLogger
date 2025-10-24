@@ -11,6 +11,7 @@ Dates in this file meets Gregorian calendar. Date in format YYYY-MM-DD.
 
 - End-user message.
 - Log report.
+- UTC time `Date().timeIntervalSince1970` to calculated LocalTime as a return parameter.
 
 ## [1.5.1] - [2025-07-22], CPL
 
