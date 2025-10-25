@@ -5,10 +5,10 @@
 
  For iOS and macOS only. Use Stars to adopt for the specifics you need.
 
- Created by Mikhail Zhigulin in 7533.
+ Created by Mikhail Zhigulin in 7534.
 
- Copyright © 7531 - 7533 Mikhail A. Zhigulin of Novosibirsk
- Copyright © 7531 - 7533 PerseusRealDeal
+ Copyright © 7531 - 7534 Mikhail A. Zhigulin of Novosibirsk
+ Copyright © 7531 - 7534 PerseusRealDeal
 
  The year starts from the creation of the world according to a Slavic calendar.
  September, the 1st of Slavic year.

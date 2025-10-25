@@ -158,7 +158,7 @@ log.logObject = ("MyApp", "MyLover") // Customs for Console.app Subsystem and Ca
 
 ## Custom log
 
-> If a specific combination of message marks or other change is expected for some reasons.
+> For any specific combination of message marks and other changes before to log.
 
 ```swift
 
@@ -253,7 +253,7 @@ VStack {
 | :---: | :----------- | :------------------------------------------------- |
 | 5     | DEBUG        | Debugging only                                     |
 | 4     | INFO         | Helpful, but not essential                         |
-| 3     | NOTICE       | Might result in a failure or end-user notification |
+| 3     | NOTICE       | Might result in a failure. End-user notification   |
 | 2     | ERROR        | Errors seen during the code execution              |
 | 1     | FAULT        | Faults and bugs in the code                        |
 
@@ -456,12 +456,12 @@ class MyEndUserMessageClass: PerseusDelegatedMessage {
     }
 }
 
-func customEndUserPrint(_ text: String,
-                        _ type: PerseusLogger.Level,
-                        _ localTime: LocalTime,
-                        _ owner: PIDandTID,
-                        _ user: PerseusLogger.User,
-                        _ dirs: Directives) {
+func customPrint(_ text: String,
+                 _ type: PerseusLogger.Level,
+                 _ localTime: LocalTime,
+                 _ owner: PIDandTID,
+                 _ user: PerseusLogger.User,
+                 _ dirs: Directives) {
 
     let text = text.replacingOccurrences(of: "\(type.tag) ", with: "")
 
@@ -470,7 +470,7 @@ func customEndUserPrint(_ text: String,
     }
 }
 
-log.customActionOnMessage = customEndUserPrint(_:_:_:_:_:_:)
+log.customActionOnMessage = customPrint(_:_:_:_:_:_:)
 
 var delegate: PerseusDelegatedMessage? = MyEndUserMessageClass()
 let greeting = "Hello"
