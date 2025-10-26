@@ -54,19 +54,26 @@ import Foundation
 import os
 
 // swiftlint:disable type_name
-typealias log = PerseusLogger // In SPM package should be not public except TheOne.
+typealias log = PerseusLogger // Not public in SPM package, except TheOne.
 // swiftlint:enable type_name
 
-public typealias ConsoleObject = (subsystem: String, category: String)
-public typealias LocalTime = (date: String, time: String, timeUTC: TimeInterval)
-public typealias PIDandTID = (pid: String, tid: String) // PID and Thread ID.
-public typealias Directives = (fileName: String, line: UInt)
-
-public typealias MessageDelegate = (
-    (String, PerseusLogger.Level, LocalTime, PIDandTID, PerseusLogger.User, Directives) -> Void
-)
+// Not public in SPM package, except TheOne.
+protocol PerseusDelegatedMessage: AnyObject {
+    var message: String { get set }
+}
 
 public class PerseusLogger {
+
+    // MARK: - Typealiases
+
+    public typealias ConsoleObject = (subsystem: String, category: String)
+    public typealias LocalTime = (date: String, time: String, timeUTC: TimeInterval)
+    public typealias PIDandTID = (pid: String, tid: String) // PID and Thread ID.
+    public typealias Directives = (fileName: String, line: UInt) // #file and #line.
+
+    public typealias MessageDelegate = (
+        (String, Level, LocalTime, PIDandTID, User, Directives) -> Void
+    )
 
     // MARK: - Constants
 
@@ -83,7 +90,7 @@ public class PerseusLogger {
     public enum Output: String, Decodable, CaseIterable {
         case standard // In Use: Swift.print("").
         case consoleapp // In Use: Logger structure from iOS 14.0, macOS 11.0, NSLog otherwise.
-        case custom // In Use: customActionOnMessage?(_:_:_:_:_:).
+        case custom // In Use: customActionOnMessage?(_:_:_:_:_:_:).
     }
 
     // log.message("Notification...", .notice, .custom, .enduser)
@@ -182,7 +189,7 @@ public class PerseusLogger {
 
     // MARK: - Properties
 
-    public static var customActionOnMessage: MessageDelegate?
+    public static var customActionOnMessage: PerseusLogger.MessageDelegate?
 
 #if DEBUG
     public static var turned = Status.on
@@ -197,7 +204,8 @@ public class PerseusLogger {
     public static var subsecond = TimeMultiply.nanosecond
     public static var tidnumber = TIDNumber.hexadecimal
 
-    // Message Details Visibility flags
+    // MARK: - Message Details Visibility Flags
+
     public static var format = MessageFormat.short
 
     // [TYPE] [DATE] [TIME] [PID:TID] message, file: #, line: #
@@ -207,8 +215,10 @@ public class PerseusLogger {
     public static var directives = false // file# and line# Depends on format
 
 #if targetEnvironment(simulator)
-    public static var debugIsInfo = true // Shows DEBUG message as INFO in macOS Console.app.
+    public static var debugIsInfo = true // Shows DEBUG message as INFO in macOS Console.
 #endif
+
+    // MARK: - Special Properties
 
     public static var logObject: ConsoleObject? {
         didSet {
@@ -276,10 +286,10 @@ public class PerseusLogger {
         // PID and TID.
 
         let withOwnerId = (format == .full) ? true : owner && (format != .textonly)
-        let idtuple = getPIDandTID()
+        let idTuple = getPIDandTID()
 
         if withOwnerId {
-            message = "[\(idtuple.pid):\(idtuple.tid)] \(message)"
+            message = "[\(idTuple.pid):\(idTuple.tid)] \(message)"
         }
 
         // Time.
@@ -299,8 +309,8 @@ public class PerseusLogger {
         // Print.
 
         if oput == .custom {
-            let dirs: Directives = (fileName: fileName, line: line)
-            customActionOnMessage?(message, type, localTime, idtuple, user, dirs)
+            let directives: Directives = (fileName: fileName, line: line)
+            customActionOnMessage?(message, type, localTime, idTuple, user, directives)
         } else {
             print(message, type, oput)
         }
@@ -504,7 +514,11 @@ private extension Int {
 
 private extension UInt64 {
     var hex: String {
-        return "0x\(String(format: "%02x", self))"
+
+        let value = self
+        let valueFormated = String(format: "%02x", value)
+
+        return valueFormated
     }
 }
 
@@ -624,124 +638,140 @@ private let defaultDebugProfile =
 
 // MARK: - Log Report
 
-public protocol PerseusDelegatedMessage {
-    var message: String { get set }
-}
+extension PerseusLogger {
 
-public class PerseusLogReport: NSObject {
+    public class Report: NSObject {
 
-    public var delegate: PerseusDelegatedMessage? // Delegate for end-user messages.
-    public var text: String { report }
+        // MARK: - Internals
 
-    @objc public dynamic var lastMessage: String = "" {
-        didSet {
-            resizeReportIfNeeded()
-            appendLastMessageToReport()
+        private var delegate: PerseusDelegatedMessage? // Delegate for end-user messages.
+        private var report = "" // Last messages.
+
+        // MARK: - Properties
+
+        @objc public dynamic var lastMessage: String = "" {
+            didSet {
+                resizeReportIfNeeded()
+                appendLastMessageToReport()
+            }
         }
-    }
 
-    private var report = "" // Last messages.
+        public var messageDelegate: AnyObject? {
+            didSet {
+                delegate = messageDelegate as? PerseusDelegatedMessage
+            }
+        }
 
-    public let limit: Int
-    public let newLine: String
+        public var text: String { report }
 
-    public static let newLineDefault = "\r\n--\r\n"
+        // MARK: - Constants
+
+        public let limit: Int
+        public let newLine: String
+
 #if os(iOS)
-    public static let limitDefault = 1000
+        public static let limitDefault = 1000
 #elseif os(macOS)
-    public static let limitDefault = 3000
+        public static let limitDefault = 3000
 #endif
 
-    public init(_ limit: Int = PerseusLogReport.limitDefault,
-                _ newLine: String = PerseusLogReport.newLineDefault) {
-        self.limit = limit
-        self.newLine = newLine
-    }
+        // MARK: - Initializer
 
-    // swiftlint:disable:next function_parameter_count
-    public func report(_ text: String,
-                       _ type: PerseusLogger.Level,
-                       _ localTime: LocalTime,
-                       _ owner: PIDandTID,
-                       _ user: PerseusLogger.User,
-                       _ dirs: Directives) {
-
-        let text = text.replacingOccurrences(of: "\(type.tag) ", with: "")
-        lastMessage = "[\(localTime.date)] [\(localTime.time)] \(type.tag)\r\n\(text)"
-
-        if user == .enduser {
-            delegate?.message = text
-        }
-    }
-
-    public func clear() {
-        report = ""
-    }
-
-    private func resizeReportIfNeeded() {
-
-        let lmCount = lastMessage.count
-        let nlCount = newLine.count
-
-        // Can the last message be reported?
-        guard lmCount != 0, lmCount < limit else {
-            return
+        public init(limited: Int = Report.limitDefault, _ newLine: String = "\r\n--\r\n") {
+            self.limit = limited
+            self.newLine = newLine
         }
 
-        // Should the report be resized?
-        let length = lmCount + report.count + (report.isEmpty ? 0 : nlCount)
-        guard limit - length < 0 else {
-            return
-        }
+        // MARK: - Contract
 
-        // What length to remove?
-        let messages = report.components(separatedBy: newLine)
-        let messagesCount = messages.count - 1
+        // swiftlint:disable:next function_parameter_count
+        public func report(_ text: String,
+                           _ type: Level,
+                           _ localTime: LocalTime,
+                           _ owner: PIDandTID,
+                           _ user: User,
+                           _ dirs: Directives) {
 
-        var lengthToRemove = 0
-        var itemCount = 0
+            let text = text.replacingOccurrences(of: "\(type.tag) ", with: "")
+            lastMessage = "[\(localTime.date)] [\(localTime.time)] \(type.tag)\r\n\(text)"
 
-        for item in messages {
-
-            itemCount += 1
-            let newLineLength = messagesCount == 0 ? 0 : nlCount
-
-            lengthToRemove += (item.count + newLineLength)
-
-            if itemCount == messagesCount, messagesCount > 2 {
-                lengthToRemove -= nlCount // There's no new line in the report end
-            }
-
-            // Is it enough?
-            let reportAfter = report.count - lengthToRemove
-            let lastMessageAfter = reportAfter != 0 ? nlCount + lmCount : lmCount
-
-            if limit - (reportAfter + lastMessageAfter) >= 0 {
-                break
+            if user == .enduser {
+                delegate?.message = text
             }
         }
 
-        // Final check
-        guard report.count >= lengthToRemove else {
-            return
+        public func clear() {
+            report = ""
         }
 
-        // Free space
-        report.removeFirst(lengthToRemove)
-    }
+        // MARK: - Realization
 
-    private func appendLastMessageToReport() {
+        private func resizeReportIfNeeded() {
 
-        guard lastMessage.isEmpty == false, lastMessage.count < limit else {
-            return
+            let lmCount = lastMessage.count
+            let nlCount = newLine.count
+
+            // Can the last message be reported?
+            guard lmCount != 0, lmCount < limit else {
+                return
+            }
+
+            // Should the report be resized?
+            let length = lmCount + report.count + (report.isEmpty ? 0 : nlCount)
+            guard limit - length < 0 else {
+                return
+            }
+
+            // What length to remove?
+            let messages = report.components(separatedBy: newLine)
+            let messagesCount = messages.count - 1
+
+            var lengthToRemove = 0
+            var itemCount = 0
+
+            for item in messages {
+
+                itemCount += 1
+                let newLineLength = messagesCount == 0 ? 0 : nlCount
+
+                lengthToRemove += (item.count + newLineLength)
+
+                if itemCount == messagesCount, messagesCount > 2 {
+                    lengthToRemove -= nlCount // There's no new line in the report end
+                }
+
+                // Is it enough?
+                let reportAfter = report.count - lengthToRemove
+                let lastMessageAfter = reportAfter != 0 ? nlCount + lmCount : lmCount
+
+                if limit - (reportAfter + lastMessageAfter) >= 0 {
+                    break
+                }
+            }
+
+            // Final check
+            guard report.count >= lengthToRemove else {
+                return
+            }
+
+            // Free space
+            report.removeFirst(lengthToRemove)
         }
 
-        let length = (lastMessage.count + report.count + (report.isEmpty ? 0 : newLine.count))
+        private func appendLastMessageToReport() {
 
-        guard limit - length >= 0 else {
-            return
+            guard lastMessage.isEmpty == false, lastMessage.count < limit else {
+                return
+            }
+
+            let newLinelength = report.isEmpty ? 0 : newLine.count
+            let length = (lastMessage.count + report.count + newLinelength)
+
+            guard limit - length >= 0 else {
+                return
+            }
+
+            report.append(report.isEmpty ? lastMessage : newLine + lastMessage)
         }
-
-        report.append(report.isEmpty ? lastMessage : newLine + lastMessage)
     }
 }

@@ -53,19 +53,26 @@ import Foundation
 import os
 
 // swiftlint:disable type_name
-public typealias log = PerseusLogger // In SPM package should be not public except TheOne.
+public typealias log = PerseusLogger // Not public in SPM package, except TheOne.
 // swiftlint:enable type_name
 
-public typealias ConsoleObject = (subsystem: String, category: String)
-public typealias LocalTime = (date: String, time: String, timeUTC: TimeInterval)
-public typealias PIDandTID = (pid: String, tid: String) // PID and Thread ID.
-public typealias Directives = (fileName: String, line: UInt)
-
-public typealias MessageDelegate = (
-    (String, PerseusLogger.Level, LocalTime, PIDandTID, PerseusLogger.User, Directives) -> Void
-)
+// Not public in SPM package, except TheOne.
+public protocol PerseusDelegatedMessage: AnyObject {
+    var message: String { get set }
+}
 
 public class PerseusLogger {
+
+    // MARK: - Typealiases
+
+    public typealias ConsoleObject = (subsystem: String, category: String)
+    public typealias LocalTime = (date: String, time: String, timeUTC: TimeInterval)
+    public typealias PIDandTID = (pid: String, tid: String) // PID and Thread ID.
+    public typealias Directives = (fileName: String, line: UInt) // #file and #line.
+
+    public typealias MessageDelegate = (
+        (String, Level, LocalTime, PIDandTID, User, Directives) -> Void
+    )
 
     // MARK: - Constants
 
@@ -181,7 +188,7 @@ public class PerseusLogger {
 
     // MARK: - Properties
 
-    public static var customActionOnMessage: MessageDelegate?
+    public static var customActionOnMessage: PerseusLogger.MessageDelegate?
 
 #if DEBUG
     public static var turned = Status.on
@@ -196,7 +203,8 @@ public class PerseusLogger {
     public static var subsecond = TimeMultiply.nanosecond
     public static var tidnumber = TIDNumber.hexadecimal
 
-    // Message Details Visibility flags
+    // MARK: - Message Details Visibility Flags
+
     public static var format = MessageFormat.short
 
     // [TYPE] [DATE] [TIME] [PID:TID] message, file: #, line: #
@@ -206,8 +214,10 @@ public class PerseusLogger {
     public static var directives = false // file# and line# Depends on format
 
 #if targetEnvironment(simulator)
-    public static var debugIsInfo = true // Shows DEBUG message as INFO in macOS Console.app.
+    public static var debugIsInfo = true // Shows DEBUG message as INFO in macOS Console.
 #endif
+
+    // MARK: - Special Properties
 
     public static var logObject: ConsoleObject? {
         didSet {
@@ -275,10 +285,10 @@ public class PerseusLogger {
         // PID and TID.
 
         let withOwnerId = (format == .full) ? true : owner && (format != .textonly)
-        let idtuple = getPIDandTID()
+        let idTuple = getPIDandTID()
 
         if withOwnerId {
-            message = "[\(idtuple.pid):\(idtuple.tid)] \(message)"
+            message = "[\(idTuple.pid):\(idTuple.tid)] \(message)"
         }
 
         // Time.
@@ -299,7 +309,7 @@ public class PerseusLogger {
 
         if oput == .custom {
             let directives: Directives = (fileName: fileName, line: line)
-            customActionOnMessage?(message, type, localTime, idtuple, user, directives)
+            customActionOnMessage?(message, type, localTime, idTuple, user, directives)
         } else {
             print(message, type, oput)
         }
@@ -503,7 +513,11 @@ private extension Int {
 
 private extension UInt64 {
     var hex: String {
-        return "0x\(String(format: "%02x", self))"
+
+        let value = self
+        let valueFormated = String(format: "%02x", value)
+
+        return valueFormated
     }
 }
 

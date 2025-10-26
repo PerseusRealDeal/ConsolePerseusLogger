@@ -15,27 +15,31 @@
 > `1:` Log to the console.</br>
 > `2:` Log to macOS Console.</br>
 > `3:` Log to custom output.</br>
-> `4:` Collect logs. Extend [PerseusLogReport](/Sources/ConsolePerseusLogger/PerseusLogReport.swift) to meet expectations with specifics or create your own.</br>
+> `4:` Collect logs. Extend [PerseusLogger.Report](/Sources/ConsolePerseusLogger/TheReport.swift) to meet expectations with specifics or create your own.</br>
 > `5:` Delegate logs. End-user notifications.</br>
 
 > `CPL` is a single author and personale solution developed in `P2P` relationship paradigm.
-
-> `In approbation:` [`iOS app`](https://github.com/perseusrealdeal/TheOneRing) [`macOS app`](https://github.com/perseusrealdeal/Arkenstone) `In business:` [`The Dark Moon`](https://github.com/perseusrealdeal/TheDarkMoon)
 
 ## Integration Capabilities
 
 [![Standalone](https://img.shields.io/badge/Standalone%20-available-informational.svg)](/CPLStar.swift)
 [![Swift Package Manager compatible](https://img.shields.io/badge/Swift%20Package%20Manager-compatible-4BC51D.svg)](/Package.swift)
 
-> [`Approbation and A3 Environment`](/APPROBATION.md) / [`CHANGELOG`](/CHANGELOG.md) / [`Xcode Playground`](https://github.com/PerseusRealDeal/ConsolePerseusLogger/issues/17)
-
 ## Our Terms
 
-> `CPL` stands for `C`onsole `P`erseus `L`ogger.
+> [`CPL`](https://github.com/perseusrealdeal/ConsolePerseusLogger.git) stands for `C`onsole `P`erseus `L`ogger.</br>
+> [`PGK`](https://github.com/perseusrealdeal/PerseusGeoKit.git) stands for `P`erseus `G`eo `K`it.</br>
+> [`PDM`](https://github.com/perseusrealdeal/PerseusDarkMode.git) stands for `P`erseus `D`ark `M`ode.</br>
+> `P2P` stands for `P`erson-`to`-`P`erson.</br>
+> [`A3`](https://docs.google.com/document/d/1K2jOeIknKRRpTEEIPKhxO2H_1eBTof5uTXxyOm5g6nQ) stands for `A`pple `A`pps `A`pprobation.</br>
+> [`T3`](https://github.com/perseusrealdeal/TheTechnologicalTree) stands for `T`he `T`echnological `T`ree.
 
-> `P2P` stands for `person-to-person`. 
+## CPL in Use
 
-> `A3` stands for `A`pple `A`pps `A`pprobation.
+> `In approbation:` [`iOS app`](https://github.com/perseusrealdeal/TheOneRing) [`macOS app`](https://github.com/perseusrealdeal/Arkenstone)</br>
+> `In business:` [`The Dark Moon`](https://github.com/perseusrealdeal/TheDarkMoon) [`PerseusGeoKit`](https://github.com/PerseusRealDeal/PerseusGeoKit) [`PerseusDarkMode`](https://github.com/PerseusRealDeal/PerseusDarkMode)
+
+> `For details:` [`Approbation and A3 Environment`](/APPROBATION.md) / [`CHANGELOG`](/CHANGELOG.md) / [`Xcode Playground`](https://github.com/PerseusRealDeal/ConsolePerseusLogger/issues/17)</br>
 
 # Contents
 
@@ -49,11 +53,16 @@
     * [Custom log](#Custom-log)
     * [Debugging SwiftUI](#Debugging-SwiftUI)
     * [Log level and message types](#Log-level-and-message-types)
-    * [Setting the Logger Up](#Setting-the-Logger-Up)
-    * [CPL in SPM package](#CPL-in-SPM-package)
+    * [Configuration](#Configuration)
+        * [Default settings](#Default-settings)
+        * [Load settings with JSON config](#Load-settings-with-JSON-config)
+    * [SPM package](#SPM-package)
     * [macOS Console and Simulator](#macOS-Console-and-Simulator)
     * [Collecting logs](#Collecting-logs)
     * [Delegating logs](#Delegating-logs)
+        * [End-user message statement](#End-user-message-statement)
+        * [To delegate with reporting](#To-delegate-with-reporting)
+        * [To delegate without reporting](#To-delegate-without-reporting)
 * [Points taken into account](#Points-taken-into-account)
 * [License MIT](#License-MIT)
     * [Other Required License Notices](#Other-Required-License-Notices)
@@ -164,15 +173,12 @@ log.logObject = ("MyApp", "MyLover") // Customs for Console.app Subsystem and Ca
 
 import ConsolePerseusLogger
 
-typealias Level = ConsolePerseusLogger.PerseusLogger.Level
-typealias User = ConsolePerseusLogger.PerseusLogger.User
-
 func customPrint(_ text: String,
-                 _ type: PerseusLogger.Level,
-                 _ localTime: LocalTime,
-                 _ owner: PIDandTID,
-                 _ user: PerseusLogger.User,
-                 _ dirs: Directives) {
+                 _ type: ConsolePerseusLogger.PerseusLogger.Level,
+                 _ localTime: ConsolePerseusLogger.PerseusLogger.LocalTime,
+                 _ owner: ConsolePerseusLogger.PerseusLogger.PIDandTID,
+                 _ user: ConsolePerseusLogger.PerseusLogger.User,
+                 _ dirs: ConsolePerseusLogger.PerseusLogger.Directives) {
 
     let time = "[\(localTime.date)] [\(localTime.time)]"
     let utc = localTime.timeUTC
@@ -192,7 +198,7 @@ log.message("The app's start point...", .info)
 
 ```
 
-![Image](https://github.com/user-attachments/assets/cd4a8b95-b777-4be0-993e-2b846673a1a2)
+![Image](https://github.com/user-attachments/assets/d6a016ed-231b-4a63-a99d-12b93ca0fe5a)
 
 ## Debugging SwiftUI
 
@@ -261,7 +267,9 @@ VStack {
 
 ![Image](https://github.com/user-attachments/assets/32db0216-5e71-4615-8f01-8c222cb0ae0d)
 
-## Setting the Logger Up
+## Configuration
+
+### Default settings
 
 > Default values of CPL options depend on DEBUG/RELEASE.
 
@@ -290,7 +298,7 @@ VStack {
 | :---------- | :------------------- | :------------------- |
 | debugIsInfo | true                 | true                 |
 
-### Load (reset) CPL options with JSON config
+### Load settings with JSON config
 
 > Each option can be reseted in run time with json config except option `turned`.
 
@@ -328,7 +336,7 @@ log.message(result)
 
 ![Image](https://github.com/user-attachments/assets/0dc0848b-824c-406a-95ca-c9987133ad67)
 
-## CPL in SPM package
+## SPM package
 
 > In SPM package `CPL` can be used as standalone, just place [CPLStar.swift](/CPLStar.swift) into your project directly.
 
@@ -381,11 +389,12 @@ log.message("The app's start point...", .info)
 
 ## Collecting logs
 
-> [PerseusLogReport](/Sources/ConsolePerseusLogger/PerseusLogReport.swift) and KVO can be used to view last log messages.
+> [PerseusLogger.Report](/Sources/ConsolePerseusLogger/TheReport.swift) and KVO can be used to view last log messages.
 
 ```swift
+import Foundation
 
-let report = PerseusLogReport()
+let report = PerseusLogger.Report()
 var observation: NSKeyValueObservation?
 
 observation = report.observe(\.lastMessage, options: .new) { _, change in
@@ -403,11 +412,13 @@ log.customActionOnMessage = report.report(_:_:_:_:_:_:)
 `Step 3:` `log.customActionOnMessage = report.report(_:_:_:_:_:_:)`
 
 > [!NOTE]
-> Override method `report(_:_:_:_:_:_:)` of `PerseusLogReport` to meet expectations with specifics.
+> Override method `report(_:_:_:_:_:_:)` of `PerseusLogger.Report` to meet expectations with specifics.
 
-![Image](https://github.com/user-attachments/assets/e4ca3a96-e684-4680-8be0-a45c91c1eca8)
+![Image](https://github.com/user-attachments/assets/66bea796-68fe-47e8-ab97-02f4184c58e0)
 
 ## Delegating logs
+
+### End-user message statement
 
 A log message can be used for easy creating end-user notifications in a way like this:
 
@@ -421,28 +432,25 @@ log.message("Notification...", .notice, .custom, .enduser)
 > 2. Message type `.notice` is recommended, it's a default and almost neutral level. 
 > 3. Output `.custom` is in use to process end-user messages. 
 
-![Image](https://github.com/user-attachments/assets/56f36daf-15ca-46d5-8098-4b8aa77703b4)
+![Image](https://github.com/user-attachments/assets/28dbedb9-72b6-45ff-a252-b10ffcd79f08)
 
-`Case 1:` **To delegate a log message with reporting:**
+### To delegate with reporting
 
 `Step 1:` Find a type to implement `PerseusDelegatedMessage` protocol
 
-`Step 2:` Create a report of `PerseusLogReport`
+`Step 2:` Create a report of `PerseusLogger.Report`
 
-`Step 3:` Set the delegate `report.delegate` to the `PerseusDelegatedMessage` one
+`Step 3:` Set the delegate `report.messageDelegate` to the `PerseusDelegatedMessage` one
 
 `Step 4:` `log.customActionOnMessage = report.report(_:_:_:_:_:_:)`
 
-![Image](https://github.com/user-attachments/assets/3921a0f7-86d8-4dd6-b3a9-99369c037317)
+![Image](https://github.com/user-attachments/assets/7b0e2cc9-7568-4c98-87cd-dc8b37b5c15b)
 
-`Case 2:` **To delegate a log message without reporting:**
+### To delegate without reporting
 
 ```swift
 
 import ConsolePerseusLogger
-
-typealias Level = ConsolePerseusLogger.PerseusLogger.Level
-typealias User = ConsolePerseusLogger.PerseusLogger.User
 
 class MyEndUserMessageClass: PerseusDelegatedMessage {
     var message: String = "" {
@@ -457,11 +465,11 @@ class MyEndUserMessageClass: PerseusDelegatedMessage {
 }
 
 func customPrint(_ text: String,
-                 _ type: PerseusLogger.Level,
-                 _ localTime: LocalTime,
-                 _ owner: PIDandTID,
-                 _ user: PerseusLogger.User,
-                 _ dirs: Directives) {
+                 _ type: ConsolePerseusLogger.PerseusLogger.Level,
+                 _ localTime: ConsolePerseusLogger.PerseusLogger.LocalTime,
+                 _ owner: ConsolePerseusLogger.PerseusLogger.PIDandTID,
+                 _ user: ConsolePerseusLogger.PerseusLogger.User,
+                 _ dirs: ConsolePerseusLogger.PerseusLogger.Directives) {
 
     let text = text.replacingOccurrences(of: "\(type.tag) ", with: "")
 
@@ -479,7 +487,7 @@ log.message(greeting, .notice, .custom, .enduser)
 
 ```
 
-![Image](https://github.com/user-attachments/assets/b615d8d4-3901-4d5f-9eb4-b1c82410ac2f)
+![Image](https://github.com/user-attachments/assets/ed4e8f74-cab7-4287-8616-1656d0ead09c)
 
 # Points taken into account
 
