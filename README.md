@@ -1,53 +1,88 @@
 # ConsolePerseusLogger — Xcode 14.2+
 
-> [`iOS approbation app`](https://github.com/perseusrealdeal/TheOneRing) [`macOS approbation app`](https://github.com/perseusrealdeal/Arkenstone)
-
-> Light-weight logging lover in Swift. Hereinafter `CPL` stands for `C`onsole `P`erseus `L`ogger.<br/>
-
-> - Log to the console.<br/>
-> - Log to macOS Console.app.<br/>
-> - Log to custom output.
-
-> `[TYPE] [DATE] [TIME] [PID:TID] message, file: #, line: #`
-
-> `CPL` is a single author and personale solution developed in `person-to-person` relationship paradigm.
-
 [![Actions Status](https://github.com/perseusrealdeal/ConsolePerseusLogger/actions/workflows/main.yml/badge.svg)](https://github.com/perseusrealdeal/ConsolePerseusLogger/actions/workflows/main.yml)
 [![Style](https://github.com/perseusrealdeal/ConsolePerseusLogger/actions/workflows/swiftlint.yml/badge.svg)](https://github.com/perseusrealdeal/ConsolePerseusLogger/actions/workflows/swiftlint.yml)
-[![Version](https://img.shields.io/badge/Version-1.5.1-green.svg)](/CHANGELOG.md)
+[![Version](https://img.shields.io/badge/Version-1.6.0-green.svg)](/CHANGELOG.md)
 [![Platforms](https://img.shields.io/badge/Platforms-macOS%2010.13+_|_iOS%2011.0+-orange.svg)](https://en.wikipedia.org/wiki/List_of_Apple_products)
 [![Xcode 14.2](https://img.shields.io/badge/Xcode-14.2+-red.svg)](https://en.wikipedia.org/wiki/Xcode)
 [![Swift 5.7](https://img.shields.io/badge/Swift-5.7-red.svg)](https://www.swift.org)
 [![License](http://img.shields.io/:License-MIT-blue.svg)](/LICENSE)
+
+> `[TYPE] [DATE] [TIME] [PID:TID] message, file: #, line: #`
+
+> Home-made product. Light-weight logging lover in Swift. 
+
+> `1:` Log to the console.</br>
+> `2:` Log to macOS Console.</br>
+> `3:` Log to custom output.</br>
+> `4:` Collect logs. Extend [PerseusLogger.Report](/Sources/ConsolePerseusLogger/TheReport.swift) to meet expectations with specifics or create your own.</br>
+> `5:` Delegate logs. End-user notifications.</br>
+
+> `CPL` is a single author and personale solution developed in `P2P` relationship paradigm.
 
 ## Integration Capabilities
 
 [![Standalone](https://img.shields.io/badge/Standalone%20-available-informational.svg)](/CPLStar.swift)
 [![Swift Package Manager compatible](https://img.shields.io/badge/Swift%20Package%20Manager-compatible-4BC51D.svg)](/Package.swift)
 
-> [!TIP]
-> To adopt `CPL` for the specifics you need use [Standalone](/CPLStar.swift).
+## Our Terms
 
-## Approbation Matrix
+> [`CPL`](https://github.com/perseusrealdeal/ConsolePerseusLogger.git) stands for `C`onsole `P`erseus `L`ogger.</br>
+> [`PGK`](https://github.com/perseusrealdeal/PerseusGeoKit.git) stands for `P`erseus `G`eo `K`it.</br>
+> [`PDM`](https://github.com/perseusrealdeal/PerseusDarkMode.git) stands for `P`erseus `D`ark `M`ode.</br>
+> `P2P` stands for `P`erson-`to`-`P`erson.</br>
+> [`A3`](https://docs.google.com/document/d/1K2jOeIknKRRpTEEIPKhxO2H_1eBTof5uTXxyOm5g6nQ) stands for `A`pple `A`pps `A`pprobation.</br>
+> [`T3`](https://github.com/perseusrealdeal/TheTechnologicalTree) stands for `T`he `T`echnological `T`ree.
 
-> [`A3 Environment and Approbation`](/APPROBATION.md) / [`CHANGELOG`](/CHANGELOG.md) for details.
+## CPL in Use
 
-> Xcode playground [download page](https://github.com/PerseusRealDeal/ConsolePerseusLogger/issues/17).
+> `In approbation:` [`iOS app`](https://github.com/perseusrealdeal/TheOneRing) [`macOS app`](https://github.com/perseusrealdeal/Arkenstone)</br>
+> `In business:` [`The Dark Moon`](https://github.com/perseusrealdeal/TheDarkMoon) [`PerseusGeoKit`](https://github.com/PerseusRealDeal/PerseusGeoKit) [`PerseusDarkMode`](https://github.com/PerseusRealDeal/PerseusDarkMode)
 
-## In brief > Idea to use
+> `For details:` [`Approbation and A3 Environment`](/APPROBATION.md) / [`CHANGELOG`](/CHANGELOG.md) / [`Xcode Playground`](https://github.com/PerseusRealDeal/ConsolePerseusLogger/issues/17)</br>
 
-> USE LOGGER LIKE A VARIABLE ANYWHERE YOU WANT.<br/>
+# Contents
 
-![Image](https://github.com/user-attachments/assets/d1bb43ab-1342-4dff-b4d4-0fbd205dba39)
+* [In brief](#In-brief)
+* [Build requirements](#Build-requirements)
+* [Third-party software](#Third-party-software)
+* [Installation](#Installation)
+* [Usage](#Usage)
+    * [Log to the console](#Log-to-the-console)
+    * [Log to macOS Console](#Log-to-macOS-Console)
+    * [Custom log](#Custom-log)
+    * [Debugging SwiftUI](#Debugging-SwiftUI)
+    * [Log level and message types](#Log-level-and-message-types)
+    * [Configuration](#Configuration)
+        * [Default settings](#Default-settings)
+        * [Load settings with JSON config](#Load-settings-with-JSON-config)
+    * [SPM package](#SPM-package)
+    * [macOS Console and Simulator](#macOS-Console-and-Simulator)
+    * [Collecting logs](#Collecting-logs)
+    * [Delegating logs](#Delegating-logs)
+        * [End-user message statement](#End-user-message-statement)
+        * [To delegate with reporting](#To-delegate-with-reporting)
+        * [To delegate without reporting](#To-delegate-without-reporting)
+* [Points taken into account](#Points-taken-into-account)
+* [License MIT](#License-MIT)
+    * [Other Required License Notices](#Other-Required-License-Notices)
+* [Credits](#Credits)
+* [Author](#Author)
 
-## Build requirements
+# In brief
+
+> USE LOGGER LIKE A VARIABLE ANYWHERE YOU WANT<br/>
+
+![Image](https://github.com/user-attachments/assets/fbf78ea8-8efe-4167-a1ff-a83c20276652)
+
+# Build requirements
 
 - [macOS Monterey 12.7.6+](https://apps.apple.com/by/app/macos-monterey/id1576738294) / [Xcode 14.2+](https://developer.apple.com/services-account/download?path=/Developer_Tools/Xcode_14.2/Xcode_14.2.xip)
 
 > [!TIP]
 > As the single source code [CPLStar.swift](/CPLStar.swift) CPL with minimum changes can be used even in Xcode 10.1, just remove all statements starting with `if #available(iOS 14.0, macOS 11.0, *)`.
 
-## Third-party software
+# Third-party software
 
 | Type   | Name                                                                                                                              | License                            |
 | ------ | --------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------- |
@@ -58,12 +93,28 @@
 
 # Installation
 
-> Standalone: the single source code file [CPLStar.swift](/CPLStar.swift)
+`Standalone:` Place [CPLStar.swift](/CPLStar.swift) into your project directly
 
-> Swift Package Manager: `https://github.com/perseusrealdeal/ConsolePerseusLogger`
+```swift
+
+log.message("[\(type(of: self))].\(#function)")
+
+```
+
+`Swift Package Manager:` `https://github.com/perseusrealdeal/ConsolePerseusLogger` 
+
+> Exact Version is strongly recommended.
+
+```swift
+
+import ConsolePerseusLogger
+
+log.message("[\(type(of: self))].\(#function)")
+
+```
 
 > [!NOTE]
-> If output is consoleapp and Environment Variable `OS_ACTIVITY_MODE` in `disable` log messaging will be restricted for Xcode console, but only.
+> If output is `.consoleapp` and Environment Variable `OS_ACTIVITY_MODE` in `disable` log messaging will be restricted for Xcode console, but only.
 
 ![Image](https://github.com/user-attachments/assets/fb64c5cf-70dc-489c-9850-976ea3d5800c)
 
@@ -79,42 +130,66 @@ log.message("[\(type(of: self))].\(#function)")
 
 ```
 
-![Image](https://github.com/user-attachments/assets/fde70234-5faa-4afe-ad1f-2bfc24ee8f7d)
+![Image](https://github.com/user-attachments/assets/ad0acd00-d55c-4ab9-916e-db32ca8ee236)
 
-## Log to macOS Console.app
+## Log to macOS Console
+
+> [!NOTE]
+> To pass messages to Console.app `CPL` employs `Logger` structure (from iOS 14.0, macOS 11.0) and `OSLog`.
+
+`Case 1:` Redirect all messages to .consoleapp
 
 ```swift
 
-import ConsolePerseusLogger
-
-// MARK: - Log to Console.app
-
-// log.logObject = ("MyApp", "MyLover") // Customs for Console.app Subsystem and Category.
-
 log.output = .consoleapp
-log.message("The app's start point...", .info)
+log.message("[\(type(of: self))].\(#function)")
 
 ```
 
-![Image](https://github.com/user-attachments/assets/04e2618f-7b83-401a-bc7b-87bdc91fb9e9)
+![Image](https://github.com/user-attachments/assets/276bbeec-3883-4c2d-a1d2-4e1f78d3f5ed)
+
+`Case 2:` Redirect the message to .consoleapp
+
+```swift
+
+log.message("[\(type(of: self))].\(#function)", .debug, .consoleapp)
+
+```
+
+> [!TIP]
+> Set custom titles for Console.app Subsystem and Category
+
+```swift
+
+log.logObject = ("MyApp", "MyLover") // Customs for Console.app Subsystem and Category.
+
+```
 
 ## Custom log
+
+> For any specific combination of message marks and other changes before to log.
 
 ```swift
 
 import ConsolePerseusLogger
 
-typealias Level = ConsolePerseusLogger.PerseusLogger.Level
-
-func customPrint(_ text: String, _ type: Level, _ localTime: LocalTime, _ owner: PIDandTID) {
+func customPrint(_ text: String,
+                 _ type: ConsolePerseusLogger.PerseusLogger.Level,
+                 _ localTime: ConsolePerseusLogger.PerseusLogger.LocalTime,
+                 _ owner: ConsolePerseusLogger.PerseusLogger.PIDandTID,
+                 _ user: ConsolePerseusLogger.PerseusLogger.User,
+                 _ dirs: ConsolePerseusLogger.PerseusLogger.Directives) {
 
     let time = "[\(localTime.date)] [\(localTime.time)]"
-    let id = "[\(owner.pid):\(owner.tid)]"
+    let utc = localTime.timeUTC
 
-    print("[MYLOG] [\(type)] \(time) \(id) \(text)")
+    let id = "[\(owner.pid):\(owner.tid)]"
+    // let text = text.replacingOccurrences(of: "\(type.tag) ", with: "")
+
+    print("[MYLOG] \(text) \(time) \(id) UTC: \(utc)")
 }
 
-log.customActionOnMessage = customPrint(_:_:_:_:)
+log.customActionOnMessage = customPrint(_:_:_:_:_:_:)
 
 log.format = .textonly
 log.output = .custom
@@ -123,11 +198,11 @@ log.message("The app's start point...", .info)
 
 ```
 
-![Image](https://github.com/user-attachments/assets/fe135516-7ab2-4747-8954-fd1ffe768483)
+![Image](https://github.com/user-attachments/assets/d6a016ed-231b-4a63-a99d-12b93ca0fe5a)
 
 ## Debugging SwiftUI
 
-`Case 1:` as is
+`Case 1:` As Is
 
 ```swift
 
@@ -138,9 +213,9 @@ Image(systemName: "globe")
 
 ```
 
-`Case 2:` wrapper
+`Case 2:` Wrapper
 
-> Add an extension on View that returns itself and calls the logger's message method:
+> Extend View with the method `message(_:_:_:_:_:)`:
 
 ```swift
 
@@ -148,10 +223,11 @@ extension View {
     func message(_ text: @autoclosure () -> String,
                  _ type: PerseusLogger.Level = .debug,
                  _ oput: PerseusLogger.Output = PerseusLogger.output,
+                 _ user: PerseusLogger.User = .operative,
                  _ file: StaticString = #file,
                  _ line: UInt = #line) -> Self {
 
-        log.message(text(), type, oput, file, line)
+        log.message(text(), type, oput, user, file, line)
 
         return self
     }
@@ -159,7 +235,7 @@ extension View {
 
 ```
 
-> Then use message as a view modifier to print debug information to the console when the view is built:
+> Then use `message` as `a view modifier` to output a message:
 
 ```swift
 
@@ -173,25 +249,27 @@ VStack {
 
 ```
 
-![Image](https://github.com/user-attachments/assets/bdc3e71f-123c-42b8-b3ae-d98a34f99520)
+![Image](https://github.com/user-attachments/assets/1dcdca20-dbf7-4d91-9dae-278fddf5a747)
 
 ## Log level and message types
 
 > CPL applies the most common log types for indicating information category.
 
-| Level | Message Type | Description                           |
-| :---: | :----------- | :------------------------------------ |
-| 5     | DEBUG        | Debugging only                        |
-| 4     | INFO         | Helpful, but not essential            |
-| 3     | NOTICE       | Might result in a failure             |
-| 2     | ERROR        | Errors seen during the code execution |
-| 1     | FAULT        | Faults and bugs in the code           |
+| Level | Message Type | Description                                        |
+| :---: | :----------- | :------------------------------------------------- |
+| 5     | DEBUG        | Debugging only                                     |
+| 4     | INFO         | Helpful, but not essential                         |
+| 3     | NOTICE       | Might result in a failure. End-user notification   |
+| 2     | ERROR        | Errors seen during the code execution              |
+| 1     | FAULT        | Faults and bugs in the code                        |
 
 > Also, CPL considers Message Type to filter, look how it works:
 
-![Image](https://github.com/user-attachments/assets/23b72f6e-39b9-4d7d-be27-7374436deb42)
+![Image](https://github.com/user-attachments/assets/32db0216-5e71-4615-8f01-8c222cb0ae0d)
 
-## Setting the Logger Up
+## Configuration
+
+### Default settings
 
 > Default values of CPL options depend on DEBUG/RELEASE.
 
@@ -220,7 +298,7 @@ VStack {
 | :---------- | :------------------- | :------------------- |
 | debugIsInfo | true                 | true                 |
 
-### Load (reset) CPL options with JSON config
+### Load settings with JSON config
 
 > Each option can be reseted in run time with json config except option `turned`.
 
@@ -256,11 +334,14 @@ log.message(result)
 
 ```
 
-![Image](https://github.com/user-attachments/assets/32c6dcee-11ad-44d6-add0-ee8e6ae6c465)
+![Image](https://github.com/user-attachments/assets/0dc0848b-824c-406a-95ca-c9987133ad67)
 
-## CPL in SPM package
+## SPM package
 
-> In case if CPL in use as a standalone file in SPM package.
+> In SPM package `CPL` can be used as standalone, just place [CPLStar.swift](/CPLStar.swift) into your project directly.
+
+> [!IMPORTANT]
+> Statement `typealias log = PerseusLogger` in SPM package should be not public.
 
 ```swift
 
@@ -287,13 +368,16 @@ log.message("The app's start point...", .info)
 
 ```
 
-## Console.app and Simulator
+## macOS Console and Simulator
+
+> [!NOTE]
+> `CPL` employs `Logger` structure (from iOS 14.0, macOS 11.0) and `OSLog` to pass messages to macOS Console.
 
 > Just a matter of fact that Console.app doesn't show any DEBUG message from any app running on Simulator (even if "Include Debug Messages" tapped in Console.app).<br/>
 
-> Console Perseus Logger running on Simulator doesn't pass DEBUG message to Console.app, instead it passes INFO message with text of DEBUG message by default if Simulator runs, so, a passed message being INFO looks like a DEBUG and it works perfactly well.<br/>
+> Console Perseus Logger running on Simulator doesn't pass DEBUG message to Console.app, instead it passes INFO message with text of DEBUG message by default, so, a passed message being INFO looks like a DEBUG and it works perfactly well.<br/>
 
-> If for some reasons CPL must pass DEBUG like a DEBUG message the option should take false `log.debugIsInfo = false`.
+> If for some reasons CPL must pass DEBUG as a DEBUG message the option should take false `log.debugIsInfo = false`, but Console.app will not show DEBUG messages.
 
 ```swift
 
@@ -302,6 +386,108 @@ log.message("The app's start point...", .info)
 #endif
 
 ```
+
+## Collecting logs
+
+> [PerseusLogger.Report](/Sources/ConsolePerseusLogger/TheReport.swift) and KVO can be used to view last log messages.
+
+```swift
+import Foundation
+
+let report = PerseusLogger.Report()
+var observation: NSKeyValueObservation?
+
+observation = report.observe(\.lastMessage, options: .new) { _, change in
+    // Refresh code
+}
+
+log.customActionOnMessage = report.report(_:_:_:_:_:_:)
+
+```
+
+`Step 1:` Create a report
+
+`Step 2:` Create an observer for the last message to refresh on change
+
+`Step 3:` `log.customActionOnMessage = report.report(_:_:_:_:_:_:)`
+
+> [!NOTE]
+> Override method `report(_:_:_:_:_:_:)` of `PerseusLogger.Report` to meet expectations with specifics.
+
+![Image](https://github.com/user-attachments/assets/66bea796-68fe-47e8-ab97-02f4184c58e0)
+
+## Delegating logs
+
+### End-user message statement
+
+A log message can be used for easy creating end-user notifications in a way like this:
+
+```swift
+
+log.message("Notification...", .notice, .custom, .enduser)
+
+```
+> [!IMPORTANT]
+> 1. End-user message egnores `log.turned = .off`, but `log.level` is still matter.
+> 2. Message type `.notice` is recommended, it's a default and almost neutral level. 
+> 3. Output `.custom` is in use to process end-user messages. 
+
+![Image](https://github.com/user-attachments/assets/28dbedb9-72b6-45ff-a252-b10ffcd79f08)
+
+### To delegate with reporting
+
+`Step 1:` Find a type to implement `PerseusDelegatedMessage` protocol
+
+`Step 2:` Create a report of `PerseusLogger.Report`
+
+`Step 3:` Set the delegate `report.messageDelegate` to the `PerseusDelegatedMessage` one
+
+`Step 4:` `log.customActionOnMessage = report.report(_:_:_:_:_:_:)`
+
+![Image](https://github.com/user-attachments/assets/7b0e2cc9-7568-4c98-87cd-dc8b37b5c15b)
+
+### To delegate without reporting
+
+```swift
+
+import ConsolePerseusLogger
+
+class MyEndUserMessageClass: PerseusDelegatedMessage {
+    var message: String = "" {
+        didSet {
+            didSetEndUserMessage()
+        }
+    }
+
+    private func didSetEndUserMessage() {
+        log.message("[\(type(of: self))].\(#function): \(message)")
+    }
+}
+
+func customPrint(_ text: String,
+                 _ type: ConsolePerseusLogger.PerseusLogger.Level,
+                 _ localTime: ConsolePerseusLogger.PerseusLogger.LocalTime,
+                 _ owner: ConsolePerseusLogger.PerseusLogger.PIDandTID,
+                 _ user: ConsolePerseusLogger.PerseusLogger.User,
+                 _ dirs: ConsolePerseusLogger.PerseusLogger.Directives) {
+
+    let text = text.replacingOccurrences(of: "\(type.tag) ", with: "")
+
+    if user == .enduser {
+        delegate?.message = text
+    }
+}
+
+log.customActionOnMessage = customPrint(_:_:_:_:_:_:)
+
+var delegate: PerseusDelegatedMessage? = MyEndUserMessageClass()
+let greeting = "Hello"
+
+log.message(greeting, .notice, .custom, .enduser)
+
+```
+
+![Image](https://github.com/user-attachments/assets/ed4e8f74-cab7-4287-8616-1656d0ead09c)
 
 # Points taken into account
 
@@ -313,8 +499,8 @@ log.message("The app's start point...", .info)
 
 # License MIT
 
-Copyright © 7531 - 7533 Mikhail A. Zhigulin of Novosibirsk<br/>
-Copyright © 7531 - 7533 PerseusRealDeal
+Copyright © 7531 - 7534 Mikhail A. Zhigulin of Novosibirsk<br/>
+Copyright © 7531 - 7534 PerseusRealDeal
 
 - The year starts from the creation of the world according to a Slavic calendar.
 - September, the 1st of Slavic year. It means that "Sep 01, 2024" is the beginning of 7533.
@@ -327,7 +513,7 @@ Copyright © 7531 - 7533 PerseusRealDeal
 
 [LICENSE](/LICENSE) for details.
 
-## Credits
+# Credits
 
 <table>
 <tr>

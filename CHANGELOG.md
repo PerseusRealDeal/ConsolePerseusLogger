@@ -5,6 +5,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Dates in this file meets Gregorian calendar. Date in format YYYY-MM-DD.
 
+## [1.6.0] - [2025-10-30], CPL
+
+### Added
+
+- End-user message.
+- Log report.
+- UTC time `Date().timeIntervalSince1970` to calculated LocalTime as a return parameter.
+- Directives file and line to message delegate signature.
+- Contents section to README.
+
+### Updated
+
+- README, APPROBATION, LICENSE notices.
+- Xcode Playground.
+
 ## [1.5.1] - [2025-07-22], CPL
 
 ### Added
