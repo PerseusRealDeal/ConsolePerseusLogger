@@ -77,7 +77,6 @@ extension PerseusLogger {
                            _ user: User,
                            _ dirs: Directives) {
 
-            let text = text.replacingOccurrences(of: "\(type.tag) ", with: "")
             lastMessage = "[\(localTime.date)] [\(localTime.time)] \(type.tag)\r\n\(text)"
 
             if user == .enduser {

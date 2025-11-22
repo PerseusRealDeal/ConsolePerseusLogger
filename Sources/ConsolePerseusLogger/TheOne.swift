@@ -269,6 +269,7 @@ public class PerseusLogger {
             return
         }
 
+        let text = text()
         var message = ""
 
         // Path.
@@ -277,9 +278,9 @@ public class PerseusLogger {
         let fileName = (file.description as NSString).lastPathComponent
 
         if withDirectives {
-            message = "\(text()), file: \(fileName), line: \(line)"
+            message = "\(text), file: \(fileName), line: \(line)"
         } else {
-            message = "\(text())"
+            message = "\(text)"
         }
 
         // PID and TID.
@@ -309,7 +310,7 @@ public class PerseusLogger {
 
         if oput == .custom {
             let directives: Directives = (fileName: fileName, line: line)
-            customActionOnMessage?(message, type, localTime, idTuple, user, directives)
+            customActionOnMessage?(text, type, localTime, idTuple, user, directives)
         } else {
             print(message, type, oput)
         }
