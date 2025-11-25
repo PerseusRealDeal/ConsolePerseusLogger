@@ -186,6 +186,11 @@ public class PerseusLogger {
 // message
     }
 
+    public enum ReportLineMode {
+        case singleLine
+        case multiLine
+    }
+
     // MARK: - Properties
 
     public static var customActionOnMessage: PerseusLogger.MessageDelegate?

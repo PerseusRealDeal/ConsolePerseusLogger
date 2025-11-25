@@ -7,6 +7,10 @@ Dates in this file meets Gregorian calendar. Date in format YYYY-MM-DD.
 
 ## [1.6.1] - [2025-11-NN], CPL
 
+### Added:
+
+- Line mode to report.
+
 ### Fixed:
 
 - Message text for custom output (text goes with no tag just only text, tages go separately.)

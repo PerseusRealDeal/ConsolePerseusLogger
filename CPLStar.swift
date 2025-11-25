@@ -187,6 +187,11 @@ public class PerseusLogger {
 // message
     }
 
+    public enum ReportLineMode {
+        case singleLine
+        case multiLine
+    }
+
     // MARK: - Properties
 
     public static var customActionOnMessage: PerseusLogger.MessageDelegate?
@@ -664,6 +669,11 @@ extension PerseusLogger {
         }
 
         public var text: String { report }
+        public var mode: ReportLineMode = .singleLine {
+            didSet {
+                removeMessages()
+            }
+        }
 
         // MARK: - Constants
 
@@ -693,7 +703,11 @@ extension PerseusLogger {
                            _ user: User,
                            _ dirs: Directives) {
 
-            lastMessage = "[\(localTime.date)] [\(localTime.time)] \(type.tag)\r\n\(text)"
+            if mode == .singleLine {
+                lastMessage = "[\(localTime.date)] [\(localTime.time)] \(type.tag) \(text)"
+            } else if mode == .multiLine {
+                lastMessage = "[\(localTime.date)] [\(localTime.time)] \(type.tag)\r\n\(text)"
+            }
 
             if user == .enduser {
                 delegate?.message = text
@@ -701,10 +715,14 @@ extension PerseusLogger {
         }
 
         public func clear() {
-            report = ""
+            removeMessages()
         }
 
         // MARK: - Realization
+
+        private func removeMessages() {
+            report = ""
+        }
 
         private func resizeReportIfNeeded() {
 
