@@ -2,7 +2,7 @@
 
 [![Actions Status](https://github.com/perseusrealdeal/ConsolePerseusLogger/actions/workflows/main.yml/badge.svg)](https://github.com/perseusrealdeal/ConsolePerseusLogger/actions/workflows/main.yml)
 [![Style](https://github.com/perseusrealdeal/ConsolePerseusLogger/actions/workflows/swiftlint.yml/badge.svg)](https://github.com/perseusrealdeal/ConsolePerseusLogger/actions/workflows/swiftlint.yml)
-[![Version](https://img.shields.io/badge/Version-1.6.0-green.svg)](/CHANGELOG.md)
+[![Version](https://img.shields.io/badge/Version-1.7.0-green.svg)](/CHANGELOG.md)
 [![Platforms](https://img.shields.io/badge/Platforms-macOS%2010.13+_|_iOS%2011.0+-orange.svg)](https://en.wikipedia.org/wiki/List_of_Apple_products)
 [![Xcode 14.2](https://img.shields.io/badge/Xcode-14.2+-red.svg)](https://en.wikipedia.org/wiki/Xcode)
 [![Swift 5.7](https://img.shields.io/badge/Swift-5.7-red.svg)](https://www.swift.org)
@@ -10,13 +10,13 @@
 
 > `[TYPE] [DATE] [TIME] [PID:TID] message, file: #, line: #`
 
-> Home-made product. Light-weight logging lover in Swift. 
+> This is the great home-made product in Swift. Light-weight logging lover.
 
 > `1:` Log to the console.</br>
 > `2:` Log to macOS Console.</br>
 > `3:` Log to custom output.</br>
-> `4:` Collect logs. Extend [PerseusLogger.Report](/Sources/ConsolePerseusLogger/TheReport.swift) to meet expectations with specifics or create your own.</br>
-> `5:` Delegate logs. End-user notifications.</br>
+> `4:` Collect log messages.</br>
+> `5:` Delegate log message.</br>
 
 > `CPL` is a single author and personale solution developed in `P2P` relationship paradigm.
 
@@ -37,7 +37,7 @@
 ## CPL in Use
 
 > `In approbation:` [`iOS app`](https://github.com/perseusrealdeal/TheOneRing) [`macOS app`](https://github.com/perseusrealdeal/Arkenstone)</br>
-> `In business:` [`The Dark Moon`](https://github.com/perseusrealdeal/TheDarkMoon) [`PerseusGeoKit`](https://github.com/PerseusRealDeal/PerseusGeoKit) [`PerseusDarkMode`](https://github.com/PerseusRealDeal/PerseusDarkMode)
+> `In business:` [`The Dark Moon`](https://github.com/perseusrealdeal/TheDarkMoon) [`PerseusGeoKit`](https://github.com/PerseusRealDeal/PerseusGeoKit) [`PerseusDarkMode`](https://github.com/PerseusRealDeal/PerseusDarkMode) [`Convertor mov2gif`](https://github.com/PerseusRealDeal/mov2gif)
 
 > `For details:` [`Approbation and A3 Environment`](/APPROBATION.md) / [`CHANGELOG`](/CHANGELOG.md) / [`Xcode Playground`](https://github.com/PerseusRealDeal/ConsolePerseusLogger/issues/17)</br>
 
@@ -64,15 +64,15 @@
         * [To delegate with reporting](#To-delegate-with-reporting)
         * [To delegate without reporting](#To-delegate-without-reporting)
 * [Points taken into account](#Points-taken-into-account)
-* [License MIT](#License-MIT)
-    * [Other Required License Notices](#Other-Required-License-Notices)
+* [License](#License)
+    * [Other required license notices](#Other-required-license-notices)
 * [Credits](#Credits)
 * [Author](#Author)
 
 # In brief
 
 > USE LOGGER LIKE A VARIABLE ANYWHERE YOU WANT<br/>
-
+<!-- 1 -->
 ![Image](https://github.com/user-attachments/assets/fbf78ea8-8efe-4167-a1ff-a83c20276652)
 
 # Build requirements
@@ -115,7 +115,7 @@ log.message("[\(type(of: self))].\(#function)")
 
 > [!NOTE]
 > If output is `.consoleapp` and Environment Variable `OS_ACTIVITY_MODE` in `disable` log messaging will be restricted for Xcode console, but only.
-
+<!-- 0 -->
 ![Image](https://github.com/user-attachments/assets/fb64c5cf-70dc-489c-9850-976ea3d5800c)
 
 # Usage
@@ -129,13 +129,13 @@ import ConsolePerseusLogger
 log.message("[\(type(of: self))].\(#function)")
 
 ```
-
+<!-- 2 -->
 ![Image](https://github.com/user-attachments/assets/ad0acd00-d55c-4ab9-916e-db32ca8ee236)
 
 ## Log to macOS Console
 
 > [!NOTE]
-> To pass messages to Console.app `CPL` employs `Logger` structure (from iOS 14.0, macOS 11.0) and `OSLog`.
+> To pass messages to Console.app `CPL` employs [`Logger`](https://developer.apple.com/documentation/os/logger) structure (from iOS 14.0, macOS 11.0) and [`OSLog`](https://developer.apple.com/documentation/os/oslog).
 
 `Case 1:` Redirect all messages to .consoleapp
 
@@ -145,7 +145,7 @@ log.output = .consoleapp
 log.message("[\(type(of: self))].\(#function)")
 
 ```
-
+<!-- 3 -->
 ![Image](https://github.com/user-attachments/assets/276bbeec-3883-4c2d-a1d2-4e1f78d3f5ed)
 
 `Case 2:` Redirect the message to .consoleapp
@@ -167,29 +167,24 @@ log.logObject = ("MyApp", "MyLover") // Customs for Console.app Subsystem and Ca
 
 ## Custom log
 
-> For any specific combination of message marks and other changes before to log.
+> For any specific combination of the log message details.
 
 ```swift
 
 import ConsolePerseusLogger
 
-func customPrint(_ text: String,
-                 _ type: ConsolePerseusLogger.PerseusLogger.Level,
-                 _ localTime: ConsolePerseusLogger.PerseusLogger.LocalTime,
-                 _ owner: ConsolePerseusLogger.PerseusLogger.PIDandTID,
-                 _ user: ConsolePerseusLogger.PerseusLogger.User,
-                 _ dirs: ConsolePerseusLogger.PerseusLogger.Directives) {
+func customPrint(_ instance: LogMessage) {
 
-    let time = "[\(localTime.date)] [\(localTime.time)]"
-    let utc = localTime.timeUTC
+    let time = "[\(instance.localTime.date)] [\(instance.localTime.time)]"
+    let utc = instance.localTime.timeUTC
 
-    let id = "[\(owner.pid):\(owner.tid)]"
-    // let text = text.replacingOccurrences(of: "\(type.tag) ", with: "")
+    let id = "[\(instance.owner.pid):\(instance.owner.tid)]"
+    let dirs = "file: \(instance.fileline.fileName), line: \(instance.fileline.line)"
 
-    print("[MYLOG] \(text) \(time) \(id) UTC: \(utc)")
+    print("[MYLOG] \(instance.text) \(id) \(time) UTC: \(utc), \(dirs)")
 }
 
-log.customActionOnMessage = customPrint(_:_:_:_:_:_:)
+log.customActionOnMessage = customPrint(_:)
 
 log.format = .textonly
 log.output = .custom
@@ -197,8 +192,8 @@ log.output = .custom
 log.message("The app's start point...", .info)
 
 ```
-
-![Image](https://github.com/user-attachments/assets/d6a016ed-231b-4a63-a99d-12b93ca0fe5a)
+<!-- 4 -->
+![Image](https://github.com/user-attachments/assets/2968aef2-9154-4776-9127-bad7a8f8b915)
 
 ## Debugging SwiftUI
 
@@ -248,7 +243,7 @@ VStack {
 }
 
 ```
-
+<!-- 5 -->
 ![Image](https://github.com/user-attachments/assets/1dcdca20-dbf7-4d91-9dae-278fddf5a747)
 
 ## Log level and message types
@@ -259,13 +254,16 @@ VStack {
 | :---: | :----------- | :------------------------------------------------- |
 | 5     | DEBUG        | Debugging only                                     |
 | 4     | INFO         | Helpful, but not essential                         |
-| 3     | NOTICE       | Might result in a failure. End-user notification   |
+| 3     | NOTICE       | Might result in a failure                          |
 | 2     | ERROR        | Errors seen during the code execution              |
 | 1     | FAULT        | Faults and bugs in the code                        |
 
-> Also, CPL considers Message Type to filter, look how it works:
+> [!IMPORTANT]
+> NOTICE in use with end-user notifications as a recommended type, it's a default and almost neutral level.
 
-![Image](https://github.com/user-attachments/assets/32db0216-5e71-4615-8f01-8c222cb0ae0d)
+> Also, CPL considers Message Type to filter, look how it works:
+<!-- 6 -->
+![Image](https://github.com/user-attachments/assets/45aa8913-cd35-4c4b-b5da-03ce34860221)
 
 ## Configuration
 
@@ -286,6 +284,7 @@ VStack {
 | subsecond   | .nanosecond          | .nanosecond          |
 | tidnumber   | .hexadecimal         | .hexadecimal         |
 | format      | .short               | .short               |
+| linemode    | .singleLine          | .singleLine          |
 | marks       | true                 | true                 |
 | time        | false                | false                |
 | owner       | false                | false                |
@@ -333,8 +332,8 @@ if let path = Bundle.main.url(forResource: "CPLConfig", withExtension: "json") {
 log.message(result)
 
 ```
-
-![Image](https://github.com/user-attachments/assets/0dc0848b-824c-406a-95ca-c9987133ad67)
+<!-- 7 -->
+![Image](https://github.com/user-attachments/assets/3910b34f-2946-4138-8f59-2bc70bbfb2fa)
 
 ## SPM package
 
@@ -342,6 +341,9 @@ log.message(result)
 
 > [!IMPORTANT]
 > Statement `typealias log = PerseusLogger` in SPM package should be not public.
+
+> [!IMPORTANT]
+> Statement `protocol PerseusDelegatedMessage` in SPM package should be not public, also.
 
 ```swift
 
@@ -362,7 +364,7 @@ typealias logB = PackageB.PerseusLogger
 logA.turned = .off
 logB.turned = .off
 
-// MARK: - Logger
+// MARK: - The Logger
 
 log.message("The app's start point...", .info)
 
@@ -401,7 +403,7 @@ observation = report.observe(\.lastMessage, options: .new) { _, change in
     // Refresh code
 }
 
-log.customActionOnMessage = report.report(_:_:_:_:_:_:)
+log.customActionOnMessage = report.report(_:)
 
 ```
 
@@ -409,12 +411,27 @@ log.customActionOnMessage = report.report(_:_:_:_:_:_:)
 
 `Step 2:` Create an observer for the last message to refresh on change
 
-`Step 3:` `log.customActionOnMessage = report.report(_:_:_:_:_:_:)`
+`Step 3:` `log.customActionOnMessage = report.report(_:)`
 
 > [!NOTE]
-> Override method `report(_:_:_:_:_:_:)` of `PerseusLogger.Report` to meet expectations with specifics.
+> Override method `report(_:)` of [`PerseusLogger.Report`](/Sources/ConsolePerseusLogger/TheReport.swift) to meet expectations with specifics.
 
-![Image](https://github.com/user-attachments/assets/66bea796-68fe-47e8-ab97-02f4184c58e0)
+> [!WARNING]
+> You must be careful to avoid infinite recursion when you try to add a log statement to KVO block definition.
+
+```swift
+
+observation = report.observe(\.lastMessage, options: .new) { _, change in
+    
+    // Infinite recursion case, fatal error.
+    log.message("[\(type(of: self))].\(#function)") // Leads to stack overflow.
+    
+    // Refresh code
+}
+
+```
+<!-- 8 -->
+![Image](https://github.com/user-attachments/assets/87d8b172-905e-4940-a7fe-d65d48b38796)
 
 ## Delegating logs
 
@@ -431,8 +448,8 @@ log.message("Notification...", .notice, .custom, .enduser)
 > 1. End-user message egnores `log.turned = .off`, but `log.level` is still matter.
 > 2. Message type `.notice` is recommended, it's a default and almost neutral level. 
 > 3. Output `.custom` is in use to process end-user messages. 
-
-![Image](https://github.com/user-attachments/assets/28dbedb9-72b6-45ff-a252-b10ffcd79f08)
+<!-- 9.1 -->
+![Image](https://github.com/user-attachments/assets/75f808b1-7b35-49ea-83bc-954e721d5a51)
 
 ### To delegate with reporting
 
@@ -442,9 +459,9 @@ log.message("Notification...", .notice, .custom, .enduser)
 
 `Step 3:` Set the delegate `report.messageDelegate` to the `PerseusDelegatedMessage` one
 
-`Step 4:` `log.customActionOnMessage = report.report(_:_:_:_:_:_:)`
-
-![Image](https://github.com/user-attachments/assets/7b0e2cc9-7568-4c98-87cd-dc8b37b5c15b)
+`Step 4:` `log.customActionOnMessage = report.report(_:)`
+<!-- 9.2 -->
+![Image](https://github.com/user-attachments/assets/6bd1a026-436c-4609-a523-fc514deb7159)
 
 ### To delegate without reporting
 
@@ -464,30 +481,28 @@ class MyEndUserMessageClass: PerseusDelegatedMessage {
     }
 }
 
-func customPrint(_ text: String,
-                 _ type: ConsolePerseusLogger.PerseusLogger.Level,
-                 _ localTime: ConsolePerseusLogger.PerseusLogger.LocalTime,
-                 _ owner: ConsolePerseusLogger.PerseusLogger.PIDandTID,
-                 _ user: ConsolePerseusLogger.PerseusLogger.User,
-                 _ dirs: ConsolePerseusLogger.PerseusLogger.Directives) {
+func customPrint(_ instance: LogMessage) {
 
-    let text = text.replacingOccurrences(of: "\(type.tag) ", with: "")
-
-    if user == .enduser {
-        delegate?.message = text
+    if instance.user == .enduser {
+        delegate?.message = instance.text
+        return
     }
+
+    print(instance.getMessage() + " customed!")
 }
 
-log.customActionOnMessage = customPrint(_:_:_:_:_:_:)
+log.customActionOnMessage = customPrint(_:)
 
-var delegate: PerseusDelegatedMessage? = MyEndUserMessageClass()
+let delegate: PerseusDelegatedMessage? = MyEndUserMessageClass()
 let greeting = "Hello"
 
-log.message(greeting, .notice, .custom, .enduser)
+log.message("\(greeting) 1", .notice) // .standard
+log.message("\(greeting) 2", .notice, .custom) // .custom
+log.message("\(greeting) 3", .notice, .custom, .enduser) // .custom delegated to .enduser
 
 ```
-
-![Image](https://github.com/user-attachments/assets/ed4e8f74-cab7-4287-8616-1656d0ead09c)
+<!-- 9.3 -->
+![Image](https://github.com/user-attachments/assets/d8dd8a5f-0fba-45cb-90f8-4caded3d1167)
 
 # Points taken into account
 
@@ -497,15 +512,17 @@ log.message(greeting, .notice, .custom, .enduser)
 - Preconfigured GitHub config [.gitignore](/.gitignore)
 - Preconfigured GitHub CI [main.yml](/.github/workflows/main.yml)
 
-# License MIT
+# License
+
+`License:` MIT
 
 Copyright © 7531 - 7534 Mikhail A. Zhigulin of Novosibirsk<br/>
 Copyright © 7531 - 7534 PerseusRealDeal
 
 - The year starts from the creation of the world according to a Slavic calendar.
-- September, the 1st of Slavic year. It means that "Sep 01, 2024" is the beginning of 7533.
+- September, the 1st of Slavic year. It means that "Sep 01, 2025" is the beginning of 7534.
 
-## Other Required License Notices
+## Other required license notices
 
 © 2025 The SwiftLint Contributors **for** SwiftLint</br>
 © GitHub **for** GitHub Action cirruslabs/swiftlint-action@v1</br>
@@ -519,22 +536,22 @@ Copyright © 7531 - 7534 PerseusRealDeal
 <tr>
     <td>Balance and Control</td>
     <td>kept by</td>
-    <td>Mikhail A. Zhigulin</td>
+    <td>Mikhail Zhigulin</td>
 </tr>
 <tr>
     <td>Source Code</td>
     <td>written by</td>
-    <td>Mikhail A. Zhigulin</td>
+    <td>Mikhail Zhigulin</td>
 </tr>
 <tr>
     <td>Documentation</td>
     <td>prepared by</td>
-    <td>Mikhail A. Zhigulin</td>
+    <td>Mikhail Zhigulin</td>
 </tr>
 <tr>
     <td>Product Approbation</td>
     <td>tested by</td>
-    <td>Mikhail A. Zhigulin</td>
+    <td>Mikhail Zhigulin</td>
 </tr>
 </table>
 

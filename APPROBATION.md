@@ -1,4 +1,4 @@
-# Approbation Matrix / ConsolePerseusLogger v1.1.0 & v1.2.0 & v1.3.0 & v1.4.0 & v1.5.0 & v1.5.1 & v1.6.0
+# Approbation Matrix / ConsolePerseusLogger v1.1.0 & v1.2.0 & v1.3.0 & v1.4.0 & v1.5.0 & v1.5.1 & v1.6.0 & 1.7.0
 
 > NOTE: To catch all log messages Mac Console should be started first then after a little while the logged app.
 
