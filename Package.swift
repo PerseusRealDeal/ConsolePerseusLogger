@@ -1,7 +1,7 @@
 // swift-tools-version:5.7
 
 /* Package.swift
- Version: 1.6.0
+ Version: 1.7.0
 
  For iOS and macOS only. Use Stars to adopt for the specifics you need.
 
@@ -11,7 +11,7 @@
  Copyright © 7531 - 7534 PerseusRealDeal
 
  The year starts from the creation of the world according to a Slavic calendar.
- September, the 1st of Slavic year.
+ September, the 1st of Slavic year. It means that "Sep 01, 2025" is the beginning of 7534.
 
  Licensed under the MIT license. See LICENSE file.
  All rights reserved.

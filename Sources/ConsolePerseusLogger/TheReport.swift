@@ -15,7 +15,7 @@
 //  Copyright © 7534 PerseusRealDeal
 //
 //  The year starts from the creation of the world according to a Slavic calendar.
-//  September, the 1st of Slavic year.
+//  September, the 1st of Slavic year. It means that "Sep 01, 2025" is the beginning of 7534.
 //
 //  Licensed under the MIT license. See LICENSE file.
 //  All rights reserved.
@@ -48,6 +48,11 @@ extension PerseusLogger {
         }
 
         public var text: String { report }
+        public var linemode: LineMode = .singleLine {
+            didSet {
+                removeMessages()
+            }
+        }
 
         // MARK: - Constants
 
@@ -69,27 +74,24 @@ extension PerseusLogger {
 
         // MARK: - Contract
 
-        // swiftlint:disable:next function_parameter_count
-        public func report(_ text: String,
-                           _ type: Level,
-                           _ localTime: LocalTime,
-                           _ owner: PIDandTID,
-                           _ user: User,
-                           _ dirs: Directives) {
+        public func report(_ instance: LogMessage) {
 
-            let text = text.replacingOccurrences(of: "\(type.tag) ", with: "")
-            lastMessage = "[\(localTime.date)] [\(localTime.time)] \(type.tag)\r\n\(text)"
+            lastMessage = instance.getMessage(mode: self.linemode)
 
-            if user == .enduser {
-                delegate?.message = text
+            if instance.user == .enduser {
+                delegate?.message = instance.text
             }
         }
 
         public func clear() {
-            report = ""
+            removeMessages()
         }
 
         // MARK: - Realization
+
+        private func removeMessages() {
+            report = ""
+        }
 
         private func resizeReportIfNeeded() {
 
@@ -97,7 +99,7 @@ extension PerseusLogger {
             let nlCount = newLine.count
 
             // Can the last message be reported?
-            guard lmCount != 0, lmCount < limit else {
+            guard lmCount != 0, lmCount <= limit else {
                 return
             }
 
@@ -109,7 +111,7 @@ extension PerseusLogger {
 
             // What length to remove?
             let messages = report.components(separatedBy: newLine)
-            let messagesCount = messages.count - 1
+            let messagesCount = messages.count
 
             var lengthToRemove = 0
             var itemCount = 0
@@ -117,11 +119,11 @@ extension PerseusLogger {
             for item in messages {
 
                 itemCount += 1
-                let newLineLength = messagesCount == 0 ? 0 : nlCount
+                let newLineLength = messagesCount == 1 ? 0 : nlCount
 
                 lengthToRemove += (item.count + newLineLength)
 
-                if itemCount == messagesCount, messagesCount > 2 {
+                if itemCount == messagesCount, messagesCount >= 2 {
                     lengthToRemove -= nlCount // There's no new line in the report end
                 }
 
@@ -145,7 +147,7 @@ extension PerseusLogger {
 
         private func appendLastMessageToReport() {
 
-            guard lastMessage.isEmpty == false, lastMessage.count < limit else {
+            guard lastMessage.isEmpty == false, lastMessage.count <= limit else {
                 return
             }
 
