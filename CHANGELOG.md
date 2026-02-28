@@ -5,6 +5,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Dates in this file meets Gregorian calendar. Date in format YYYY-MM-DD.
 
+## [1.7.1] - [2026-03-03], CPL
+
+### Changed:
+
+- Renamed from `CPLStar.swift` to `TheLoggerStar.swift`
+
+### Added:
+
+- Minor changes to documentation.
+
 ## [1.7.0] - [2025-11-30], CPL
 
 ### Added:
