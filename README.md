@@ -1,16 +1,25 @@
-# ConsolePerseusLogger — Xcode 14.2+
+<div align="center">
+
+Console Perseus Logger
+==
+
+USE LOGGER LIKE A VARIABLE ANYWHERE YOU WANT
 
 [![Actions Status](https://github.com/perseusrealdeal/ConsolePerseusLogger/actions/workflows/main.yml/badge.svg)](https://github.com/perseusrealdeal/ConsolePerseusLogger/actions/workflows/main.yml)
 [![Style](https://github.com/perseusrealdeal/ConsolePerseusLogger/actions/workflows/swiftlint.yml/badge.svg)](https://github.com/perseusrealdeal/ConsolePerseusLogger/actions/workflows/swiftlint.yml)
-[![Version](https://img.shields.io/badge/Version-1.7.0-green.svg)](/CHANGELOG.md)
+[![Version](https://img.shields.io/badge/Version-1.7.1-green.svg)](/CHANGELOG.md)
 [![Platforms](https://img.shields.io/badge/Platforms-macOS%2010.13+_|_iOS%2011.0+-orange.svg)](https://en.wikipedia.org/wiki/List_of_Apple_products)
 [![Xcode 14.2](https://img.shields.io/badge/Xcode-14.2+-red.svg)](https://en.wikipedia.org/wiki/Xcode)
 [![Swift 5.7](https://img.shields.io/badge/Swift-5.7-red.svg)](https://www.swift.org)
-[![License](http://img.shields.io/:License-MIT-blue.svg)](/LICENSE)
 
-> `[TYPE] [DATE] [TIME] [PID:TID] message, file: #, line: #`
+[`A3 Environment`](/APPROBATION.md) • [`CHANGELOG`](/CHANGELOG.md) • [`Xcode Playground`](https://github.com/PerseusRealDeal/ConsolePerseusLogger/issues/17) • [`MIT License`](/LICENSE)
 
-> This is the great home-made product in Swift. Light-weight logging lover.
+</div>
+
+---
+
+Usages
+==
 
 > `1:` Log to the console.</br>
 > `2:` Log to macOS Console.</br>
@@ -18,33 +27,32 @@
 > `4:` Collect log messages.</br>
 > `5:` Delegate log message.</br>
 
-> `CPL` is a single author and personale solution developed in `P2P` relationship paradigm.
+Integration
+==
 
-## Integration Capabilities
-
-[![Standalone](https://img.shields.io/badge/Standalone%20-available-informational.svg)](/CPLStar.swift)
+[![Standalone](https://img.shields.io/badge/Standalone%20-available-informational.svg)](/TheLoggerStar.swift)
 [![Swift Package Manager compatible](https://img.shields.io/badge/Swift%20Package%20Manager-compatible-4BC51D.svg)](/Package.swift)
 
-## Our Terms
+CPL in Use
+==
 
-> [`CPL`](https://github.com/perseusrealdeal/ConsolePerseusLogger.git) stands for `C`onsole `P`erseus `L`ogger.</br>
-> [`PGK`](https://github.com/perseusrealdeal/PerseusGeoKit.git) stands for `P`erseus `G`eo `K`it.</br>
-> [`PDM`](https://github.com/perseusrealdeal/PerseusDarkMode.git) stands for `P`erseus `D`ark `M`ode.</br>
-> `P2P` stands for `P`erson-`to`-`P`erson.</br>
-> [`A3`](https://docs.google.com/document/d/1K2jOeIknKRRpTEEIPKhxO2H_1eBTof5uTXxyOm5g6nQ) stands for `A`pple `A`pps `A`pprobation.</br>
-> [`T3`](https://github.com/perseusrealdeal/TheTechnologicalTree) stands for `T`he `T`echnological `T`ree.
+> `Approbation:` 
 
-## CPL in Use
+- [`Swift macOS app`](https://github.com/perseusrealdeal/Arkenstone) 
+- [`Swift iOS app`](https://github.com/perseusrealdeal/TheOneRing)
 
-> `In approbation:` [`iOS app`](https://github.com/perseusrealdeal/TheOneRing) [`macOS app`](https://github.com/perseusrealdeal/Arkenstone)</br>
-> `In business:` [`The Dark Moon`](https://github.com/perseusrealdeal/TheDarkMoon) [`PerseusGeoKit`](https://github.com/PerseusRealDeal/PerseusGeoKit) [`PerseusDarkMode`](https://github.com/PerseusRealDeal/PerseusDarkMode) [`Convertor mov2gif`](https://github.com/PerseusRealDeal/mov2gif)
+> `Business:` 
 
-> `For details:` [`Approbation and A3 Environment`](/APPROBATION.md) / [`CHANGELOG`](/CHANGELOG.md) / [`Xcode Playground`](https://github.com/PerseusRealDeal/ConsolePerseusLogger/issues/17)</br>
+- Swift package [`PerseusDarkMode`](https://github.com/PerseusRealDeal/PerseusDarkMode) 
+- Swift package [`PerseusGeoKit`](https://github.com/PerseusRealDeal/PerseusGeoKit)
+- Swift macOS app [`The Dark Moon`](https://github.com/perseusrealdeal/TheDarkMoon) 
+- Swift macOS app [`Convertor mov2gif`](https://github.com/PerseusRealDeal/mov2gif)
 
-# Contents
+Contents
+==
 
 * [In brief](#In-brief)
-* [Build requirements](#Build-requirements)
+* [Requirements](#Requirements)
 * [Third-party software](#Third-party-software)
 * [Installation](#Installation)
 * [Usage](#Usage)
@@ -63,37 +71,92 @@
         * [End-user message statement](#End-user-message-statement)
         * [To delegate with reporting](#To-delegate-with-reporting)
         * [To delegate without reporting](#To-delegate-without-reporting)
-* [Points taken into account](#Points-taken-into-account)
+* [Account points](#Account-points)
 * [License](#License)
-    * [Other required license notices](#Other-required-license-notices)
+    * [Other required licenses details](#Other-required-licenses-details)
 * [Credits](#Credits)
+* [Contributing](#Contributing)
 * [Author](#Author)
+    * [Contact](#Contact)
 
-# In brief
+Our Terms
+--
 
-> USE LOGGER LIKE A VARIABLE ANYWHERE YOU WANT<br/>
+| Acronym | Stands for                                                                                                |
+| :-----: | --------------------------------------------------------------------------------------------------------- |
+| CPL     | [Console_Perseus_Logger](https://github.com/perseusrealdeal/ConsolePerseusLogger.git)                     |
+| PDM     | [Perseus_Dark_Mode](https://github.com/perseusrealdeal/PerseusDarkMode.git)                               |
+| PGK     | [Perseus_Geo_Kit](https://github.com/perseusrealdeal/PerseusGeoKit.git)                                   |
+| A3      | [Apple_Apps_Approbation](https://docs.google.com/document/d/1K2jOeIknKRRpTEEIPKhxO2H_1eBTof5uTXxyOm5g6nQ) |
+| T3      | [The_Technological_Tree](https://github.com/perseusrealdeal/TheTechnologicalTree)                         |
+| P2P     | Person_to_Person                                                                                          |
+
+In brief
+==
+
+The great home-made product `CPL` is a single author and personale solution developed in `P2P` relationship paradigm.
+
+<div align="center">
+
+`Log Template` 
+
+</div>
+
+```
+[TYPE] [DATE] [TIME] [PID:TID] message, file: #, line: #
+```
+
+```swift
+
+log.message("text")
+
+```
+
 <!-- 1 -->
 ![Image](https://github.com/user-attachments/assets/fbf78ea8-8efe-4167-a1ff-a83c20276652)
 
-# Build requirements
+Requirements
+==
 
-- [macOS Monterey 12.7.6+](https://apps.apple.com/by/app/macos-monterey/id1576738294) / [Xcode 14.2+](https://developer.apple.com/services-account/download?path=/Developer_Tools/Xcode_14.2/Xcode_14.2.xip)
+`To build:`
+
+- [macOS Monterey 12.7.6+](https://apps.apple.com/by/app/macos-monterey/id1576738294)
+- [Xcode 14.2+](https://developer.apple.com/services-account/download?path=/Developer_Tools/Xcode_14.2/Xcode_14.2.xip)
 
 > [!TIP]
-> As the single source code [CPLStar.swift](/CPLStar.swift) CPL with minimum changes can be used even in Xcode 10.1, just remove all statements starting with `if #available(iOS 14.0, macOS 11.0, *)`.
+> As the single source code [TheLoggerStar.swift](/TheLoggerStar.swift), CPL with minimum changes can be used even in Xcode 10.1
 
-# Third-party software
+`For Xcode 10.1:` remove all statements starting with
 
-| Type   | Name                                                                                                                              | License                            |
-| ------ | --------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------- |
-| Style  | [SwiftLint](https://github.com/realm/SwiftLint) / [v0.57.0 for Monterey+](https://github.com/realm/SwiftLint/releases/tag/0.57.0) | MIT                                |
-| Script | [SwiftLint Shell Script](/SucceedsPostAction.sh) to run SwiftLint                                                                 | MIT                                |
-| Action | [mxcl/xcodebuild@v3](https://github.com/mxcl/xcodebuild)                                                                          | [Unlicense](https://unlicense.org) |
-| Action | [cirruslabs/swiftlint-action@v1](https://github.com/cirruslabs/swiftlint-action/)                                                 | MIT                                |
+```swift
 
-# Installation
+if #available(iOS 14.0, macOS 11.0, *)
 
-`Standalone:` Place [CPLStar.swift](/CPLStar.swift) into your project directly
+```
+
+Third-party software
+==
+
+MIT
+--
+
+| Type   | Name                                                                                                                              |
+| ------ | --------------------------------------------------------------------------------------------------------------------------------- |
+| Style  | [SwiftLint](https://github.com/realm/SwiftLint) / [v0.57.0 for Monterey+](https://github.com/realm/SwiftLint/releases/tag/0.57.0) |
+| Script | [SwiftLint Shell Script](/SucceedsPostAction.sh) to run SwiftLint                                                                 |
+| Action | [cirruslabs/swiftlint-action@v1](https://github.com/cirruslabs/swiftlint-action/)                                                 |
+
+[Unlicense](https://unlicense.org)
+--
+
+| Type   | Name                                                                                                                              |
+| ------ | --------------------------------------------------------------------------------------------------------------------------------- |
+| Action | [mxcl/xcodebuild@v3](https://github.com/mxcl/xcodebuild)                                                                          |
+
+Installation
+==
+
+`Standalone:` Place [`TheLoggerStar.swift`](/TheLoggerStar.swift) (`CPLStar.swift` previously) into your project directly
 
 ```swift
 
@@ -101,8 +164,13 @@ log.message("[\(type(of: self))].\(#function)")
 
 ```
 
-`Swift Package Manager:` `https://github.com/perseusrealdeal/ConsolePerseusLogger` 
+`Swift Package Manager:` 
 
+```
+https://github.com/perseusrealdeal/ConsolePerseusLogger
+```
+
+> [!CAUTION]
 > Exact Version is strongly recommended.
 
 ```swift
@@ -114,13 +182,15 @@ log.message("[\(type(of: self))].\(#function)")
 ```
 
 > [!NOTE]
-> If output is `.consoleapp` and Environment Variable `OS_ACTIVITY_MODE` in `disable` log messaging will be restricted for Xcode console, but only.
+> If output is `.consoleapp` (macOS Console app) and Environment Variable `OS_ACTIVITY_MODE` in `disable` log messaging will be restricted for Xcode console, but only.
 <!-- 0 -->
 ![Image](https://github.com/user-attachments/assets/fb64c5cf-70dc-489c-9850-976ea3d5800c)
 
-# Usage
+Usage
+==
 
-## Log to the console
+Log to the console
+--
 
 ```swift
 
@@ -132,7 +202,8 @@ log.message("[\(type(of: self))].\(#function)")
 <!-- 2 -->
 ![Image](https://github.com/user-attachments/assets/ad0acd00-d55c-4ab9-916e-db32ca8ee236)
 
-## Log to macOS Console
+Log to macOS Console
+--
 
 > [!NOTE]
 > To pass messages to Console.app `CPL` employs [`Logger`](https://developer.apple.com/documentation/os/logger) structure (from iOS 14.0, macOS 11.0) and [`OSLog`](https://developer.apple.com/documentation/os/oslog).
@@ -165,7 +236,8 @@ log.logObject = ("MyApp", "MyLover") // Customs for Console.app Subsystem and Ca
 
 ```
 
-## Custom log
+Custom log
+--
 
 > For any specific combination of the log message details.
 
@@ -195,7 +267,8 @@ log.message("The app's start point...", .info)
 <!-- 4 -->
 ![Image](https://github.com/user-attachments/assets/2968aef2-9154-4776-9127-bad7a8f8b915)
 
-## Debugging SwiftUI
+Debugging SwiftUI
+--
 
 `Case 1:` As Is
 
@@ -246,7 +319,8 @@ VStack {
 <!-- 5 -->
 ![Image](https://github.com/user-attachments/assets/1dcdca20-dbf7-4d91-9dae-278fddf5a747)
 
-## Log level and message types
+Log level and message types
+--
 
 > CPL applies the most common log types for indicating information category.
 
@@ -265,7 +339,8 @@ VStack {
 <!-- 6 -->
 ![Image](https://github.com/user-attachments/assets/45aa8913-cd35-4c4b-b5da-03ce34860221)
 
-## Configuration
+Configuration
+--
 
 ### Default settings
 
@@ -335,9 +410,10 @@ log.message(result)
 <!-- 7 -->
 ![Image](https://github.com/user-attachments/assets/3910b34f-2946-4138-8f59-2bc70bbfb2fa)
 
-## SPM package
+SPM package
+--
 
-> In SPM package `CPL` can be used as standalone, just place [CPLStar.swift](/CPLStar.swift) into your project directly.
+> In SPM package `CPL` can be used as standalone, just place [TheLoggerStar.swift](/TheLoggerStar.swift) into your project directly.
 
 > [!IMPORTANT]
 > Statement `typealias log = PerseusLogger` in SPM package should be not public.
@@ -370,7 +446,8 @@ log.message("The app's start point...", .info)
 
 ```
 
-## macOS Console and Simulator
+macOS Console and Simulator
+--
 
 > [!NOTE]
 > `CPL` employs `Logger` structure (from iOS 14.0, macOS 11.0) and `OSLog` to pass messages to macOS Console.
@@ -389,7 +466,8 @@ log.message("The app's start point...", .info)
 
 ```
 
-## Collecting logs
+Collecting logs
+--
 
 > [PerseusLogger.Report](/Sources/ConsolePerseusLogger/TheReport.swift) and KVO can be used to view last log messages.
 
@@ -433,7 +511,8 @@ observation = report.observe(\.lastMessage, options: .new) { _, change in
 <!-- 8 -->
 ![Image](https://github.com/user-attachments/assets/87d8b172-905e-4940-a7fe-d65d48b38796)
 
-## Delegating logs
+Delegating logs
+--
 
 ### End-user message statement
 
@@ -504,60 +583,87 @@ log.message("\(greeting) 3", .notice, .custom, .enduser) // .custom delegated to
 <!-- 9.3 -->
 ![Image](https://github.com/user-attachments/assets/d8dd8a5f-0fba-45cb-90f8-4caded3d1167)
 
-# Points taken into account
+Account points
+==
 
 - Preconfigured Swift Package manifest [Package.swift](/Package.swift)
 - Preconfigured SwiftLint config [.swiftlint.yml](/.swiftlint.yml)
 - Preconfigured SwiftLint CI [swiftlint.yml](/.github/workflows/swiftlint.yml)
 - Preconfigured GitHub config [.gitignore](/.gitignore)
 - Preconfigured GitHub CI [main.yml](/.github/workflows/main.yml)
+- [Changelog](/CHANGELOG.md)
+- [A3 environment specification](/APPROBATION.md)
+- [SwiftLint shell script](/SucceedsPostAction.sh)
 
-# License
+License
+==
 
-`License:` MIT
+`MIT License`, see [LICENSE](/LICENSE) for details.
 
 Copyright © 7531 - 7534 Mikhail A. Zhigulin of Novosibirsk<br/>
 Copyright © 7531 - 7534 PerseusRealDeal
 
 - The year starts from the creation of the world according to a Slavic calendar.
-- September, the 1st of Slavic year. It means that "Sep 01, 2025" is the beginning of 7534.
+- September, the 1st of Slavic year. For instance, "Sep 01, 2025" is the beginning of 7534.
 
-## Other required license notices
+Other required licenses details
+--
 
-© 2025 The SwiftLint Contributors **for** SwiftLint</br>
-© GitHub **for** GitHub Action cirruslabs/swiftlint-action@v1</br>
-© 2021 Alexandre Colucci, geteimy.com **for** Shell Script SucceedsPostAction.sh</br>
+`© 2025 The SwiftLint Contributors` **for** SwiftLint</br>
+`© GitHub` **for** GitHub Action cirruslabs/swiftlint-action@v1</br>
+`© 2021 Alexandre Colucci, geteimy.com` **for** Shell Script SucceedsPostAction.sh</br>
 
-[LICENSE](/LICENSE) for details.
-
-# Credits
+Credits
+==
 
 <table>
-<tr>
-    <td>Balance and Control</td>
-    <td>kept by</td>
-    <td>Mikhail Zhigulin</td>
-</tr>
-<tr>
-    <td>Source Code</td>
-    <td>written by</td>
-    <td>Mikhail Zhigulin</td>
-</tr>
-<tr>
-    <td>Documentation</td>
-    <td>prepared by</td>
-    <td>Mikhail Zhigulin</td>
-</tr>
-<tr>
-    <td>Product Approbation</td>
-    <td>tested by</td>
-    <td>Mikhail Zhigulin</td>
-</tr>
+  <tr>
+      <td>Balance and Control</td>
+      <td>Mikhail Zhigulin</td>
+  </tr>
+  <tr>
+      <td>Source Code</td>
+      <td>Mikhail Zhigulin</td>
+  </tr>
+  <tr>
+      <td>Documentation</td>
+      <td>Mikhail Zhigulin</td>
+  </tr>
+  <tr>
+      <td>Approbation</td>
+      <td>Mikhail Zhigulin</td>
+  </tr>
+  <tr>
+      <td>English</td>
+      <td>Mikhail Zhigulin</td>
+  </tr>
 </table>
 
 - Language support: [Reverso](https://www.reverso.net/)
 - Git clients: [SmartGit](https://syntevo.com/) and [GitHub Desktop](https://github.com/apps/desktop)
 
-# Author
+Contributing
+==
 
-> © Mikhail A. Zhigulin of Novosibirsk.
+> [!NOTE]
+> The product is constructed in `P2P` relationship paradigm that means the only one single and the same face in the product team during all development process stages.
+
+`Bug reports are welcome`, create an issue and give details.
+
+Author
+==
+
+<div align="center">
+
+`© Mikhail A. Zhigulin of Novosibirsk`
+
+</div>
+
+Contact
+--
+
+<div align="center">
+
+[E-mail](mailto:mzhigulin@gmail.com) • [Telegram](https://t.me/velociraptor1985) • [GitHub](https://github.com/perseusrealdeal)
+
+</div>
