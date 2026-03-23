@@ -27,13 +27,19 @@ final class FunctionalTests: XCTestCase {
         log.time = true
         log.owner = true
     }
-/*
+
     override static func tearDown() {
         super.tearDown()
+
+        log.message("[\(type(of: self))].\(#function)")
     }
 
+    /*
+
     func test_zero() { XCTFail("Tests not yet implemented in \(type(of: self)).") }
-*/
+
+     */
+
     func test_the_first_success() {
         log.message("[\(type(of: self))].\(#function)")
 
