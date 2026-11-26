@@ -5,6 +5,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Dates in this file meets Gregorian calendar. Date in format YYYY-MM-DD.
 
+## [1.7.2] - [2026-11-27], CPL
+
+### Added:
+
+- Minor internal improvements.
+- Method `text` as a short use of method `message`, but both the same.
+
 ## [1.7.1] - [2026-03-03], CPL
 
 ### Changed:
