@@ -7,10 +7,11 @@ USE LOGGER LIKE A VARIABLE ANYWHERE YOU WANT
 
 [![Actions Status](https://github.com/perseusrealdeal/ConsolePerseusLogger/actions/workflows/main.yml/badge.svg)](https://github.com/perseusrealdeal/ConsolePerseusLogger/actions/workflows/main.yml)
 [![Style](https://github.com/perseusrealdeal/ConsolePerseusLogger/actions/workflows/swiftlint.yml/badge.svg)](https://github.com/perseusrealdeal/ConsolePerseusLogger/actions/workflows/swiftlint.yml)
-[![Version](https://img.shields.io/badge/Version-1.7.1-green.svg)](/CHANGELOG.md)
+[![Version](https://img.shields.io/badge/Version-1.7.2-green.svg)](/CHANGELOG.md)
 [![Platforms](https://img.shields.io/badge/Platforms-macOS%2010.13+_|_iOS%2011.0+-orange.svg)](https://en.wikipedia.org/wiki/List_of_Apple_products)
 [![Xcode 14.2](https://img.shields.io/badge/Xcode-14.2+-red.svg)](https://en.wikipedia.org/wiki/Xcode)
 [![Swift 5.7](https://img.shields.io/badge/Swift-5.7-red.svg)](https://www.swift.org)
+[![GitHubTree](https://img.shields.io/badge/GitHubTree-ConsolePerseusLogger-blue)](https://githubtree.mgks.dev/repo/perseusrealdeal/ConsolePerseusLogger/main/?ref=badge)
 
 [`A3 Environment`](/APPROBATION.md) • [`CHANGELOG`](/CHANGELOG.md) • [`Xcode Playground`](https://github.com/PerseusRealDeal/ConsolePerseusLogger/issues/17) • [`MIT License`](/LICENSE)
 
@@ -112,6 +113,14 @@ log.message("text")
 
 ```
 
+`Or just the same:`
+
+```swift
+
+log.text("text")
+
+```
+
 <!-- 1 -->
 ![Image](https://github.com/user-attachments/assets/fbf78ea8-8efe-4167-a1ff-a83c20276652)
 
@@ -140,11 +149,12 @@ Third-party software
 MIT
 --
 
-| Type   | Name                                                                                                                              |
-| ------ | --------------------------------------------------------------------------------------------------------------------------------- |
-| Style  | [SwiftLint](https://github.com/realm/SwiftLint) / [v0.57.0 for Monterey+](https://github.com/realm/SwiftLint/releases/tag/0.57.0) |
-| Script | [SwiftLint Shell Script](/SucceedsPostAction.sh) to run SwiftLint                                                                 |
-| Action | [cirruslabs/swiftlint-action@v1](https://github.com/cirruslabs/swiftlint-action/)                                                 |
+| Type      | Name                                                                                                                              |
+| --------- | --------------------------------------------------------------------------------------------------------------------------------- |
+| Style     | [SwiftLint](https://github.com/realm/SwiftLint) / [v0.57.0 for Monterey+](https://github.com/realm/SwiftLint/releases/tag/0.57.0) |
+| Script    | [SwiftLint Shell Script](/SucceedsPostAction.sh) to run SwiftLint                                                                 |
+| Action    | [cirruslabs/swiftlint-action@v1](https://github.com/cirruslabs/swiftlint-action/)                                                 |
+| Tree View | [GitHubTree Viewer](https://github.com/mgks/GitHubTree)                               |
 
 [Unlicense](https://unlicense.org)
 --
@@ -156,7 +166,7 @@ MIT
 Installation
 ==
 
-`Standalone:` Place [`TheLoggerStar.swift`](/TheLoggerStar.swift) (`CPLStar.swift` previously) into your project directly
+`Standalone:` Place [`TheLoggerStar.swift`](/TheLoggerStar.swift) into your project directly
 
 ```swift
 
@@ -600,11 +610,11 @@ License
 
 `MIT License`, see [LICENSE](/LICENSE) for details.
 
-Copyright © 7531 - 7534 Mikhail A. Zhigulin of Novosibirsk<br/>
-Copyright © 7531 - 7534 PerseusRealDeal
+Copyright © 7531 - 7535 Mikhail A. Zhigulin of Novosibirsk<br/>
+Copyright © 7531 - 7535 PerseusRealDeal
 
 - The year starts from the creation of the world according to a Slavic calendar.
-- September, the 1st of Slavic year. For instance, "Sep 01, 2025" is the beginning of 7534.
+- September, the 1st of Slavic year. For instance, "Sep 01, 2026" is the beginning of 7535.
 
 Other required licenses details
 --
@@ -612,6 +622,7 @@ Other required licenses details
 `© 2025 The SwiftLint Contributors` **for** SwiftLint</br>
 `© GitHub` **for** GitHub Action cirruslabs/swiftlint-action@v1</br>
 `© 2021 Alexandre Colucci, geteimy.com` **for** Shell Script SucceedsPostAction.sh</br>
+`© 2025 Ghazi (mgks.dev)` **for** GitHubTree Viewer</br>
 
 Credits
 ==

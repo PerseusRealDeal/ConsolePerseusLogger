@@ -11,11 +11,11 @@
 //  iOS: https://github.com/PerseusRealDeal/TheOneRing
 //  macOS: https://github.com/PerseusRealDeal/Arkenstone
 //
-//  Copyright © 7534 Mikhail A. Zhigulin of Novosibirsk
-//  Copyright © 7534 PerseusRealDeal
+//  Copyright © 7534 - 7535 Mikhail A. Zhigulin of Novosibirsk
+//  Copyright © 7534 - 7535 PerseusRealDeal
 //
 //  The year starts from the creation of the world according to a Slavic calendar.
-//  September, the 1st of Slavic year. For instance, "Sep 01, 2025" is the beginning of 7534.
+//  September, the 1st of Slavic year. For instance, "Sep 01, 2026" is the beginning of 7535.
 //
 //  Licensed under the MIT license. See LICENSE file.
 //  All rights reserved.
